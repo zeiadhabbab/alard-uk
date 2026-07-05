@@ -1,0 +1,215 @@
+{% comment %}
+  Renders product pricing (regular, sale, unit-price, badges)
+
+  Props:
+  - product: {Product} (required)
+  - use_variant: {Boolean} If true, use selected_or_first_available_variant prices
+  - show_badges: {Boolean} Show "Sale" / "Sold Out" badges
+  - price_class: {String} Extra CSS class on wrapper
+  - show_compare_at_price: {Boolean} Force show compare-at (mainly for volume pricing)
+
+  Notes:
+  - If the product has tag 'discount10', we display 10% off and mark as on-sale (CSS-friendly).
+  - If volume pricing is configured, we show a min–max price range.
+  - If settings.currency_code_enabled is true, values render with currency code.
+{% endcomment %}
+
+{%- liquid
+  # --- Safety checks ---
+  if product == nil
+    break
+  endif
+
+  # --- Resolve pricing target (product vs variant) ---
+  if use_variant
+    assign target = product.selected_or_first_available_variant
+  else
+    assign target = product
+  endif
+
+  # --- Raw numeric values ---
+  assign compare_at_price = target.compare_at_price
+  assign price            = target.price | default: 1999
+  assign price_min        = product.price_min
+  assign price_max        = product.price_max
+  assign available        = target.available | default: false
+
+  # --- Manual discount via tag (10% off) ---
+  assign has_manual_discount = false
+  if product.tags contains 'discount10'
+    assign has_manual_discount = true
+  endif
+  assign price_minus_10 = price | times: 0.9
+
+  # --- Format money once (with or without currency code) ---
+  assign money_price         = price         | money
+  assign money_price_min     = price_min     | money
+  assign money_price_max     = price_max     | money
+  assign money_compare_price = compare_at_price | money
+  assign money_price_minus_10 = price_minus_10 | money
+  if settings.currency_code_enabled
+    assign money_price         = price         | money_with_currency
+    assign money_price_min     = price_min     | money_with_currency
+    assign money_price_max     = price_max     | money_with_currency
+    assign money_compare_price = compare_at_price | money_with_currency
+    assign money_price_minus_10 = price_minus_10 | money_with_currency
+  endif
+
+  # --- Price text for "From" if product price varies and we're not on a variant ---
+
+
+  # --- Determine sale states for wrapper classes ---
+  assign is_native_sale = false
+  if compare_at_price > price and product.quantity_price_breaks_configured? != true
+    assign is_native_sale = true
+  endif
+
+  assign is_manual_sale = has_manual_discount
+
+  assign is_volume_sale = false
+  if compare_at_price > price and product.quantity_price_breaks_configured?
+    assign is_volume_sale = true
+  endif
+
+  assign is_any_sale = false
+  if is_native_sale or is_manual_sale or is_volume_sale
+    assign is_any_sale = true
+  endif
+-%}
+<style>
+  .price--on-sale .price__regular {
+    display: none !important;
+  }
+  .price-item--last span.money{
+    font-size: 20px !important;
+    font-weight: bold !important;
+    color: #718443 !important;
+}
+</style>
+<div
+  class="
+    price
+    {%- if price_class %} {{ price_class }}{% endif -%}
+    {%- unless available %} price--sold-out{% endunless -%}
+    {%- if is_native_sale or is_manual_sale %} price--on-sale{% endif -%}
+    {%- if is_volume_sale %} volume-pricing--sale-badge{% endif -%}
+    {%- if product.price_varies == false and product.compare_at_price_varies %} price--no-compare{% endif -%}
+    {%- if show_badges %} price--show-badge{% endif -%}
+  "
+>
+  <div class="price__container">
+    {%- comment -%}
+      Structure:
+      - .price__regular: shown by CSS when not on sale
+      - .price__sale:    shown by CSS when on sale
+    {%- endcomment -%}
+
+    <!-- Regular price (shown when NOT on sale) -->
+    <div class="price__regular">
+      {%- if product.quantity_price_breaks_configured? -%}
+        {%- if show_compare_at_price -%}
+          {%- unless product.price_varies == false and product.compare_at_price_varies -%}
+            <span class="visually-hidden visually-hidden--inline">
+              {{ 'products.product.price.regular_price' | t }}
+            </span>
+            <span>
+              <s class="price-item price-item--regular variant-item__old-price">
+                {{ money_compare_price }}
+              </s>
+            </span>
+          {%- endunless -%}
+        {%- endif -%}
+        <span class="visually-hidden visually-hidden--inline">
+          {{ 'products.product.price.regular_price' | t }}
+        </span>
+      
+      {%- else -%}
+        <span class="visually-hidden visually-hidden--inline">
+          {{ 'products.product.price.regular_price' | t }}
+        </span>
+
+        <span class="price-item price-item--regular {{ show_compare_at_price  }}">
+          {{ money_price }}
+        </span>
+      {%- endif -%}
+    </div>
+
+    <!-- Sale price (shown when ON sale) -->
+    <div class="price__sale">
+      {%- comment -%}
+        Determine whether to show the crossed-out "was" price.
+        Triggers if:
+        - Native sale (compare_at > price), OR
+        - 'onsale' tag is present, OR
+        - Volume pricing with explicit compare-at request.
+      {%- endcomment -%}
+      {%- assign show_was_price = false -%}
+      {%- if is_native_sale -%}
+        {%- assign show_was_price = true -%}
+      {%- elsif product.tags contains 'onsale' -%}
+        {%- assign show_was_price = true -%}
+      {%- elsif product.quantity_price_breaks_configured? and show_compare_at_price -%}
+        {%- assign show_was_price = true -%}
+      {%- endif -%}
+
+      {%- if show_was_price -%}
+        <span class="visually-hidden visually-hidden--inline">
+          {{ 'products.product.price.regular_price' | t }}
+        </span>
+        <span>
+          <s class="price-item price-item--regular">
+            {{ money_compare_price }}
+          </s>
+        </span>
+      {%- endif -%}
+
+      <span class="visually-hidden visually-hidden--inline">
+        {{ 'products.product.price.sale_price' | t }}
+      </span>
+
+      <span class="price-item price-item--sale price-item--last">
+        {%- if is_manual_sale -%}
+          {{ money_price_minus_10 }}
+        {%- else -%}
+          {{ money_price }}
+        {%- endif -%}
+      </span>
+
+      {%- if is_manual_sale -%}
+        <span class="discount10-money_price">
+          <s class="price-item price-item--regular">{{ money_price }}</s>
+        </span>
+      {%- endif -%}
+    </div>
+
+    <!-- Unit price (if defined on selected variant) -->
+    <small class="unit-price caption{% if product.selected_or_first_available_variant.unit_price_measurement == nil %} hidden{% endif %}">
+      <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+      <span class="price-item price-item--last">
+        <span>{{- product.selected_or_first_available_variant.unit_price | money -}}</span>
+        <span aria-hidden="true">/</span>
+        <span class="visually-hidden">&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span>
+        <span>
+          {%- if product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}
+            {{- product.selected_or_first_available_variant.unit_price_measurement.reference_value -}}
+          {%- endif -%}
+          {{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}
+        </span>
+      </span>
+    </small>
+  </div>
+
+  {%- if show_badges -%}
+    {%- if is_any_sale -%}
+      <span class="badge price__badge-sale color-{{ settings.sale_badge_color_scheme }}">
+        {{ 'products.product.on_sale' | t }}
+      </span>
+    {%- endif -%}
+
+    {%- unless available -%}
+      <span class="badge price__badge-sold-out color-{{ settings.sold_out_badge_color_scheme }}">
+        {{ 'products.product.sold_out' | t }}
+      </span>
+    {%- endunless -%}
+  {%- endif -%}
+</div>

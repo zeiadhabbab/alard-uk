@@ -1,0 +1,75 @@
+<style>
+    .img-slick-slider {
+      width:100%;
+      display: flex;
+      justify-content: center;
+      margin-top:8rem;
+      direction: ltr;
+    }
+    .slick-slider-img {
+     max-width: 100%;
+     height: auto;
+     padding:0 10px;
+     cursor: pointer;
+
+    }
+
+    .slick-slider-container {
+      width:70%;
+
+
+    }
+
+    @media screen and (max-width: 750px) {
+      .slick-slider-container {
+        width:100%;
+      }
+
+    .img-slick-slider {
+        margin-top:4rem;
+    }
+
+
+
+  }
+</style>
+<div class="img-slick-slider">
+  <div class="slick-slider-container">
+    <div class="slick-slider">
+      {%- for block in section.blocks -%}
+        {% case block.type %}
+            {%- when 'image' -%}
+              {%- if block.settings.image != blank -%}
+                {%- assign image_size_2x = block.settings.image_width | times: 2 | at_most: 5760 -%}
+                  <img
+                    width="fit-content"
+                    height="fit-content"
+                    class="slick-slider-img"
+                    src="{{ block.settings.image | img_url: '100x100'}}"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    loading="lazy"
+                    onclick="window.open('{{ block.settings.reel_link }}', '_blank');"
+                  />
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+              {%- endif -%}
+      
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<script>
+    jQuery(document).ready(function($) {
+        $('.slick-slider').slick({
+          dots: false,
+          infinite: false,
+          slidesToShow: 4,
+          slidesToScroll: 1,
+          arrows: true
+      });
+  });
+</script>

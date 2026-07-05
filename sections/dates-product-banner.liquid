@@ -1,0 +1,110 @@
+{{ 'section-dates-hero.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="dates-product-banner section-{{ section.id }}"
+  style="background-color: {{ section.settings.background_color }};"
+>
+  <div class="page-width dates-product-banner__inner">
+    {%- if section.settings.product != blank -%}
+      {% assign banner_product = section.settings.product %}
+      <div class="dates-product-banner__media">
+        {%- if banner_product.featured_image != blank -%}
+          {{
+            banner_product.featured_image
+            | image_url: width: 900
+            | image_tag:
+              loading: 'lazy',
+              class: 'dates-product-banner__image',
+              alt: banner_product.title | escape
+          }}
+        {%- endif -%}
+      </div>
+
+      <div class="dates-product-banner__content">
+        <h2 class="dates-product-banner__title">
+          {{ section.settings.heading | default: banner_product.title }}
+        </h2>
+
+        {%- if section.settings.body != blank -%}
+          <p class="dates-product-banner__body">
+            {{ section.settings.body }}
+          </p>
+        {%- endif -%}
+
+        <div class="dates-product-banner__price">
+          {{ banner_product.price | money }}
+        </div>
+
+        <div class="dates-product-banner__buttons">
+          <a
+            href="{{ banner_product.url }}"
+            class="button dates-product-banner__button-primary"
+          >
+            {{ section.settings.primary_button_label }}
+          </a>
+          <a
+            href="{{ banner_product.url }}"
+            class="button dates-product-banner__button-secondary"
+          >
+            {{ section.settings.secondary_button_label }}
+          </a>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="dates-product-banner__placeholder">
+        <p>Select a product in this section’s settings.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Dates product banner",
+  "tag": "section",
+  "class": "section section--dates-product-banner",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#5a3e22"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Quality Palestinian Medjoul Dates 907g/2lb"
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body text",
+      "default": "Naturally sweet, and plump, our dates are carefully grown, handpicked, and packed. From palm to table, every Medjool date is nurtured with precision to deliver exceptional flavor and freshness."
+    },
+    {
+      "type": "text",
+      "id": "primary_button_label",
+      "label": "Primary button label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Secondary button label",
+      "default": "Buy now"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dates product banner"
+    }
+  ]
+}
+{% endschema %}
+

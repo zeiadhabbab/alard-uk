@@ -1,0 +1,277 @@
+{{ 'section-dates-hero.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }} .dates-hero__content {
+    max-width: {{ section.settings.content_max_width_mobile }}%;
+    text-align: {{ section.settings.heading_alignment }};
+  }
+
+  .section-{{ section.id }} .dates-hero__title {
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_size_mobile }}px;
+  }
+
+  @media screen and (min-width: 1200px) {
+    .section-{{ section.id }} .dates-hero__content {
+      max-width: {{ section.settings.content_max_width_desktop }}%;
+    }
+
+    .section-{{ section.id }} .dates-hero__title {
+      font-size: {{ section.settings.heading_size }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  class="dates-hero section-{{ section.id }}"
+  {% if section.settings.background_image != blank %}
+    style="background-image:
+      {% if section.settings.enable_gradient %}linear-gradient(0deg, rgba(176, 45, 42, 0.8), rgba(176, 45, 42, 0.8)),{% endif %}
+      url({{ section.settings.background_image | image_url: width: 2400 }});
+      background-size: {{ section.settings.background_size }};
+      background-position: {{ section.settings.background_position }};"
+  {% endif %}
+>
+  <div class="dates-hero__overlay"></div>
+
+  <div class="page-width dates-hero__inner">
+    <div class="dates-hero__content{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="dates-hero__eyebrow">
+          {{ section.settings.eyebrow }}
+        </p>
+      {%- endif -%}
+
+      <h1 class="dates-hero__title h0">
+        {{ section.settings.heading_line_1 }}<br>
+        {{ section.settings.heading_line_2 }}
+      </h1>
+
+      {%- if section.settings.subtitle != blank -%}
+        <p class="dates-hero__subtitle">
+          {{ section.settings.subtitle }}
+        </p>
+      {%- endif -%}
+
+      {%- if section.settings.body != blank -%}
+        <p class="dates-hero__body">
+          {{ section.settings.body }}
+        </p>
+      {%- endif -%}
+
+      <div class="dates-hero__buttons">
+        {%- if section.settings.primary_button_label != blank -%}
+          <a
+            {% if section.settings.primary_button_link == blank %}
+              role="link" aria-disabled="true"
+            {% else %}
+              href="{{ section.settings.primary_button_link }}"
+            {% endif %}
+            class="button button--primary dates-hero__button-primary"
+          >
+            {{ section.settings.primary_button_label }}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.secondary_button_label != blank -%}
+          <a
+            {% if section.settings.secondary_button_link == blank %}
+              role="link" aria-disabled="true"
+            {% else %}
+              href="{{ section.settings.secondary_button_link }}"
+            {% endif %}
+            class="button button--secondary dates-hero__button-secondary"
+          >
+            {{ section.settings.secondary_button_label }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="dates-hero__map-wrapper{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+      {%- if section.settings.map_image != blank -%}
+        {{
+          section.settings.map_image
+          | image_url: width: 600
+          | image_tag:
+            loading: 'lazy',
+            class: 'dates-hero__map-image',
+            alt: section.settings.map_alt | escape
+        }}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Dates hero",
+  "tag": "section",
+  "class": "section section--dates-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_gradient",
+      "label": "Enable gradient overlay",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "background_size",
+      "label": "Background size",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" },
+        { "value": "auto", "label": "Auto" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background position",
+      "default": "center center",
+      "options": [
+        { "value": "left top", "label": "Left top" },
+        { "value": "left center", "label": "Left center" },
+        { "value": "left bottom", "label": "Left bottom" },
+        { "value": "center top", "label": "Center top" },
+        { "value": "center center", "label": "Center center" },
+        { "value": "center bottom", "label": "Center bottom" },
+        { "value": "right top", "label": "Right top" },
+        { "value": "right center", "label": "Right center" },
+        { "value": "right bottom", "label": "Right bottom" }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "map_image",
+      "label": "Map image"
+    },
+    {
+      "type": "text",
+      "id": "map_alt",
+      "label": "Map image alt text",
+      "default": "Map of Palestine with date palms"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width_desktop",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Content Max Width (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "content_max_width_mobile",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Content Max Width (Mobile)",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Desktop)",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Mobile)",
+      "default": 52
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading Alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_1",
+      "label": "Heading line 1",
+      "default": "Enjoy Our Award-Winning"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Heading line 2",
+      "default": "Palestinian Dates"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "The sweet taste of Palestine"
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body text",
+      "default": "Grown under Jericho sun, our Medjool dates are cultivated in one of the most unique regions on earth. Naturally sweet, and plump, our dates are carefully grown, handpicked, and packed. From palm to table, every Medjool date is nurtured with precision to deliver exceptional flavor and freshness."
+    },
+    {
+      "type": "text",
+      "id": "primary_button_label",
+      "label": "Primary button label",
+      "default": "Shop Medjool Dates"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Secondary button label",
+      "default": "Build Your Ramadan Box"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dates hero"
+    }
+  ]
+}
+{% endschema %}

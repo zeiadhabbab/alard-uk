@@ -1,0 +1,604 @@
+{% comment %}
+  Custom Landing Section
+
+  Template usage:
+  - Assign templates/page.custom-landing.json to any Shopify page.
+  - Open Online Store > Themes > Customize, select that page, then edit this section visually.
+
+  How blocks work:
+  - Merchants can add, remove, duplicate, and drag/drop Heading, Text, Image, and Button blocks.
+  - Blocks render in the same order as section.blocks, which is controlled by the Shopify editor.
+
+  Customization:
+  - Section settings control spacing, colors, content width, card styling, alignment, and LTR/RTL direction.
+  - This section is reusable and can also be added to other Online Store 2.0 page templates.
+{% endcomment %}
+
+{%- liquid
+  assign section_id = 'custom-landing-' | append: section.id
+  assign text_align = section.settings.content_alignment
+  if text_align == 'start'
+    assign text_align = 'start'
+  elsif text_align == 'end'
+    assign text_align = 'end'
+  else
+    assign text_align = 'center'
+  endif
+-%}
+
+{%- style -%}
+  #{{ section_id }} {
+    --cl-bg: {{ section.settings.background_color }};
+    --cl-card-bg: {{ section.settings.card_background }};
+    --cl-text: {{ section.settings.text_color }};
+    --cl-accent: {{ section.settings.accent_color }};
+    --cl-button-text: {{ section.settings.button_text_color }};
+    --cl-max-width: {{ section.settings.max_width }}px;
+    --cl-padding-top: {{ section.settings.padding_top | times: 0.72 | round: 0 }}px;
+    --cl-padding-bottom: {{ section.settings.padding_bottom | times: 0.72 | round: 0 }}px;
+    --cl-gap: {{ section.settings.block_spacing }}px;
+    background: var(--cl-bg);
+    color: var(--cl-text);
+    padding-block: var(--cl-padding-top) var(--cl-padding-bottom);
+  }
+
+  #{{ section_id }} .custom-landing__shell {
+    width: min(var(--cl-max-width), calc(100% - 32px));
+    margin-inline: auto;
+  }
+
+  #{{ section_id }} .custom-landing__content {
+    display: flex;
+    flex-direction: column;
+    align-items: {% if section.settings.content_alignment == 'start' %}flex-start{% elsif section.settings.content_alignment == 'end' %}flex-end{% else %}center{% endif %};
+    gap: var(--cl-gap);
+    text-align: {{ text_align }};
+  }
+
+  #{{ section_id }} .custom-landing__content--card {
+    background: var(--cl-card-bg);
+    border-radius: 24px;
+    box-shadow: 0 18px 45px rgba(31, 24, 18, 0.08);
+    padding: clamp(24px, 5vw, 56px);
+  }
+
+  #{{ section_id }} .custom-landing__heading {
+    color: var(--cl-text);
+    font-family: inherit;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.05;
+    margin: 0;
+    max-width: 980px;
+  }
+
+  #{{ section_id }} .custom-landing__heading--small {
+    font-size: clamp(2.4rem, 4vw, 3.8rem);
+  }
+
+  #{{ section_id }} .custom-landing__heading--medium {
+    font-size: clamp(3rem, 5vw, 5.2rem);
+  }
+
+  #{{ section_id }} .custom-landing__heading--large {
+    font-size: clamp(3.8rem, 7vw, 7.2rem);
+  }
+
+  #{{ section_id }} .custom-landing__text {
+    color: color-mix(in srgb, var(--cl-text) 78%, transparent);
+    line-height: 1.65;
+    margin: 0;
+    max-width: 760px;
+  }
+
+  #{{ section_id }} .custom-landing__text--small {
+    font-size: 1.5rem;
+  }
+
+  #{{ section_id }} .custom-landing__text--medium {
+    font-size: 1.7rem;
+  }
+
+  #{{ section_id }} .custom-landing__text--large {
+    font-size: 2rem;
+  }
+
+  #{{ section_id }} .custom-landing__text > * {
+    margin-block: 0 1em;
+  }
+
+  #{{ section_id }} .custom-landing__text > :last-child {
+    margin-block-end: 0;
+  }
+
+  #{{ section_id }} .custom-landing__media {
+    width: 100%;
+    margin: 0;
+  }
+
+  #{{ section_id }} .custom-landing__media--narrow {
+    max-width: 520px;
+  }
+
+  #{{ section_id }} .custom-landing__media--medium {
+    max-width: 760px;
+  }
+
+  #{{ section_id }} .custom-landing__media--wide {
+    max-width: 100%;
+  }
+
+  #{{ section_id }} .custom-landing__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    object-fit: cover;
+  }
+
+  #{{ section_id }} .custom-landing__placeholder {
+    display: grid;
+    min-height: 280px;
+    place-items: center;
+    border: 1px dashed color-mix(in srgb, var(--cl-text) 24%, transparent);
+    border-radius: 20px;
+    background: color-mix(in srgb, var(--cl-card-bg) 88%, var(--cl-accent));
+    color: color-mix(in srgb, var(--cl-text) 62%, transparent);
+    font-size: 1.4rem;
+  }
+
+  #{{ section_id }} .custom-landing__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 24px;
+    border: 1px solid var(--cl-accent);
+    border-radius: 999px;
+    background: var(--cl-accent);
+    color: var(--cl-button-text);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, color 180ms ease;
+  }
+
+  #{{ section_id }} .custom-landing__button:hover,
+  #{{ section_id }} .custom-landing__button:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(31, 24, 18, 0.16);
+  }
+
+  #{{ section_id }} .custom-landing__button--secondary {
+    background: transparent;
+    color: var(--cl-accent);
+  }
+
+  #{{ section_id }} .custom-landing__button--secondary:hover,
+  #{{ section_id }} .custom-landing__button--secondary:focus-visible {
+    background: var(--cl-accent);
+    color: var(--cl-button-text);
+  }
+
+  @media screen and (min-width: 750px) {
+    #{{ section_id }} {
+      --cl-padding-top: {{ section.settings.padding_top }}px;
+      --cl-padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #{{ section_id }} .custom-landing__shell {
+      width: min(var(--cl-max-width), calc(100% - 24px));
+    }
+
+    #{{ section_id }} .custom-landing__content {
+      align-items: stretch;
+      text-align: {% if section.settings.content_alignment == 'end' %}end{% elsif section.settings.content_alignment == 'start' %}start{% else %}center{% endif %};
+    }
+
+    #{{ section_id }} .custom-landing__content--card {
+      border-radius: 18px;
+      padding: 24px;
+    }
+
+    #{{ section_id }} .custom-landing__heading,
+    #{{ section_id }} .custom-landing__text,
+    #{{ section_id }} .custom-landing__media {
+      max-width: 100%;
+    }
+
+    #{{ section_id }} .custom-landing__button {
+      width: 100%;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  id="{{ section_id }}"
+  class="custom-landing"
+  dir="{{ section.settings.text_direction }}"
+  aria-label="{{ section.settings.section_label | escape }}"
+>
+  <div class="custom-landing__shell">
+    <div class="custom-landing__content{% if section.settings.show_card %} custom-landing__content--card{% endif %}">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'heading' -%}
+            {%- if block.settings.heading != blank -%}
+              <{{ block.settings.heading_level }}
+                class="custom-landing__heading custom-landing__heading--{{ block.settings.size }}"
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.heading }}
+              </{{ block.settings.heading_level }}>
+            {%- endif -%}
+
+          {%- when 'text' -%}
+            {%- if block.settings.text != blank -%}
+              <div
+                class="custom-landing__text custom-landing__text--{{ block.settings.size }} rte"
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.text }}
+              </div>
+            {%- endif -%}
+
+          {%- when 'image' -%}
+            <figure
+              class="custom-landing__media custom-landing__media--{{ block.settings.width }}"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.image != blank -%}
+                {%- liquid
+                  assign image_alt = block.settings.alt_text | default: block.settings.image.alt | escape
+                  assign image_widths = '375, 550, 750, 950, 1100, 1500, 1800, 2200'
+                -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 2200
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: image_widths,
+                    sizes: '(min-width: 1200px) 1100px, calc(100vw - 32px)',
+                    alt: image_alt,
+                    class: 'custom-landing__image'
+                }}
+              {%- else -%}
+                <div class="custom-landing__placeholder">
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+              {%- endif -%}
+            </figure>
+
+          {%- when 'button' -%}
+            {%- if block.settings.label != blank -%}
+              <a
+                class="custom-landing__button custom-landing__button--{{ block.settings.style }}"
+                {% if block.settings.link == blank %}
+                  role="link"
+                  aria-disabled="true"
+                {% else %}
+                  href="{{ block.settings.link }}"
+                {% endif %}
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.label | escape }}
+              </a>
+            {%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom landing section",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_label",
+      "label": "Accessible section label",
+      "default": "Custom landing page"
+    },
+    {
+      "type": "select",
+      "id": "text_direction",
+      "label": "Text direction",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "ltr",
+          "label": "Left to right"
+        },
+        {
+          "value": "rtl",
+          "label": "Right to left"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "start",
+          "label": "Start"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "End"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "min": 640,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 1100
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card",
+      "label": "Show content card",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f8f5ef"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#2a241f"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent/button color",
+      "default": "#56622e"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "block_spacing",
+      "label": "Block spacing",
+      "min": 8,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Build a custom landing page"
+        },
+        {
+          "type": "select",
+          "id": "heading_level",
+          "label": "Heading level",
+          "default": "h1",
+          "options": [
+            {
+              "value": "h1",
+              "label": "H1"
+            },
+            {
+              "value": "h2",
+              "label": "H2"
+            },
+            {
+              "value": "h3",
+              "label": "H3"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "default": "large",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add your page copy here. Use the Shopify editor to reorder, remove, or add blocks.</p>"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "default": "medium",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt text",
+          "info": "Leave blank to use the image alt text from Shopify files."
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Image width",
+          "default": "wide",
+          "options": [
+            {
+              "value": "narrow",
+              "label": "Narrow"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "wide",
+              "label": "Wide"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Button label",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button URL"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Button style",
+          "default": "primary",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom landing section",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

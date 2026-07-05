@@ -1,0 +1,824 @@
+{% comment %}
+  Section: Harvest 2025 Landing Page (Al'Ard) Thanks Page
+  Usage: Create a new page (e.g., "Harvest 2025"), then add this section to the page in the theme editor.
+  This section renders a full landing page with: announcement bar, hero (email signup), features, testimonials, product sizes, story, FAQ, and final CTA.
+  Assets: Replace placeholder images (data-uris / SVGs) as needed. All styles are scoped to this section via the root id wrapper.
+{% endcomment %}
+
+<style>
+    /* ===== Al'Ard Products Section ===== */
+    :root {
+      --ap-bg: #4d5f2e; /* olive green background */
+      --ap-card: #ffffff; /* card background */
+      --ap-text: #2a2a2a; /* body text */
+      --ap-muted: #6a6a6a; /* muted text */
+      --ap-radius: 18px; /* card radius */
+      --ap-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+      --ap-container: min(1200px, 92vw);
+    }
+
+    #MainContent {
+      width: 100%;
+    }
+
+    .alard-hero {
+      background-image: url({{'bg-hero.png'|asset_img_url:'original'}});
+      height: 100vh;
+      background-size: cover;
+    }
+
+    .container.wrap {
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    .alard-hero h1 {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 57px;
+      line-height: 64px;
+      text-align: center;
+      letter-spacing: -0.25px;
+      color: #ffffff;
+    }
+
+    .alard-hero p {
+      /* EN/Title Large */
+      font-style: normal;
+      font-weight: 400;
+      font-size: 22px;
+      line-height: 10px;
+      color: #ffffff;
+    }
+
+    .alard-hero button {
+      background: #a2b739;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+      height: 40px;
+      color: #5d442c;
+    }
+
+    .form-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      min-width: 460px;
+      flex-direction: row;
+      justify-content: center;
+      margin-top: 64px;
+          margin-bottom: 64px;
+    }
+
+    h2 {
+      font-family: 'Begum';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 45px;
+      line-height: 52px;
+      margin-top: 64px;
+      margin-bottom: 16px;
+    }
+
+    .color-s9 {
+      color: #5e442a;
+    }
+
+    .color-s8 {
+      color: #a18973;
+    }
+
+    .color-s10-bg {
+      background: #ded5ce;
+    }
+
+    .color-s10 {
+      color: #ded5ce;
+    }
+
+    .color-s2 {
+      background: #56622e;
+    }
+
+    .color-white {
+      color: #ffffff;
+    }
+
+    p {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 22px;
+      line-height: 28px;
+    }
+
+    .p-0 {
+      padding: 0;
+    }
+
+    .m-0 {
+      margin: 0;
+    }
+
+    .alard-features,
+    .alard-rate {
+      padding: 60px 0px 0px 1px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .alard-rate {
+      width: calc(90% + 30px);
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin: 0 auto;
+    }
+    .feature-card {
+      background: #ece8e4;
+      border-radius: 14px;
+      padding: 30px 24px;
+      text-align: left;
+      transition: transform 0.2s ease;
+      border: 1px solid #ded5ce;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+    }
+    .feature-icon {
+      font-size: 28px;
+      color: #7fa34a;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .feature-title {
+      color: #5e442a;
+      margin-bottom: 8px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 40px;
+      font-family: 'Begum';
+    }
+    .feature-text {
+      font-size: 16px;
+      color: #a18973;
+      line-height: 1.5;
+    }
+
+    /* Force Judge.me carousel to show 4 columns on desktop */
+    .jdgm-carousel-item {
+      flex: 0 0 25% !important; /* 4 columns (100 / 4 = 25%) */
+      max-width: 25% !important;
+      margin-left: 10px;
+      margin-right: 10px;
+
+      padding: 10px;
+
+      background: #ece8e4;
+      border-radius: 24px;
+    }
+
+    /* Adjust spacing */
+    .jdgm-carousel__item {
+      padding: 0 10px;
+    }
+
+    /* Tablet (2 per row) */
+    @media (max-width: 900px) {
+      .jdgm-carousel-item {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+      }
+    }
+
+    /* Mobile (1 per row) */
+    @media (max-width: 600px) {
+      .jdgm-carousel-item {
+        flex: 0 0 100% !important;
+        max-width: 90% !important;
+      }
+    }
+
+    .jdgm-carousel-wrapper {
+      width: 100% !important;
+      margin: auto;
+      padding: 20px 0 !important;
+    }
+
+    .jdgm--shop-review-has-image,
+    .jdgm-carousel-item__review-title {
+      display: none !important;
+    }
+
+    .jdgm-carousel-item {
+      padding: 20px !important;
+    }
+
+    .jdgm-carousel__right-arrow,
+    .jdgm-carousel__left-arrow {
+      border-color: #5e442a !important;
+    }
+    .jdgm-carousel {
+      margin: 0 auto !important;
+      width: 100%;
+    }
+
+    .jdgm-carousel-item__review-body p {
+      font-size: 16px !important;
+      color: #050505 !important;
+      /* three lines at leaset*/
+      display: -webkit-box !important;
+      -webkit-line-clamp: 3 !important;
+      -webkit-box-orient: vertical !important;
+      overflow: hidden !important;
+      margin-top: 20px !important;
+      margin-bottom: 20px !important;
+    }
+
+    .jdgm-carousel-item__reviewer-name {
+      margin-top: 20px;
+    }
+
+    .jdgm-carousel-item * {
+      text-align: left;
+    }
+    .jdgm-star {
+      color: #fdc800 !important;
+    }
+
+    .alard-products {
+      background: #56622e;
+      color: #fff;
+    }
+
+    .alard-products .ap-container {
+      width: var(--ap-container);
+      margin-inline: auto;
+      padding-top: 1px;
+      padding-bottom: 60px;
+    }
+
+    .alard-products .ap-header {
+      text-align: center;
+    }
+
+    .alard-products .ap-header p {
+      /* identical to box height, or 127% */
+      text-align: center;
+
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 45px;
+    }
+
+    .ap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(16px, 2.5vw, 28px);
+    }
+
+    .ap-card {
+      background: var(--ap-card);
+      color: var(--ap-text);
+      border-radius: var(--ap-radius);
+      box-shadow: var(--ap-shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .ap-media {
+      aspect-ratio: 4/3; /* keeps image area consistent */
+      overflow: hidden;
+    }
+
+    .ap-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .ap-card:hover .ap-media img {
+      transform: scale(1.04);
+    }
+
+    .ap-body {
+      padding: clamp(16px, 2.2vw, 22px);
+    }
+
+    .ap-body h3 {
+      font-size: clamp(18px, 2.2vw, 22px);
+      line-height: 1.35;
+      margin: 0 0 8px;
+      font-weight: 700;
+    }
+
+    .ap-body p {
+      color: var(--ap-muted);
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* Optional CTA button if you enable it */
+    .ap-btn {
+      display: inline-block;
+      margin-top: 14px;
+      background: #233816;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: opacity 0.2s ease;
+    }
+    .ap-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 1024px) {
+      .ap-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 640px) {
+      .ap-grid {
+        grid-template-columns: 1fr;
+      }
+      .ap-media {
+        aspect-ratio: 16/10;
+      }
+    }
+
+    .alard-from-cta {
+      background: #d0b24f;
+    }
+
+    .alard-from-cta h2 {
+      color: #5e442a;
+    }
+
+    .alard-from-cta button {
+      background: #56622e;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+      height: 40px;
+    }
+
+    .alard-from-cta .form-line {
+      margin-top: 10px;
+      margin-bottom: 60px;
+    }
+
+    /* ===== Al'Ard Meaning Section ===== */
+    :root {
+      --am-gold: #916600;
+      --am-brown: #5e442a;
+      --am-text: #ffffff;
+      --am-radius: 0;
+    }
+
+    .alard-meaning {
+      color: var(--am-text);
+    }
+
+    .am-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      min-height: 100%;
+    }
+
+    .am-text {
+      display: flex;
+      align-items: center;
+      padding: clamp(32px, 5vw, 64px);
+      line-height: 1.7;
+    }
+
+    .am-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .am-bg-gold {
+      background-color: var(--am-gold);
+    }
+    .am-bg-brown {
+      background-color: var(--am-brown);
+    }
+
+    .am-text h2 {
+      margin-bottom: 18px;
+      color: #ffffff;
+      margin-top: 0;
+    }
+
+    .am-text p {
+      margin-bottom: 14px;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .am-highlight {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .am-image {
+      overflow: hidden;
+    }
+
+    .am-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .am-image:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Responsive layout */
+    @media (max-width: 900px) {
+      .am-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+
+      .am-text,
+      .am-image {
+        order: unset !important;
+      }
+    }
+
+    /* ===== Al'Ard FAQ ===== */
+    :root {
+      --faq-bg: #ded5ce; /* soft beige */
+      --card-bg: #ece8e4;
+      --text: #5e442a;
+      --muted: #a18973;
+      --radius: 16px;
+      --shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      --container: min(1625px, 92vw);
+    }
+
+    .alard-faq {
+      background: var(--faq-bg);
+      padding: clamp(40px, 5vw, 72px) 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color: var(--text);
+    }
+
+    .alard-faq .faq-wrap {
+      width: var(--container);
+      margin: 0 auto;
+    }
+
+    .faq-title {
+      margin: 0 0 18px;
+      color: var(--text);
+    }
+
+    .faq-grid {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+    }
+
+    .column-left,
+    .column-right {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .faq-item {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .faq-item summary {
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 20px;
+      font-weight: 700;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-item .chev {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      stroke: #7b6d60;
+      stroke-width: 2;
+      fill: none;
+      transform: rotate(180deg); /* open state (−) */
+      transition: transform 0.25s ease;
+    }
+
+    .faq-item[open] .chev {
+      transform: rotate(0);
+    } /* caret up when open */
+
+    .faq-body {
+      padding: 0 20px 18px 20px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .text-input {
+      flex: 1 1 240px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .show-mobile{
+      display: none !important;
+    }
+
+    .hide-mobile{
+      display: block !important;
+    }
+
+    @media (max-width: 900px) {
+      .header__heading-logo {
+        height: 60px;
+        width: 60px;
+      }
+
+      .alard-hero {
+        height: 600px;
+      }
+
+      .alard-hero h1 {
+        font-size: 36px;
+        line-height: 44px;
+      }
+
+      .alard-hero p {
+        font-size: 14px;
+        text-align: center;
+        max-width: 90vh;
+        line-height: 1.2em;
+      }
+
+      .form-line {
+        flex-direction: column;
+      }
+
+      .text-input {
+        flex: 1 1 44px;
+      }
+
+      .form-line {
+        min-width: 288px;
+      }
+
+      .feature-title {
+        display: inline-block;
+      }
+
+      .feature-icon svg {
+        width: 30px;
+      }
+
+      .feature-title {
+        display: inline-block;
+      }
+
+      .feature-icon svg {
+        width: 30px;
+      }
+
+      .feature-title {
+        color: #5e442a;
+        margin-bottom: 8px;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 13px;
+        font-family: 'Begum';
+      }
+
+      .feature-title br {
+        display: none;
+      }
+
+      .feature-icon {
+        padding: 0;
+        margin: 0;
+        line-height: 40px;
+        margin-right: 11px;
+      }
+
+      h2 {
+        font-size: 32px;
+        text-align: center;
+        line-height: 1.2em;
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      p {
+        font-size: 14px;
+        line-height: 1.2em;
+      }
+
+      .feature-icon {
+        padding: 0;
+        margin: 0;
+        line-height: 40px;
+        margin-right: 11px;
+      }
+
+      h2 {
+        font-size: 32px;
+        text-align: center;
+        line-height: 1.2em;
+      }
+
+      p {
+        font-size: 14px;
+        line-height: 1.2em;
+      }
+
+      .faq-grid {
+        flex-direction: column;
+      }
+
+      .faq-title{
+        text-align: left;
+      }
+
+      .column-left,
+      .column-right {
+        width: 100%;
+      }
+
+      .m-order-1{
+        order: 1;
+      }
+      .m-order-2{
+        order: 2;
+      }
+      .m-order-3{
+        order: 3;
+      }
+      .m-order-4{
+        order: 4;
+      }
+
+      .show-mobile{
+        display: block !important;
+      }
+
+      .hide-mobile{
+        display: none !important;
+      }
+
+      .am-image.show-mobile{
+        margin-right: -30px;
+        margin-left: -30px;
+      }
+
+      .am-image.show-mobile img{
+        height: 400px;
+      }
+
+      .am-inner h2{
+        text-align: left;
+        margin-left: 0;
+      }
+
+    }
+
+
+    /* ---- Mobile carousel ≤900px ---- */
+    @media (max-width: 900px){
+      /* turn the grid into a horizontal scroller */
+      .ap-grid {
+          display: grid ;
+          grid-auto-flow: column;
+          grid-auto-columns: 76%;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+      }
+      .ap-card {
+          box-shadow: none;
+          height: 347px;
+      }
+
+      div#alardCarousel {
+          margin-right: -10px;
+      }
+
+      .ap-card{
+        scroll-snap-align: start;
+        /* keep your existing card styles */
+      }
+      /* hide scrollbar */
+      .ap-grid::-webkit-scrollbar{ display: none; }
+      .ap-grid{ scrollbar-width: none; -ms-overflow-style: none; }
+
+      /* optional nav buttons */
+      .ap-carousel-nav{
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        margin-top: 6px;
+      }
+      .ap-nav{
+        width: 42px; height: 42px;
+        border: 0; border-radius: 999px;
+        background: #233816; color: #fff;
+        box-shadow: 0 6px 14px rgba(0,0,0,.15);
+        font-size: 18px; line-height: 1;
+        display: grid; place-items: center;
+        cursor: pointer;
+      }
+
+        .ap-grid{
+    display: flex !important;          /* override any grid rules */
+    grid-template-columns: unset !important;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 8px 20px 16px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ap-card{
+    flex: 0 0 86%;                      /* one card per view (86% width) */
+    max-width: none;                    /* prevent theme caps */
+    scroll-snap-align: start;
+  }
+  .ap-grid::-webkit-scrollbar{ display:none; }
+  .ap-grid{ scrollbar-width: none; -ms-overflow-style: none; }
+
+    }
+    @media (min-width: 901px){
+      .ap-carousel-nav{ display: none; }  /* arrows only on mobile */
+    }
+</style>
+
+<section id="alard-harvest-2025" style="background:#fff" class="alard">
+
+  <section style="min-height:500px;">
+    <div class="container wrap">
+      <h2 class="color-s9">Thank you for signing up!</h2>
+
+      <p class="color-s8 m-0 p-0"  style=" max-width: 1060px;text-align: center;margin-top: 65px;">
+        You’re now on the waiting list for Palestine’s 2025 Olive Oil Harvest, where heritage, craftsmanship, and flavor come together.
+      </p>
+
+      <p class="color-s8 m-0 p-0"  style=" max-width: 1060px;text-align: center;margin-top: 65px;">
+        You will get early access to this year’s limited harvest, and we’ll keep you updated with harvest news, behind-the-scenes stories.
+      </p>
+         
+      <br>
+
+      <p class="color-s8 m-0 p-0"  style=" max-width: 1060px;text-align: center;margin-top: 65px;">
+        The first taste of Palestine is coming soon.... Stay tuned. 
+      </p>
+
+    </div>
+  </section>
+
+</section>

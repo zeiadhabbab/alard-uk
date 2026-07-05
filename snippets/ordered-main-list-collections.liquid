@@ -1,0 +1,39 @@
+{% assign custom_order = "all-products,palestinian-olive-oil,featured-products,kufiya,olive-oil-soap,herbs-spices,extra-virgin-olive-oil,premium,organic,green-olive-pickles,grains,chili-sauce,tahini-and-halva,nabulsi-cheese,trees-for-palestine,gift-boxes-more,special-offers-bundles,gift-card" | split: ',' %}
+
+{%- assign ordered_collections = "" -%}
+{%- assign last_collections = "" -%}
+
+{%- for order_title in custom_order -%}
+  {%- for collection in collections -%}
+    {% if collection.handle == order_title %}
+      {%- assign ordered_collections = ordered_collections | append: collection.handle | append: ',' -%}
+    {% endif %}
+  {%- endfor -%}
+{%- endfor -%}
+
+{%- for collection in collections -%}
+  {%- unless ordered_collections contains collection.handle -%}
+    {%- assign last_collections = last_collections | append: collection.handle | append: ',' -%}
+  {%- endunless -%}
+{%- endfor -%}
+
+{%- assign final_collections = ordered_collections | append: last_collections | split: ',' | uniq -%}
+
+{%- for handle in final_collections -%}
+  {%- if handle != "" -%}
+    {%- assign collection = collections | where: "handle", handle | first -%}
+    <li
+      class="collection-list__item grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+      {% if settings.animations_reveal_on_scroll %}
+        data-cascade
+        style="--animation-order: {{ forloop.index }};"
+      {% endif %}
+    >
+      {% render 'card-collection',
+        card_collection: collection,
+        media_aspect_ratio: section.settings.image_ratio,
+        columns: 3
+      %}
+    </li>
+  {%- endif -%}
+{%- endfor -%}

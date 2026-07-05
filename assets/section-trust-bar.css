@@ -1,0 +1,140 @@
+/* Trust Bar Section */
+.section--trust-bar {
+    background: #414A22;
+    padding: 16px 0;
+}
+
+.trust-bar__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.trust-bar__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.trust-bar__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    flex-shrink: 0;
+    color: #ffffff;
+}
+
+
+
+.trust-bar__content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.trust-bar__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.3;
+}
+
+.trust-bar__text {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+}
+
+/* Tablet */
+@media screen and (max-width: 989px) {
+    .trust-bar__inner {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+
+    .trust-bar__item {
+        flex: 0 0 calc(50% - 1rem);
+        max-width: calc(50% - 1rem);
+    }
+
+    .section--trust-bar {
+        padding: 20px 0;
+    }
+}
+
+/* Mobile */
+@media screen and (max-width: 749px) {
+    .section--trust-bar {
+        padding: 15px 0px 15px 15px;
+    }
+
+    .trust-bar__inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .trust-bar__item {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .trust-bar__icon {
+        width: 36px;
+        height: 36px;
+    }
+
+
+
+    .trust-bar__title {
+        font-size: 13px;
+    }
+
+    .trust-bar__text {
+        font-size: 11px;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    /* Default (desktop) – keep as is */
+.trust-bar__inner {
+  display: flex;
+  gap: 20px;
+          justify-content: flex-start;
+  flex-direction: row;
+}
+
+
+  
+}
+/* Mobile slider */
+@media (max-width: 768px) {
+  .trust-bar__inner {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px;
+  }
+
+  .trust-bar__inner::-webkit-scrollbar {
+    display: none; /* hide scrollbar */
+  }
+
+  .trust-bar__item {
+    min-width: 85%;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    background: transparent;
+  }
+}
+

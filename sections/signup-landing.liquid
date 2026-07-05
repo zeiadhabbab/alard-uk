@@ -1,0 +1,1493 @@
+{% comment %}
+  Sign up landing page for Al'Ard.
+  Assign templates/page.sign-up.json to a Shopify page to render this standalone signup experience.
+{% endcomment %}
+
+{%- liquid
+  assign section_id = 'signup-landing-' | append: section.id
+  assign has_app_blocks = false
+
+  for block in section.blocks
+    if block.type == '@app'
+      assign has_app_blocks = true
+      break
+    endif
+  endfor
+-%}
+
+{%- style -%}
+  {%- if section.settings.hide_theme_chrome -%}
+   
+
+    #MainContent {
+      width: 100% !important;
+      margin-top: 0 !important;
+    }
+  {%- endif -%}
+
+  #{{ section_id }} {
+    --sl-cream: {{ section.settings.background_color }};
+    --sl-paper: #fbfaf7;
+    --sl-olive: {{ section.settings.accent_color }};
+    --sl-olive-dark: #4c5d29;
+    --sl-red: #bf3334;
+    --sl-gold: {{ section.settings.secondary_accent_color }};
+    --sl-text: {{ section.settings.text_color }};
+    --sl-muted: #7f7b73;
+    --sl-border: rgba(105, 92, 67, 0.16);
+    --sl-shadow: 0 16px 45px rgba(73, 58, 33, 0.09);
+    --sl-page: min(1360px, calc(100vw - 40px));
+    color: var(--sl-text);
+    background:
+      radial-gradient(circle at top right, rgba(255,255,255,0.86), transparent 28rem),
+      linear-gradient(180deg, #f5ead8 0%, var(--sl-cream) 30%, #eee3d0 68%, #eee2ce 100%);
+    font-family: var(--font-body-family);
+    overflow: hidden;
+  }
+
+  #{{ section_id }} *,
+  #{{ section_id }} *::before,
+  #{{ section_id }} *::after {
+    box-sizing: border-box;
+  }
+
+  #{{ section_id }} .sl-shell {
+    width: var(--sl-page);
+    margin: 0 auto;
+  }
+
+  #{{ section_id }} .sl-heading {
+    margin: 0;
+    color: var(--sl-olive);
+    font-family: var(--font-heading-family);
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.08;
+  }
+
+  #{{ section_id }} .sl-copy {
+    margin: 0;
+    color: var(--sl-muted);
+    font-size: clamp(1.6rem, 1.15vw, 2rem);
+    line-height: 1.45;
+  }
+
+  #{{ section_id }} .sl-rule {
+    position: relative;
+    display: block;
+    width: min(100%, 270px);
+    height: 1px;
+    margin: 18px 0 22px;
+    background: linear-gradient(90deg, var(--sl-red), rgba(191, 51, 52, 0));
+  }
+
+  #{{ section_id }} .sl-rule::before,
+  #{{ section_id }} .sl-section-kicker::after {
+    content: "";
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    background: var(--sl-red);
+    transform: rotate(45deg);
+  }
+
+  #{{ section_id }} .sl-rule::before {
+    left: 0;
+    top: -5px;
+  }
+
+  #{{ section_id }} .sl-hero {
+    position: relative;
+    min-height: 820px;
+        padding: clamp(66px, 11vw, 161px) 0 84px;
+    isolation: isolate;
+  }
+
+  #{{ section_id }} .sl-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background:
+      linear-gradient(90deg, rgba(239, 224, 200, 0.95) 0%, rgba(244, 234, 216, 0.78) 44%, rgba(244, 234, 216, 0.22) 70%),
+      linear-gradient(135deg, rgba(107, 95, 69, 0.08), transparent 40%);
+  }
+
+  #{{ section_id }} .sl-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.22;
+    background-image:
+      linear-gradient(rgba(102, 82, 49, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(102, 82, 49, 0.05) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: linear-gradient(90deg, #000, transparent 62%);
+  }
+
+  #{{ section_id }} .sl-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(360px, 560px) minmax(420px, 1fr);
+    align-items: center;
+    gap: clamp(34px, 6vw, 96px);
+  }
+
+  #{{ section_id }} .sl-hero__content {
+    position: relative;
+    z-index: 2;
+  }
+
+  #{{ section_id }} .sl-hero h1 {
+    max-width: 570px;
+    font-size: clamp(4.2rem, 4.9vw, 6.4rem);
+  }
+
+  #{{ section_id }} .sl-hero__text {
+    max-width: 600px;
+    color: var(--sl-text);
+    font-size: clamp(1.7rem, 1.25vw, 2.2rem);
+    line-height: 1.35;
+  }
+
+  #{{ section_id }} .sl-form {
+    display: grid;
+    gap: 16px;
+    width: min(100%, 560px);
+    margin-top: 32px;
+  }
+
+  #{{ section_id }} .sl-form--inline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(100%, 760px);
+    margin: 34px auto 0;
+  }
+
+  #{{ section_id }} .sl-form__field {
+    position: relative;
+    min-width: 0;
+  }
+
+  #{{ section_id }} .sl-form__icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    color: #8a93a1;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .sl-form input {
+    width: 100%;
+    min-height: 58px;
+    padding: 0 18px 0 48px;
+    border: 1px solid #dfe3e8;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--sl-text);
+    font-family: var(--font-body-family);
+    font-size: 1.6rem;
+    box-shadow: 0 5px 16px rgba(70, 58, 37, 0.07);
+    outline-offset: 3px;
+  }
+
+  #{{ section_id }} .sl-form input::placeholder {
+    color: #9a9da4;
+    opacity: 1;
+  }
+
+  #{{ section_id }} .sl-form__button {
+    min-height: 58px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--sl-olive);
+    color: #fff;
+    font-family: var(--font-body-family);
+    font-size: 1.6rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  #{{ section_id }} .sl-form__button:hover,
+  #{{ section_id }} .sl-form__button:focus-visible {
+    background: var(--sl-olive-dark);
+    box-shadow: 0 14px 28px rgba(79, 96, 45, 0.22);
+    transform: translateY(-1px);
+  }
+
+  #{{ section_id }} .sl-form--inline .sl-form__button {
+    grid-column: 1 / -1;
+    background: var(--sl-gold);
+  }
+
+  #{{ section_id }} .sl-form--inline .sl-form__button:hover,
+  #{{ section_id }} .sl-form--inline .sl-form__button:focus-visible {
+    background: #c7a93d;
+  }
+
+  #{{ section_id }} .sl-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 18px 0 0;
+    color: var(--sl-text);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  #{{ section_id }} .sl-note svg {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  #{{ section_id }} .sl-app-blocks {
+    display: grid;
+    gap: 16px;
+    width: min(100%, 560px);
+    margin-top: 32px;
+  }
+
+  #{{ section_id }} .sl-app-block {
+    width: 100%;
+  }
+ 
+  #{{ section_id }} .sl-app-blocks form[data-testid="form"] {
+    display: grid;
+    gap: 16px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  #{{ section_id }} .sl-app-blocks form[data-testid="form"] > div:has(shop-lead-capture) {
+    display: none !important;
+  }
+
+  #{{ section_id }} .sl-app-blocks ._formFieldContainer_1mxsl_5,
+  #{{ section_id }} .sl-app-blocks form[data-testid="form"] [class*="_formFieldContainer"] {
+    position: relative;
+    margin: 0;
+  }
+
+  #{{ section_id }} .sl-app-blocks form[data-testid="form"] [class*="_formFieldContainer"]::before {
+    content: "";
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    z-index: 2;
+    width: 20px;
+    height: 20px;
+    background-color: #7d8798;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .sl-app-blocks form[data-testid="form"] [class*="_formFieldContainer"]:has(input[data-testid="field-first_name"])::before,
+  #{{ section_id }} .sl-app-blocks form[data-testid="form"] [class*="_formFieldContainer"]:has(input#first_name)::before {
+    mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 21a8 8 0 0 0-16 0' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='7' r='4' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") center / contain no-repeat;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 21a8 8 0 0 0-16 0' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='7' r='4' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+
+  #{{ section_id }} .sl-app-blocks form[data-testid="form"] [class*="_formFieldContainer"]:has(input[data-testid="field-email"])::before,
+  #{{ section_id }} .sl-app-blocks form[data-testid="form"] [class*="_formFieldContainer"]:has(input#email)::before {
+    mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='3' y='5' width='18' height='14' rx='2' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='m3.5 7 8.5 6 8.5-6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='3' y='5' width='18' height='14' rx='2' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='m3.5 7 8.5 6 8.5-6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+
+  #{{ section_id }} .sl-app-blocks input[data-testid^="field-"],
+  #{{ section_id }} .sl-app-blocks form[data-testid="form"] input {
+    width: 100% !important;
+    min-height: 58px !important;
+    padding: 0 18px 0 48px !important;
+    border: 1px solid #dfe3e8 !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    color: var(--sl-text) !important;
+    font-family: var(--font-body-family) !important;
+    font-size: 1.6rem !important;
+    box-shadow: 0 5px 16px rgba(70, 58, 37, 0.07) !important;
+    outline-offset: 3px;
+  }
+
+  #{{ section_id }} .sl-app-blocks label[id^="label-"],
+  #{{ section_id }} .sl-app-blocks form[data-testid="form"] label {
+    position: absolute !important;
+    left: 48px !important;
+    top: 50% !important;
+    color: #9a9da4 !important;
+    font-family: var(--font-body-family) !important;
+    font-size: 1.6rem !important;
+    line-height: 1 !important;
+    transform: translateY(-50%) !important;
+    transition: opacity 160ms ease, visibility 160ms ease !important;
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .sl-app-blocks input:focus + label,
+  #{{ section_id }} .sl-app-blocks input:not(:placeholder-shown) + label {
+    opacity: 0;
+  }
+
+  #{{ section_id }} .sl-app-blocks button[data-testid="btn-form-submit"],
+  #{{ section_id }} .sl-app-blocks form[data-testid="form"] button[type="submit"] {
+    width: 100% !important;
+    min-height: 58px !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: var(--sl-olive) !important;
+    color: #fff !important;
+    font-family: var(--font-body-family) !important;
+    font-size: 1.6rem !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+    transition: background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  #{{ section_id }} .sl-app-blocks button[data-testid="btn-form-submit"]:hover,
+  #{{ section_id }} .sl-app-blocks button[data-testid="btn-form-submit"]:focus-visible,
+  #{{ section_id }} .sl-app-blocks form[data-testid="form"] button[type="submit"]:hover,
+  #{{ section_id }} .sl-app-blocks form[data-testid="form"] button[type="submit"]:focus-visible {
+    background: var(--sl-olive-dark) !important;
+    box-shadow: 0 14px 28px rgba(79, 96, 45, 0.22);
+    transform: translateY(-1px);
+  }
+
+  #{{ section_id }} .sl-app-blocks shopify-forms-embed::part(form) {
+    display: grid;
+    gap: 16px;
+    width: 100%;
+    max-width: none;
+  }
+
+  #{{ section_id }} .sl-app-blocks shopify-forms-embed::part(input) {
+    min-height: 58px;
+    border-radius: 8px;
+    font-family: var(--font-body-family);
+    font-size: 1.6rem;
+  }
+
+  #{{ section_id }} .sl-app-blocks shopify-forms-embed::part(button) {
+    min-height: 58px;
+    border-radius: 8px;
+    background: var(--sl-olive);
+    color: #fff;
+    font-family: var(--font-body-family);
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  #{{ section_id }} .sl-app-blocks shopify-forms-embed::part(button):hover,
+  #{{ section_id }} .sl-app-blocks shopify-forms-embed::part(button):focus-visible {
+    background: var(--sl-olive-dark);
+  }
+
+  #{{ section_id }} .sl-hero__image {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 0;
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+  }
+
+  #{{ section_id }} .sl-hero__image img {
+    display: block;
+    width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    object-position: bottom;
+  }
+
+  #{{ section_id }} .sl-center {
+    text-align: center;
+  }
+
+  #{{ section_id }} .sl-section-kicker {
+    position: relative;
+    display: inline-block;
+    width: 280px;
+    max-width: 70vw;
+    height: 1px;
+    margin: 18px auto 18px;
+    background: linear-gradient(90deg, transparent, rgba(191, 51, 52, 0.55), transparent);
+  }
+
+  #{{ section_id }} .sl-section-kicker::after {
+    left: 50%;
+    top: -5px;
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  #{{ section_id }} .sl-benefits {
+    padding: clamp(58px, 7vw, 94px) 0 clamp(54px, 7vw, 88px);
+  }
+
+  #{{ section_id }} .sl-benefits h2,
+  #{{ section_id }} .sl-story h2,
+  #{{ section_id }} .sl-community h2 {
+    font-size: clamp(3.6rem, 3.2vw, 5.2rem);
+  }
+
+  #{{ section_id }} .sl-benefits__subtitle {
+    color: var(--sl-muted);
+    font-size: 2rem;
+  }
+
+  #{{ section_id }} .sl-benefits__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(20px, 2vw, 28px);
+    margin-top: 34px;
+  }
+
+  #{{ section_id }} .sl-benefit {
+    min-height: 286px;
+    padding: 38px 28px 32px;
+    border: 1px solid var(--sl-border);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: var(--sl-shadow);
+    text-align: center;
+  }
+
+  #{{ section_id }} .sl-benefit__icon {
+    display: inline-grid;
+    width: 92px;
+    height: 92px;
+    margin-bottom: 22px;
+    place-items: center;
+  }
+
+  #{{ section_id }} .sl-benefit h3 {
+    margin: 0 0 10px;
+    color: var(--sl-olive);
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.4rem, 2.2vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.1;
+  }
+
+  #{{ section_id }} .sl-benefit p {
+    max-width: 310px;
+    margin: 0 auto;
+    color: var(--sl-muted);
+    font-size: 1.55rem;
+    line-height: 1.38;
+  }
+
+  #{{ section_id }} .sl-story {
+    position: relative;
+    min-height: 480px;
+    padding: clamp(70px, 10vw, 146px) 0 clamp(78px, 10vw, 150px);
+    isolation: isolate;
+  }
+
+  #{{ section_id }} .sl-story__grid {
+    display: grid;
+    grid-template-columns: minmax(320px, 560px) 1fr;
+    align-items: center;
+    gap: clamp(32px, 7vw, 96px);
+  }
+
+  #{{ section_id }} .sl-story__image {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    width: min(58vw, 860px);
+  }
+
+  #{{ section_id }} .sl-story__image::before {
+    content: "";
+    position: absolute;
+    inset: -1px 42% -1px -1px;
+    z-index: 1;
+    background: linear-gradient(90deg, var(--sl-cream), rgba(239, 227, 207, 0));
+  }
+
+  #{{ section_id }} .sl-story__image img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  #{{ section_id }} .sl-story__content {
+    position: relative;
+    z-index: 2;
+  }
+
+  #{{ section_id }} .sl-story .sl-copy {
+    max-width: 640px;
+    color: var(--sl-muted);
+    font-size: clamp(1.8rem, 1.4vw, 2.3rem);
+  }
+
+  #{{ section_id }} .sl-community {
+    position: relative;
+    padding: clamp(58px, 7vw, 82px) 0 clamp(58px, 7vw, 86px);
+    background: var(--sl-olive);
+    color: #fff;
+    text-align: center;
+    isolation: isolate;
+  }
+
+  #{{ section_id }} .sl-community::before,
+  #{{ section_id }} .sl-community::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: -1;
+    width: min(27vw, 318px);
+    opacity: 0.22;
+    background-position: left;
+    {%- if section.settings.community_pattern_image != blank -%}
+      background: url({{ section.settings.community_pattern_image | image_url: width: 700 }}) center / contain no-repeat;
+    {%- else -%}
+    background:
+      linear-gradient(45deg, transparent 46%, rgba(255,255,255,0.38) 47% 53%, transparent 54%) 0 0 / 34px 34px,
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.18) 0 5px, transparent 5px 14px);
+    {%- endif -%}
+  }
+
+  #{{ section_id }} .sl-community::after {
+    right: 0;
+    left: auto;
+    transform: scaleX(-1);
+  }
+
+  #{{ section_id }} .sl-community .sl-heading {
+    color: #fff;
+  }
+
+  #{{ section_id }} .sl-community .sl-copy {
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 1.9rem;
+  }
+
+  #{{ section_id }} .sl-community .sl-note {
+    justify-content: center;
+    max-width: 760px;
+    margin: 20px auto 0;
+    color: rgba(255, 255, 255, 0.86);
+  }
+
+  #{{ section_id }} .sl-message {
+    margin: 6px 0 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  #{{ section_id }} .sl-message--error {
+    color: #a41f20;
+  }
+
+  #{{ section_id }} .sl-community .sl-message--error {
+    color: #ffd3d3;
+  }
+
+  #{{ section_id }} .sl-message--success {
+    color: var(--sl-olive);
+  }
+
+  #{{ section_id }} .sl-community .sl-message--success {
+    color: #fff;
+  }
+
+  #{{ section_id }} .sl-trust {
+    padding: 22px 0;
+    background: #aa7600;
+    color: #fff;
+  }
+
+  #{{ section_id }} .sl-trust__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  #{{ section_id }} .sl-trust__item {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  #{{ section_id }} .sl-trust__icon {
+    display: inline-grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border-radius: 50%;
+    background: #fff;
+    color: #aa7600;
+  }
+
+  #{{ section_id }} .sl-trust__icon svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  #{{ section_id }} .sl-trust h3 {
+    margin: 0 0 3px;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  #{{ section_id }} .sl-trust p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  @media screen and (max-width: 989px) {
+    #{{ section_id }} {
+      --sl-page: min(100% - 28px, 760px);
+    }
+
+    #{{ section_id }} .sl-hero {
+      min-height: auto;
+      padding-top: 184px;
+    }
+
+    #{{ section_id }} .sl-hero__grid,
+    #{{ section_id }} .sl-story__grid {
+      grid-template-columns: 1fr;
+    }
+
+    #{{ section_id }} .sl-hero__image {
+      margin: 0;
+    }
+
+    #{{ section_id }} .sl-benefits__grid,
+    #{{ section_id }} .sl-trust__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    #{{ section_id }} .sl-story {
+      padding-bottom: 0;
+    }
+
+    #{{ section_id }} .sl-story__image {
+      position: relative;
+      right: auto;
+      width: calc(100% + 28px);
+      margin: 34px -14px 0;
+    }
+
+    #{{ section_id }} .sl-story__image::before {
+      inset: 0 0 auto;
+      height: 44%;
+      background: linear-gradient(180deg, var(--sl-cream), rgba(239, 227, 207, 0));
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    #{{ section_id }} .sl-hero h1 {
+      font-size: 4rem;
+    }
+
+    #{{ section_id }} .sl-form,
+    #{{ section_id }} .sl-form--inline {
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    #{{ section_id }} .sl-benefits__grid,
+    #{{ section_id }} .sl-trust__grid {
+      grid-template-columns: 1fr;
+    }
+
+    #{{ section_id }} .sl-benefit {
+      min-height: auto;
+      padding: 30px 22px;
+    }
+
+    #{{ section_id }} .sl-community::before,
+    #{{ section_id }} .sl-community::after {
+      width: 42vw;
+    }
+  }
+
+  .sl-story {
+    background: url({{ 'signup-story-food.png' | asset_url }});
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+{%- endstyle -%}
+
+<section id="{{ section_id }}" class="sl-page" aria-label="{{ section.settings.section_label | escape }}">
+  <div class="sl-hero">
+    <div class="sl-shell sl-hero__grid">
+      <div class="sl-hero__content">
+        <h1 class="sl-heading">{{ section.settings.hero_heading }}</h1>
+        <span class="sl-rule" aria-hidden="true"></span>
+        <p class="sl-hero__text">{{ section.settings.hero_text }}</p>
+
+        {%- if has_app_blocks -%}
+          <div class="sl-app-blocks">
+            {%- for block in section.blocks -%}
+              {%- if block.type == '@app' -%}
+                <div class="sl-app-block" {{ block.shopify_attributes }}>
+                  {% render block %}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          {% form 'customer', class: 'sl-form' %}
+            <input type="hidden" name="contact[tags]" value="{{ section.settings.customer_tags | escape }}">
+            <div class="sl-form__field">
+              <label class="visually-hidden" for="SignupLandingHeroFirstName-{{ section.id }}">{{ section.settings.first_name_placeholder }}</label>
+              <svg class="sl-form__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M20 21a8 8 0 0 0-16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <input
+                id="SignupLandingHeroFirstName-{{ section.id }}"
+                type="text"
+                name="contact[first_name]"
+                autocomplete="given-name"
+                placeholder="{{ section.settings.first_name_placeholder | escape }}"
+              >
+            </div>
+
+            <div class="sl-form__field">
+              <label class="visually-hidden" for="SignupLandingHeroEmail-{{ section.id }}">{{ section.settings.email_placeholder }}</label>
+              <svg class="sl-form__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+                <path d="m3.5 7 8.5 6 8.5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <input
+                id="SignupLandingHeroEmail-{{ section.id }}"
+                type="email"
+                name="contact[email]"
+                value="{{ form.email }}"
+                autocomplete="email"
+                autocorrect="off"
+                autocapitalize="off"
+                placeholder="{{ section.settings.email_placeholder | escape }}"
+                required
+                {% if form.errors %}
+                  aria-invalid="true"
+                  aria-describedby="SignupLandingHeroError-{{ section.id }}"
+                {% elsif form.posted_successfully? %}
+                  aria-describedby="SignupLandingHeroSuccess-{{ section.id }}"
+                {% endif %}
+              >
+            </div>
+
+            <button type="submit" class="sl-form__button" name="commit">
+              {{ section.settings.hero_button_label | escape }}
+            </button>
+
+            {%- if form.errors -%}
+              <p class="sl-message sl-message--error" id="SignupLandingHeroError-{{ section.id }}">
+                {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+              </p>
+            {%- endif -%}
+
+            {%- if form.posted_successfully? -%}
+              <p class="sl-message sl-message--success" id="SignupLandingHeroSuccess-{{ section.id }}" tabindex="-1">
+                {{ section.settings.success_message }}
+              </p>
+            {%- endif -%}
+          {% endform %}
+        {%- endif -%}
+
+        <p class="sl-note">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="m9 12 2 2 4-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          {{ section.settings.assurance_text }}
+        </p>
+      </div>
+
+      <figure class="sl-hero__image">
+        {%- if section.settings.hero_image != blank -%}
+          {{
+            section.settings.hero_image
+            | image_url: width: 1500
+            | image_tag:
+              widths: '600, 900, 1200, 1500',
+              sizes: '(min-width: 990px) 52vw, 100vw',
+              loading: 'eager',
+              alt: section.settings.hero_image.alt
+          }}
+        {%- else -%}
+          <img
+            src="{{ 'signup-hero-products.png' | asset_url }}"
+            alt=""
+            width="1360"
+            height="1160"
+            loading="eager"
+          >
+        {%- endif -%}
+      </figure>
+    </div>
+  </div>
+
+  <div class="sl-benefits">
+    <div class="sl-shell sl-center">
+      <h2 class="sl-heading">{{ section.settings.benefits_heading }}</h2>
+      <span class="sl-section-kicker" aria-hidden="true"></span>
+      <p class="sl-benefits__subtitle">{{ section.settings.benefits_subheading }}</p>
+
+      <div class="sl-benefits__grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'benefit' -%}
+            <article class="sl-benefit" {{ block.shopify_attributes }}>
+              <span class="sl-benefit__icon" aria-hidden="true">
+                {%- case block.settings.icon -%}
+                  {%- when 'tag' -%}
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="92" height="92" rx="46" stroke="#56622E" stroke-width="4"/>
+<path d="M21.3715 46.5112L44.0889 23.7884C44.3401 23.5378 44.6382 23.3392 44.9662 23.2039C45.2942 23.0687 45.6457 22.9994 46.0005 23H67.6001C69.0322 23 70.4057 23.5689 71.4184 24.5816C72.4311 25.5943 73 26.9678 73 28.3999V49.9995C73.0006 50.3543 72.9313 50.7058 72.7961 51.0338C72.6608 51.3618 72.4622 51.6599 72.2116 51.9111L49.4888 74.6285C47.9699 76.147 45.91 77 43.7622 77C41.6144 77 39.5546 76.147 38.0356 74.6285L21.3715 57.9644C19.853 56.4454 19 54.3856 19 52.2378C19 50.09 19.853 48.0301 21.3715 46.5112ZM59.5002 41.8997C60.9324 41.8997 62.3059 41.3307 63.3185 40.3181C64.3312 39.3054 64.9001 37.9319 64.9001 36.4998C64.9001 35.0676 64.3312 33.6941 63.3185 32.6815C62.3059 31.6688 60.9324 31.0999 59.5002 31.0999C58.0681 31.0999 56.6946 31.6688 55.6819 32.6815C54.6693 33.6941 54.1003 35.0676 54.1003 36.4998C54.1003 37.9319 54.6693 39.3054 55.6819 40.3181C56.6946 41.3307 58.0681 41.8997 59.5002 41.8997Z" fill="#56622E"/>
+</svg>
+                  {%- when 'sunrise' -%}
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="92" height="92" rx="46" stroke="#56622E" stroke-width="4"/>
+<path d="M57.5379 47.1458C57.271 46.646 56.984 46.1602 56.685 45.6864C55.3485 43.6635 53.6829 41.8437 51.7945 40.2588C58.0838 34.6481 65.9363 30.917 74.0999 28.7527C66.1089 28.8682 58.2965 31.9782 52.0494 36.892C51.3088 37.4993 50.5884 38.1344 49.8921 38.7934C48.7201 37.9672 47.4859 37.2245 46.2076 36.5735C46.043 33.6646 45.1821 27.1659 40.8334 23.7234C35.1221 19.2038 25.5598 21.6726 25.5598 21.6726C25.5598 21.6726 25.2567 31.4725 30.9681 35.9941C35.5014 39.5819 42.4589 38.7676 45.138 38.2778C45.8885 38.7915 46.633 39.3111 47.3555 39.8447C47.6445 40.0577 47.9314 40.2728 48.2164 40.4898C48.0438 40.677 47.8752 40.8641 47.7087 41.0553C47.5381 41.2563 46.6591 42.3255 46.5086 42.5027C46.3481 42.7118 46.0049 43.1896 45.8444 43.4126C44.9554 44.5993 44.1928 45.8755 43.4864 47.1757C42.8563 46.6202 42.1539 46.1503 41.3773 45.7819C35.4773 42.9925 27.6468 47.0741 23.8881 54.9008C20.1254 62.7256 21.8593 71.3328 27.7592 74.1222C33.6592 76.9116 41.4896 72.83 45.2484 65.0033C48.1602 58.9446 47.7749 52.422 44.7186 48.4877C46.2718 46.1403 48.0257 43.9383 50.0345 41.9194C52.2661 43.7411 54.3752 45.7381 56.1713 47.9741C52.2801 50.9467 51.4453 57.5111 54.4394 63.4642C57.7286 70.0047 64.3931 73.3298 69.3238 70.8888C74.2545 68.4478 75.5849 61.1666 72.2938 54.6261C69.0328 48.1413 62.4545 44.8223 57.5379 47.1438V47.1458ZM33.2096 53.0392C31.9072 54.0308 30.8697 55.1995 29.6034 56.2607C29.6998 53.1248 32.2705 50.3374 35.3308 49.7242C36.3503 49.5231 37.4359 49.5111 38.4052 49.9253C36.5429 50.8053 34.797 51.757 33.2116 53.0392H33.2096Z" fill="#56622E"/>
+</svg>
+                  {%- else -%}
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="92" height="92" rx="46" stroke="#56622E" stroke-width="4"/>
+<path d="M48.0027 50.7C57.8345 50.7005 67.0561 53.3376 75 57.9325V64.2842C70.0352 60.9619 64.4233 58.5343 58.3939 57.2205L65.0621 75H59.293L52.2768 56.2898C50.8687 56.1672 49.4426 56.1 48.0027 56.1C46.5623 56.1 45.1342 56.1672 43.7259 56.2898L36.7096 75H30.9431L37.6087 57.2205C31.578 58.5346 25.9654 60.9635 21 64.2869V57.9352C28.9451 53.339 38.1688 50.7 48.0027 50.7ZM48 31.8C55.4558 31.8 61.5 37.8442 61.5 45.3C61.5 45.8135 61.4689 46.3201 61.4131 46.8188C59.6635 46.4151 57.8836 46.0938 56.0789 45.8484C56.0911 45.6672 56.1 45.4844 56.1 45.3C56.1 40.8265 52.4736 37.2 48 37.2C43.5264 37.2 39.9 40.8265 39.9 45.3C39.9 45.4844 39.9063 45.6672 39.9185 45.8484C38.1137 46.0941 36.3338 46.4148 34.5844 46.8188C34.5286 46.3203 34.5 45.8135 34.5 45.3C34.5 37.8442 40.5442 31.8 48 31.8ZM31.8 45.3H23.7V39.9H31.8V45.3ZM72.3 45.3H64.2V39.9H72.3V45.3ZM37.759 31.241L33.941 35.059L28.541 29.659L32.359 25.841L37.759 31.241ZM67.4589 29.659L62.0589 35.059L58.2411 31.241L63.6411 25.841L67.4589 29.659ZM50.7 29.1H45.3V21H50.7V29.1Z" fill="#56622E"/>
+</svg>
+                {%- endcase -%}
+              </span>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.text }}</p>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="sl-story">
+    <div class="sl-shell sl-story__grid">
+      <div class="sl-story__content">
+        <h2 class="sl-heading">{{ section.settings.story_heading }}</h2>
+        <span class="sl-rule" aria-hidden="true"></span>
+        <p class="sl-copy">{{ section.settings.story_text }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sl-community">
+    <div class="sl-shell">
+      <h2 class="sl-heading">{{ section.settings.community_heading }}</h2>
+      <span class="sl-section-kicker" aria-hidden="true"></span>
+      <p class="sl-copy">{{ section.settings.community_text }}</p>
+
+      {% form 'customer', id: 'SignupLandingCommunity', class: 'sl-form sl-form--inline' %}
+        <input type="hidden" name="contact[tags]" value="{{ section.settings.customer_tags | escape }}">
+        <div class="sl-form__field">
+          <label class="visually-hidden" for="SignupLandingCommunityFirstName-{{ section.id }}">{{ section.settings.first_name_placeholder }}</label>
+          <svg class="sl-form__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M20 21a8 8 0 0 0-16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <input
+            id="SignupLandingCommunityFirstName-{{ section.id }}"
+            type="text"
+            name="contact[first_name]"
+            autocomplete="given-name"
+            placeholder="{{ section.settings.first_name_placeholder | escape }}"
+          >
+        </div>
+
+        <div class="sl-form__field">
+          <label class="visually-hidden" for="SignupLandingCommunityEmail-{{ section.id }}">{{ section.settings.email_placeholder }}</label>
+          <svg class="sl-form__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="m3.5 7 8.5 6 8.5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <input
+            id="SignupLandingCommunityEmail-{{ section.id }}"
+            type="email"
+            name="contact[email]"
+            value="{{ form.email }}"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            placeholder="{{ section.settings.email_placeholder | escape }}"
+            required
+            {% if form.errors %}
+              aria-invalid="true"
+              aria-describedby="SignupLandingCommunityError-{{ section.id }}"
+            {% elsif form.posted_successfully? %}
+              aria-describedby="SignupLandingCommunitySuccess-{{ section.id }}"
+            {% endif %}
+          >
+        </div>
+
+        <button type="submit" class="sl-form__button" name="commit">
+          {{ section.settings.community_button_label | escape }}
+        </button>
+
+        {%- if form.errors -%}
+          <p class="sl-message sl-message--error" id="SignupLandingCommunityError-{{ section.id }}">
+            {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+          </p>
+        {%- endif -%}
+
+        {%- if form.posted_successfully? -%}
+          <p class="sl-message sl-message--success" id="SignupLandingCommunitySuccess-{{ section.id }}" tabindex="-1">
+            {{ section.settings.success_message }}
+          </p>
+        {%- endif -%}
+      {% endform %}
+
+      <p class="sl-note">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="m9 12 2 2 4-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        {{ section.settings.assurance_text }}
+      </p>
+    </div>
+  </div>
+
+  {%- if section.settings.show_trust_bar -%}
+    <div class="sl-trust">
+      <div class="sl-shell sl-trust__grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'trust_item' -%}
+            <div class="sl-trust__item" {{ block.shopify_attributes }}>
+              <span class="sl-trust__icon" aria-hidden="true">
+                {%- case block.settings.icon -%}
+                  {%- when 'truck' -%}
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M3 7h11v10H3V7Zm11 3h4l3 3v4h-7v-7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7" cy="18" r="2" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="18" r="2" stroke="currentColor" stroke-width="2"/></svg>
+                  {%- when 'bolt' -%}
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="m13 2-9 12h7l-1 8 10-13h-7l0-7Z"/></svg>
+                  {%- when 'quality' -%}
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 6v6c0 5 3.4 8.2 8 9 4.6-.8 8-4 8-9V6l-8-3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m8.8 12 2.1 2.1 4.5-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  {%- else -%}
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M20 4C11 4 5 9.6 5 17.5V20h2.5C15.4 20 21 14 21 5V4h-1Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M5 19c3.5-5.5 7-8.5 12-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                {%- endcase -%}
+              </span>
+              <div>
+                <h3>{{ block.settings.title }}</h3>
+                <p>{{ block.settings.text }}</p>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  (() => {
+    const section = document.getElementById({{ section_id | json }});
+    if (!section) return;
+
+    const computed = window.getComputedStyle(section);
+    const olive = computed.getPropertyValue('--sl-olive').trim() || '#56642f';
+    const oliveDark = computed.getPropertyValue('--sl-olive-dark').trim() || '#4c5d29';
+    const textColor = computed.getPropertyValue('--sl-text').trim() || '#202020';
+    const bodyFont = computed.getPropertyValue('--font-body-family').trim() || 'inherit';
+    const styleId = 'sl-shopify-forms-style';
+    const formCss = `
+      form[data-testid="form"] {
+        display: grid !important;
+        gap: 16px !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+      }
+
+      form[data-testid="form"] > div:has(shop-lead-capture) {
+        display: none !important;
+      }
+
+      form[data-testid="form"] [class*="_formFieldContainer"] {
+        position: relative !important;
+        margin: 0 !important;
+      }
+
+      form[data-testid="form"] [class*="_formFieldContainer"]::before {
+        content: "" !important;
+        position: absolute !important;
+        left: 18px !important;
+        top: 50% !important;
+        z-index: 2 !important;
+        width: 20px !important;
+        height: 20px !important;
+        background-color: #7d8798 !important;
+        transform: translateY(-50%) !important;
+        pointer-events: none !important;
+      }
+
+      form[data-testid="form"] [class*="_formFieldContainer"]:has(input[data-testid="field-first_name"])::before,
+      form[data-testid="form"] [class*="_formFieldContainer"]:has(input#first_name)::before {
+        mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 21a8 8 0 0 0-16 0' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='7' r='4' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") center / contain no-repeat !important;
+        -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 21a8 8 0 0 0-16 0' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='7' r='4' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") center / contain no-repeat !important;
+      }
+
+      form[data-testid="form"] [class*="_formFieldContainer"]:has(input[data-testid="field-email"])::before,
+      form[data-testid="form"] [class*="_formFieldContainer"]:has(input#email)::before {
+        mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='3' y='5' width='18' height='14' rx='2' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='m3.5 7 8.5 6 8.5-6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat !important;
+        -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='3' y='5' width='18' height='14' rx='2' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='m3.5 7 8.5 6 8.5-6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat !important;
+      }
+
+      form[data-testid="form"] input {
+        box-sizing: border-box !important;
+        width: 100% !important;
+        min-height: 58px !important;
+        padding: 0 18px 0 48px !important;
+        border: 1px solid #dfe3e8 !important;
+        border-radius: 8px !important;
+        background: #fff !important;
+        color: ${textColor} !important;
+        font-family: ${bodyFont} !important;
+        font-size: 1.6rem !important;
+        box-shadow: 0 5px 16px rgba(70, 58, 37, 0.07) !important;
+        outline-offset: 3px !important;
+      }
+
+      form[data-testid="form"] label {
+        position: absolute !important;
+        left: 48px !important;
+        top: 50% !important;
+        color: #9a9da4 !important;
+        font-family: ${bodyFont} !important;
+        font-size: 1.6rem !important;
+        line-height: 1 !important;
+        transform: translateY(-50%) !important;
+        transition: opacity 160ms ease, visibility 160ms ease !important;
+        pointer-events: none !important;
+      }
+
+      form[data-testid="form"] input:focus + label,
+      form[data-testid="form"] input:not(:placeholder-shown) + label {
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+
+      form[data-testid="form"] button[type="submit"],
+      form[data-testid="form"] button[data-testid="btn-form-submit"] {
+        min-height: 35px !important;
+        border: 0 !important;
+        border-radius: 8px !important;
+        background: #56642f !important;
+        color: #fff !important;
+        font-family: 'Brother 1816 Book', sans-serif !important;
+        font-size: 1.6rem !important;
+        font-weight: 700 !important;
+        line-height: 1 !important;
+        cursor: pointer !important;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+      }
+
+      
+      form[data-testid="form"] button[type="submit"]:hover,
+      form[data-testid="form"] button[type="submit"]:focus-visible,
+      form[data-testid="form"] button[data-testid="btn-form-submit"]:hover,
+      form[data-testid="form"] button[data-testid="btn-form-submit"]:focus-visible {
+        background: ${oliveDark} !important;
+        box-shadow: 0 14px 28px rgba(79, 96, 45, 0.22) !important;
+      }
+    `;
+
+    const injectStyle = (root) => {
+      if (!root || root.getElementById?.(styleId)) return;
+      const style = document.createElement('style');
+      style.id = styleId;
+      style.textContent = formCss;
+      root.appendChild(style);
+    };
+
+    const styleOpenShadowRoots = (root) => {
+      root.querySelectorAll?.('*').forEach((element) => {
+        if (!element.shadowRoot) return;
+        injectStyle(element.shadowRoot);
+        styleOpenShadowRoots(element.shadowRoot);
+      });
+    };
+
+    const styleEmbed = () => {
+      section.querySelectorAll('shopify-forms-embed, #app-embed').forEach((embed) => {
+        embed.style.display = 'block';
+        embed.style.width = '100%';
+        embed.style.maxWidth = '100%';
+        embed.style.margin = '0';
+        embed.style.padding = '0';
+
+        if (embed.shadowRoot) {
+          injectStyle(embed.shadowRoot);
+          styleOpenShadowRoots(embed.shadowRoot);
+        }
+      });
+    };
+
+    styleEmbed();
+
+    let attempts = 0;
+    const interval = window.setInterval(() => {
+      attempts += 1;
+      styleEmbed();
+      if (attempts > 30) window.clearInterval(interval);
+    }, 300);
+
+    new MutationObserver(styleEmbed).observe(section, { childList: true, subtree: true });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Sign up landing",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_label",
+      "label": "Accessible section label",
+      "default": "Al'Ard signup landing page"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_theme_chrome",
+      "label": "Hide theme header and footer",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#efe3d0"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#202020"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Olive accent",
+      "default": "#56642f"
+    },
+    {
+      "type": "color",
+      "id": "secondary_accent_color",
+      "label": "Gold button accent",
+      "default": "#d8b94a"
+    },
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "hero_heading",
+      "label": "Heading",
+      "default": "Bring Palestine to Your Table!"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_text",
+      "label": "Text",
+      "default": "Sign up to receive product updates, special offers, and stories from the land - straight to your inbox."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "hero_button_label",
+      "label": "Hero button label",
+      "default": "Sign Up Now"
+    },
+    {
+      "type": "header",
+      "content": "Form"
+    },
+    {
+      "type": "text",
+      "id": "first_name_placeholder",
+      "label": "First name placeholder",
+      "default": "First Name"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Email Address"
+    },
+    {
+      "type": "text",
+      "id": "customer_tags",
+      "label": "Customer tags",
+      "default": "newsletter, signup landing"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thank you for signing up."
+    },
+    {
+      "type": "textarea",
+      "id": "assurance_text",
+      "label": "Privacy note",
+      "default": "No spam. Just thoughtful updates, exclusive offers, and authentic Palestinian products."
+    },
+    {
+      "type": "header",
+      "content": "Benefits"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "benefits_heading",
+      "label": "Heading",
+      "default": "Why Join?"
+    },
+    {
+      "type": "text",
+      "id": "benefits_subheading",
+      "label": "Subheading",
+      "default": "Good reasons to stay close"
+    },
+    {
+      "type": "header",
+      "content": "Story"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "story_heading",
+      "label": "Heading",
+      "default": "More Than Food"
+    },
+    {
+      "type": "textarea",
+      "id": "story_text",
+      "label": "Text",
+      "default": "Every Al'Ard product supports Palestinian farmers, preserves traditional food heritage, and connects your table to the land it comes from."
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Story image"
+    },
+    {
+      "type": "header",
+      "content": "Community signup"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "community_heading",
+      "label": "Heading",
+      "default": "Join the Al'Ard Europe Community"
+    },
+    {
+      "type": "textarea",
+      "id": "community_text",
+      "label": "Text",
+      "default": "Be the first to hear about new arrivals, gift ideas, and special offers."
+    },
+    {
+      "type": "image_picker",
+      "id": "community_pattern_image",
+      "label": "Side background image",
+      "info": "Shown on both sides of the green community section. The right side is mirrored with CSS."
+    },
+    {
+      "type": "text",
+      "id": "community_button_label",
+      "label": "Button label",
+      "default": "Get Updates"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_bar",
+      "label": "Show bottom trust bar",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit card",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "tag",
+          "options": [
+            {
+              "value": "tag",
+              "label": "Tag"
+            },
+            {
+              "value": "olive",
+              "label": "Olive"
+            },
+            {
+              "value": "sunrise",
+              "label": "Sunrise"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Exclusive Offers"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Get early access to promotions and seasonal bundles."
+        }
+      ]
+    },
+    {
+      "type": "trust_item",
+      "name": "Trust bar item",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "leaf",
+          "options": [
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "bolt",
+              "label": "Bolt"
+            },
+            {
+              "value": "quality",
+              "label": "Quality"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Authentic Palestinian Origin"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "100% Pure & Traditional Olive Oil from Palestine."
+        }
+      ]
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sign up landing",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "tag",
+            "title": "Exclusive Offers",
+            "text": "Get early access to promotions and seasonal bundles."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "olive",
+            "title": "Authentic Products",
+            "text": "Discover Palestinian olive oil, pantry staples, and heritage flavors."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "sunrise",
+            "title": "Stories from the Land",
+            "text": "Receive meaningful updates about our products, people, and purpose."
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "leaf",
+            "title": "Authentic Palestinian Origin",
+            "text": "100% Pure & Traditional Olive Oil from Palestine."
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "truck",
+            "title": "Free shipping",
+            "text": "Free Shipping for orders over $99"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "bolt",
+            "title": "Fast & Secure Delivery",
+            "text": "Worldwide shipping, carefully packed."
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "quality",
+            "title": "Trusted Quality",
+            "text": "Lab-tested & certified extra virgin."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

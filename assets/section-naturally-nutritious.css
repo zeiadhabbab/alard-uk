@@ -1,0 +1,263 @@
+/* Naturally Nutritious Section */
+.section--naturally-nutritious {
+    padding: 56px;
+    background: #56622E;
+}
+
+.naturally-nutritious__inner {
+    margin: 0 auto;
+}
+
+.naturally-nutritious__header {
+    margin-bottom: 2.5rem;
+}
+
+.naturally-nutritious__heading {
+    margin: 0 0 0.75rem;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #ffffff;
+}
+
+.naturally-nutritious__subheading {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.naturally-nutritious__content {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 2rem;
+}
+
+/* Nutrition Facts Panel */
+.nutrition-facts {
+    background-color: #414a22;
+    border-radius: 8px;
+    padding: 1.75rem;
+}
+
+.nutrition-facts__title {
+    margin: 0 0 0.25rem;
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.nutrition-facts__serving {
+    margin: 0 0 1rem;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.nutrition-facts__calories {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.75rem 0;
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.nutrition-facts__calories-label {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.nutrition-facts__calories-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.nutrition-facts__header-row {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem 0;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.nutrition-facts__row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 1rem;
+    padding: 2px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.nutrition-facts__row--indent .nutrition-facts__label {
+    padding-left: 1rem;
+    font-weight: 400;
+}
+
+.nutrition-facts__label {
+    font-weight: 600;
+}
+
+.nutrition-facts__amount {
+    text-align: right;
+    min-width: 50px;
+}
+
+.nutrition-facts__percent {
+    text-align: right;
+    min-width: 30px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.nutrition-facts__divider {
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 0.5rem 0;
+}
+
+.nutrition-facts__footnote {
+    margin: 1rem 0 0;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Right Column */
+.naturally-nutritious__right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Health Benefits */
+.health-benefits {
+    background-color: #414a22;
+    border-radius: 8px;
+    padding: 1.75rem;
+    flex: 1;
+}
+
+.health-benefits__title {
+    margin: 0 0 1.25rem;
+    font-size: 22px;
+    font-weight: 700;
+    font-style: italic;
+    color: #ffffff;
+}
+
+.health-benefits__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 2rem;
+}
+
+.health-benefits__item {
+    gap: 0.75rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 16px;
+    background: #4F5A2B;
+    border-radius: 8px;
+    align-self: stretch;
+}
+
+.health-benefits__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.health-benefits__icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.health-benefits__text {
+    font-size: 14px;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Nature's Perfect Snack */
+.natures-snack {
+    background-color: #414a22;
+    border-radius: 8px;
+    padding: 1.75rem;
+}
+
+.natures-snack__title {
+    margin: 0 0 0.75rem;
+    font-size: 24px;
+    font-weight: 700;
+    font-style: italic;
+    color: #ffffff;
+}
+
+.natures-snack__text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+}
+
+/* Tablet */
+@media screen and (max-width: 989px) {
+    .section--naturally-nutritious {
+        padding: 40px 20px;
+    }
+
+    .naturally-nutritious__content {
+        grid-template-columns: 1fr;
+    }
+
+    .naturally-nutritious__heading {
+        font-size: 36px;
+    }
+
+    .health-benefits__grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+}
+
+/* Mobile */
+@media screen and (max-width: 749px) {
+    .section--naturally-nutritious {
+        padding: 3rem;
+    }
+
+    .naturally-nutritious__heading {
+        font-size: 28px;
+    }
+
+    .naturally-nutritious__subheading {
+        font-size: 15px;
+    }
+
+    .nutrition-facts,
+    .health-benefits,
+    .natures-snack {
+        padding: 1.25rem;
+    }
+
+    .nutrition-facts__title,
+    .health-benefits__title {
+        font-size: 18px;
+    }
+
+    .natures-snack__title {
+        font-size: 20px;
+    }
+
+    .health-benefits__text {
+        font-size: 13px;
+    }
+}

@@ -1,0 +1,21 @@
+<section class="custom-page-section" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width {% if section.settings.content_width == 'narrow' %}page-width--narrow{% endif %}">
+
+      <h1 class="page-title">{{ page.title }}</h1>
+
+    <div class="custom-page-content rte">
+      <div id="ZoomyWishlistPage"></div>
+      <script src="https://zooomyapps.com/wishlist/Share_Wishlist.js" data-shop-id="alard-products.myshopify.com"></script>
+      {{ page.content }}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .page-width--narrow {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>

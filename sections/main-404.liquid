@@ -1,0 +1,138 @@
+{% assign lang = request.locale.iso_code %}
+{% assign is_arabic = false %}
+{% if lang == "ar" %}
+  {% assign is_arabic = true %}
+{% endif %}
+
+<style type="text/css">
+  .template-404 .title + * {
+    margin-top: 1rem;
+  }
+
+  @media screen and (min-width: 750px) {
+    .template-404 .title + * {
+      margin-top: 2rem;
+    }
+  }
+
+  /* Main Container */
+  .container {
+      max-width: 600px;
+      margin: auto;
+      border-top: 1px solid #ddd;
+      padding-top: 50px;
+      margin-top: -54px;
+      text-align: center;
+  }
+
+  /* Heading and Paragraph */
+  h1 {
+      font-size: 36px;
+      color: #d9534f;
+  }
+
+  p {
+      font-size: 18px;
+      color: #555;
+  }
+
+  /* Buttons */
+  .btn {
+      padding: 10px 20px;
+      margin: 10px;
+      text-decoration: none;
+      color: #fff;
+      background: #b1ba1d;
+      border-radius: 5px;
+      font-family: inherit;
+      display: inline-block;
+  }
+
+  .btn:hover {
+      opacity: 0.8;
+  }
+
+  /* Search Box */
+  .search-box {
+      margin-top: 20px;
+  }
+
+  .search-box input {
+      padding: 10px;
+      width: 80%;
+      max-width: 300px;
+      display: inline-block;
+  }
+
+  /* Responsive Adjustments */
+  @media screen and (max-width: 750px) {
+      .btn {
+          width: 100%;
+          display: block;
+          max-width: 300px;
+          margin: 10px auto;
+      }
+
+      .container {
+          margin-top: 0px;
+      }
+  }
+
+  /* RTL Support for Arabic */
+  {% if is_arabic %}
+    body {
+        direction: rtl;
+        text-align: right;
+    }
+  {% endif %}
+</style>
+
+<div class="template-404 page-width page-margin center">
+  <div class="container">
+    <div style="font-size: 58px; font-weight: 100;">404</div>
+
+    <!-- Dynamic Heading -->
+    <h1>{% if is_arabic %} الصفحة غير موجودة {% else %} Page Not Found {% endif %}</h1>
+
+    <!-- Description -->
+    <p>
+      {% if is_arabic %} 
+        يبدو أننا لم نتمكن من العثور على الصفحة التي تبحث عنها. 
+        ربما ترغب في العودة إلى <a href="/" class="btn">الصفحة الرئيسية</a>
+      {% else %}
+        Oops! It looks like the page you're looking for isn't available. 
+        Maybe try heading back to the <a href="/" class="btn">Homepage</a>.
+      {% endif %}
+    </p>
+
+    <!-- Search Box -->
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="{% if is_arabic %} ابحث هنا... {% else %} Search here... {% endif %}">
+      <button onclick="searchShopify()" class="btn">{% if is_arabic %} بحث {% else %} Search {% endif %}</button>
+    </div>
+
+    <!-- Suggested Collections -->
+    <p>{% if is_arabic %} استكشاف التصنيفات {% else %} Explore Popular Collections {% endif %}:</p>
+    <a href="/collections/organic" class="btn">{% if is_arabic %} زيت الزيتون {% else %} Olive Oil {% endif %}</a>
+    <a href="/collections/tahini-and-halva" class="btn">{% if is_arabic %} الطحينة والحلاوة {% else %} Tahini & Halva {% endif %}</a>
+    <a href="/collections/palestinian-olive-oil" class="btn">{% if is_arabic %} زيت الزيتون الفلسطيني {% else %} Palestinian Olive Oil {% endif %}</a>
+  </div>
+</div>
+
+<!-- JavaScript for Search & Title Update -->
+<script>
+  function searchShopify() {
+      let query = document.getElementById('search-input').value;
+      if (query) {
+          window.location.href = '/search?q=' + encodeURIComponent(query);
+      }
+  }
+
+  function updateTitle() {
+      let isArabic = window.location.href.includes('/ar/');
+      document.title = isArabic ? "الصفحة غير موجودة - 404" : "404 - Page Not Found";
+  }
+
+  // Set correct page title
+  updateTitle();
+</script>

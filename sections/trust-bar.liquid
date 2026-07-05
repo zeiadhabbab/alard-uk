@@ -1,0 +1,82 @@
+{{ 'section-trust-bar.css' | asset_url | stylesheet_tag }}
+
+<section class="trust-bar section-{{ section.id }}">
+  <div class="page-width trust-bar__inner">
+    <div class="trust-bar__item">
+      <span class="trust-bar__icon">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="20" fill="white" />
+          <path
+            d="M10 29C10 26 11.85 23.64 15.08 23C17.5 22.52 20 21 21 20M19 28C17.244 28.0053 15.5502 27.3505 14.2545 26.1654C12.9588 24.9803 12.1557 23.3515 12.0047 21.6021C11.8537 19.8527 12.3657 18.1104 13.4391 16.7207C14.5126 15.3311 16.0691 14.3957 17.8 14.1C23.5 13 25 12.48 27 10C28 12 29 14.18 29 18C29 23.5 24.22 28 19 28Z"
+            stroke="#414A22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </span>
+      <div class="trust-bar__content">
+        <span class="trust-bar__title">Authentic Palestinian Origin</span>
+        <span class="trust-bar__text">100% Pure & Traditional Olive Oil from Palestine.</span>
+      </div>
+    </div>
+
+    <div class="trust-bar__item">
+      <span class="trust-bar__icon">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="20" fill="white" />
+          <path
+            d="M22 15H24.3373C24.5818 15 24.7041 15 24.8192 15.0276C24.9213 15.0521 25.0188 15.0925 25.1083 15.1474C25.2092 15.2092 25.2957 15.2957 25.4686 15.4686L29.5314 19.5314C29.7043 19.7043 29.7908 19.7908 29.8526 19.8917C29.9075 19.9812 29.9479 20.0787 29.9724 20.1808C30 20.2959 30 20.4182 30 20.6627V23.5C30 23.9659 30 24.1989 29.9239 24.3827C29.8224 24.6277 29.6277 24.8224 29.3827 24.9239C29.1989 25 28.9659 25 28.5 25M23.5 25H22M22 25V15.2C22 14.0799 22 13.5198 21.782 13.092C21.5903 12.7157 21.2843 12.4097 20.908 12.218C20.4802 12 19.9201 12 18.8 12H13.2C12.0799 12 11.5198 12 11.092 12.218C10.7157 12.4097 10.4097 12.7157 10.218 13.092C10 13.5198 10 14.0799 10 15.2V23C10 24.1046 10.8954 25 12 25M22 25H18M18 25C18 26.6569 16.6569 28 15 28C13.3431 28 12 26.6569 12 25M18 25C18 23.3431 16.6569 22 15 22C13.3431 22 12 23.3431 12 25M28.5 25.5C28.5 26.8807 27.3807 28 26 28C24.6193 28 23.5 26.8807 23.5 25.5C23.5 24.1193 24.6193 23 26 23C27.3807 23 28.5 24.1193 28.5 25.5Z"
+            stroke="#414A22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+
+      </span>
+      <div class="trust-bar__content">
+        <span class="trust-bar__title">Free shipping</span>
+        <span class="trust-bar__text">Free Shipping for orders over $99</span>
+      </div>
+    </div>
+
+    <div class="trust-bar__item">
+      <span class="trust-bar__icon">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="20" fill="white" />
+          <path
+            d="M20.9989 10L12.0923 20.6879C11.7435 21.1064 11.5691 21.3157 11.5665 21.4925C11.5641 21.6461 11.6326 21.7923 11.7521 21.8889C11.8896 22 12.1621 22 12.7069 22H19.9989L18.9989 30L27.9054 19.3121C28.2542 18.8936 28.4286 18.6843 28.4313 18.5075C28.4336 18.3539 28.3652 18.2077 28.2456 18.1111C28.1081 18 27.8357 18 27.2909 18H19.9989L20.9989 10Z"
+            stroke="#414A22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+
+      </span>
+      <div class="trust-bar__content">
+        <span class="trust-bar__title">Fast & Secure Delivery</span>
+        <span class="trust-bar__text">Worldwide shipping, carefully packed.</span>
+      </div>
+    </div>
+
+    <div class="trust-bar__item">
+      <span class="trust-bar__icon">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="20" fill="white" />
+          <path
+            d="M17 20L19 22L23.5 17.5M15.3338 11.8187C16.1376 11.7545 16.9007 11.4385 17.5145 10.9154C18.9467 9.69486 21.0533 9.69486 22.4855 10.9154C23.0993 11.4385 23.8624 11.7545 24.6662 11.8187C26.5421 11.9684 28.0316 13.4579 28.1813 15.3338C28.2455 16.1376 28.5615 16.9007 29.0846 17.5145C30.3051 18.9467 30.3051 21.0533 29.0846 22.4855C28.5615 23.0993 28.2455 23.8624 28.1813 24.6662C28.0316 26.5421 26.5421 28.0316 24.6662 28.1813C23.8624 28.2455 23.0993 28.5615 22.4855 29.0846C21.0533 30.3051 18.9467 30.3051 17.5145 29.0846C16.9007 28.5615 16.1376 28.2455 15.3338 28.1813C13.4579 28.0316 11.9684 26.5421 11.8187 24.6662C11.7545 23.8624 11.4385 23.0993 10.9154 22.4855C9.69486 21.0533 9.69486 18.9467 10.9154 17.5145C11.4385 16.9007 11.7545 16.1376 11.8187 15.3338C11.9684 13.4579 13.4579 11.9684 15.3338 11.8187Z"
+            stroke="#414A22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+
+      </span>
+      <div class="trust-bar__content">
+        <span class="trust-bar__title">Trusted Quality</span>
+        <span class="trust-bar__text">Lab tested & certified extra virgin.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+"name": "Trust Bar",
+"tag": "section",
+"class": "section section--trust-bar",
+"settings": [],
+"presets": [
+{
+"name": "Trust Bar"
+}
+]
+}
+{% endschema %}

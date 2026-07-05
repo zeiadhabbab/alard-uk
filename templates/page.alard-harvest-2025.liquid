@@ -1,0 +1,1408 @@
+{% comment %}
+  Section: Harvest 2025 Landing Page (Al'Ard)
+  Usage: Create a new page (e.g., "Harvest 2025"), then add this section to the page in the theme editor.
+  This section renders a full landing page with: announcement bar, hero (email signup), features, testimonials, product sizes, story, FAQ, and final CTA.
+  Assets: Replace placeholder images (data-uris / SVGs) as needed. All styles are scoped to this section via the root id wrapper.
+{% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const scroller = document.getElementById('alardCarousel');
+    const prev = document.querySelector('.ap-prev');
+    const next = document.querySelector('.ap-next');
+    if (!scroller) return;
+
+    const step = () => {
+      const card = scroller.querySelector('.ap-card');
+      const gap = 16; // keep in sync with CSS gap
+      return (card ? card.offsetWidth : scroller.clientWidth * 0.9) + gap;
+    };
+
+    next?.addEventListener('click', () => scroller.scrollBy({ left: step(), behavior: 'smooth' }));
+    prev?.addEventListener('click', () => scroller.scrollBy({ left: -step(), behavior: 'smooth' }));
+  });
+</script>
+<style>
+  /* ===== Al'Ard Products Section ===== */
+  :root {
+    --ap-bg: #4d5f2e; /* olive green background */
+    --ap-card: #ffffff; /* card background */
+    --ap-text: #2a2a2a; /* body text */
+    --ap-muted: #6a6a6a; /* muted text */
+    --ap-radius: 18px; /* card radius */
+    --ap-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+    --ap-container: min(1200px, 92vw);
+  }
+
+  #MainContent {
+    width: 100%;
+  }
+
+  .alard-hero {
+    background-image: url({{'bg-hero.png'|asset_img_url:'original'}});
+    height: 100vh;
+    background-size: cover;
+  }
+
+  .container.wrap {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+  }
+
+  .alard-hero h1 {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 57px;
+    line-height: 64px;
+    text-align: center;
+    letter-spacing: -0.25px;
+    color: #ffffff;
+  }
+
+  .alard-hero p {
+    /* EN/Title Large */
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 0px;
+    color: #ffffff;
+  }
+
+  .alard-hero button {
+    background: #a2b739;
+    color: #fff;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+    height: 45px;
+    color: #5d442c;
+  }
+
+  .jdgm-carousel-wrapper h3 {
+    font-family: inherit;
+    margin-top: -3px;
+    color: rgba(161, 137, 115, 1);
+    margin-bottom: 31px;
+  }
+
+  .jdgm-carousel__arrows {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-right: 10px;
+    margin-top: 20px;
+    margin-bottom: 43px;
+  }
+
+  .form-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    min-width: 460px;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 64px;
+    margin-bottom: 64px;
+  }
+
+  h2 {
+    font-family: 'Begum';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 45px;
+    line-height: 52px;
+    margin-top: 64px;
+    margin-bottom: 16px;
+  }
+
+  .color-s9 {
+    color: #5e442a;
+  }
+
+  .color-s8 {
+    color: #a18973;
+  }
+
+  .color-s10-bg {
+    background: #ded5ce;
+  }
+
+  .color-s10 {
+    color: #ded5ce;
+  }
+
+  .color-s2 {
+    background: #56622e;
+  }
+
+  .color-white {
+    color: #ffffff;
+  }
+
+  p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  .p-0 {
+    padding: 0;
+  }
+
+  .m-0 {
+    margin: 0;
+  }
+
+  .alard-features,
+  .alard-rate {
+    padding: 60px 0px 0px 1px;
+    width: 90%;
+    text-align: center;
+  }
+
+  .alard-rate {
+    width: calc(90% + 30px);
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin: 0 auto;
+  }
+  .feature-card {
+    background: #ece8e4;
+    border-radius: 14px;
+    padding: 30px 24px;
+    text-align: left;
+    transition: transform 0.2s ease;
+    border: 1px solid #ded5ce;
+  }
+  .feature-card:hover {
+    transform: translateY(-4px);
+  }
+  .feature-icon {
+    font-size: 28px;
+    color: #7fa34a;
+    margin-bottom: 12px;
+    display: inline-block;
+  }
+  .feature-title {
+    color: #5e442a;
+    margin-bottom: 8px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 40px;
+    font-family: 'Begum';
+  }
+  .feature-text {
+    font-size: 16px;
+    color: #a18973;
+    line-height: 1.5;
+  }
+
+  /* Force Judge.me carousel to show 4 columns on desktop */
+  .jdgm-carousel-item {
+    flex: 0 0 25% !important; /* 4 columns (100 / 4 = 25%) */
+    max-width: 25% !important;
+    margin-left: 10px;
+    margin-right: 10px;
+
+    padding: 10px;
+
+    background: #ece8e4;
+    border-radius: 24px;
+  }
+
+  /* Adjust spacing */
+  .jdgm-carousel__item {
+    padding: 0 10px;
+  }
+
+  /* Tablet (2 per row) */
+  @media (max-width: 900px) {
+    .jdgm-carousel-item {
+      flex: 0 0 50% !important;
+      max-width: 50% !important;
+    }
+  }
+
+  /* Mobile (1 per row) */
+  @media (max-width: 600px) {
+    .jdgm-carousel-item {
+      flex: 0 0 100% !important;
+      max-width: 90% !important;
+    }
+  }
+
+  .jdgm-carousel-wrapper {
+    width: 100% !important;
+    margin: auto;
+    padding: 20px 0 !important;
+  }
+
+  .jdgm--shop-review-has-image,
+  .jdgm-carousel-item__review-title {
+    display: none !important;
+  }
+
+  .jdgm-carousel-item {
+    padding: 20px !important;
+  }
+
+  .jdgm-carousel__right-arrow,
+  .jdgm-carousel__left-arrow {
+    border-color: #5e442a !important;
+  }
+  .jdgm-carousel {
+    margin: 0 auto !important;
+    width: 100%;
+  }
+
+  .jdgm-carousel-item__review-body p {
+    font-size: 16px !important;
+    color: #050505 !important;
+    /* three lines at leaset*/
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .jdgm-carousel-item__reviewer-name {
+    margin-top: 20px;
+  }
+
+  .jdgm-carousel-item * {
+    text-align: left;
+  }
+  .jdgm-star {
+    color: #fdc800 !important;
+  }
+
+  .alard-products {
+    background: #56622e;
+    color: #fff;
+  }
+
+  .alard-products .ap-container {
+    width: var(--ap-container);
+    margin-inline: auto;
+    padding-top: 1px;
+    padding-bottom: 60px;
+  }
+
+  .alard-products .ap-header {
+    text-align: center;
+  }
+
+  .alard-products .ap-header p {
+    /* identical to box height, or 127% */
+    text-align: center;
+
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 45px;
+  }
+
+  .ap-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(16px, 2.5vw, 28px);
+  }
+
+  .ap-card {
+    background: var(--ap-card);
+    color: var(--ap-text);
+    border-radius: var(--ap-radius);
+    box-shadow: var(--ap-shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+
+  .ap-media {
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    background: #ded5ce;
+    padding-bottom: 10px;
+  }
+
+  .ap-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  .ap-card:hover .ap-media img {
+    transform: scale(1.1);
+  }
+
+  .ap-body {
+    padding: clamp(16px, 2.2vw, 22px);
+  }
+
+  .ap-body h3 {
+    font-size: clamp(18px, 2.2vw, 22px);
+    line-height: 1.35;
+    margin: 0 0 8px;
+    font-weight: 700;
+  }
+
+  .ap-body p {
+    color: var(--ap-muted);
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* Optional CTA button if you enable it */
+  .ap-btn {
+    display: inline-block;
+    margin-top: 14px;
+    background: #233816;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: opacity 0.2s ease;
+    width: 100%;
+    text-align: center;
+    margin-top: 31px;
+  }
+  .ap-btn:hover {
+    opacity: 0.9;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 1024px) {
+    .ap-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 640px) {
+    .ap-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .alard-from-cta {
+    background: #d0b24f;
+  }
+
+  .alard-from-cta h2 {
+    color: #5e442a;
+  }
+
+  .alard-from-cta button {
+    background: #56622e;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+    height: 45px;
+  }
+
+  .alard-from-cta .form-line {
+    margin-top: 10px;
+    margin-bottom: 60px;
+  }
+
+  /* ===== Al'Ard Meaning Section ===== */
+  :root {
+    --am-gold: #916600;
+    --am-brown: #5e442a;
+    --am-text: #ffffff;
+    --am-radius: 0;
+  }
+
+  .alard-meaning {
+    color: var(--am-text);
+  }
+
+  .am-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    min-height: 100%;
+  }
+
+  .am-text {
+    display: flex;
+    align-items: center;
+    padding: clamp(32px, 5vw, 64px);
+    line-height: 1.7;
+  }
+
+  .am-inner {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .am-bg-gold {
+    background-color: var(--am-gold);
+  }
+  .am-bg-brown {
+    background-color: var(--am-brown);
+  }
+
+  .am-text h2 {
+    margin-bottom: 18px;
+    color: #ffffff;
+    margin-top: 0;
+  }
+
+  .am-text p {
+    margin-bottom: 14px;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .am-highlight {
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .am-image {
+    overflow: hidden;
+  }
+
+  .am-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  .am-image:hover img {
+    transform: scale(1.05);
+  }
+
+  /* Responsive layout */
+  @media (max-width: 900px) {
+    .am-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+
+    .am-text,
+    .am-image {
+      order: unset !important;
+    }
+  }
+
+  /* ===== Al'Ard FAQ ===== */
+  :root {
+    --faq-bg: #ded5ce; /* soft beige */
+    --card-bg: #ece8e4;
+    --text: #5e442a;
+    --muted: #a18973;
+    --radius: 16px;
+    --shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    --container: min(1625px, 92vw);
+  }
+
+  .alard-faq {
+    background: var(--faq-bg);
+    padding: clamp(40px, 5vw, 72px) 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    color: var(--text);
+  }
+
+  .alard-faq .faq-wrap {
+    width: var(--container);
+    margin: 0 auto;
+  }
+
+  .faq-title {
+    margin: 0 0 18px;
+    color: var(--text);
+  }
+
+  .faq-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .column-left,
+  .column-right {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .faq-item {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .faq-item summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 18px 20px;
+    font-weight: 700;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item .chev {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    stroke: #7b6d60;
+    stroke-width: 2;
+    fill: none;
+    transform: rotate(180deg); /* open state (−) */
+    transition: transform 0.25s ease;
+  }
+
+  .faq-item[open] .chev {
+    transform: rotate(0);
+  } /* caret up when open */
+
+  .faq-body {
+    padding: 0 20px 18px 20px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .text-input {
+    flex: 1 1 240px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+
+  .show-mobile {
+    display: none !important;
+  }
+
+  .hide-mobile {
+    display: block !important;
+  }
+
+  @media (max-width: 900px) {
+    .header__heading-logo {
+      height: 60px;
+      width: 60px;
+    }
+
+    .alard-hero {
+      height: 600px;
+    }
+
+    .alard-hero h1 {
+      font-size: 36px;
+      line-height: 44px;
+    }
+
+    .alard-hero p {
+      font-size: 14px;
+      text-align: center;
+      max-width: 90%;
+      line-height: 1.5em;
+    }
+
+    .form-line {
+      flex-direction: column;
+    }
+
+    .text-input {
+      flex: 1 1 44px;
+    }
+
+    .form-line {
+      min-width: 288px;
+    }
+
+    .feature-title {
+      display: inline-block;
+    }
+
+    .feature-icon svg {
+      width: 30px;
+    }
+
+    .feature-title {
+      display: inline-block;
+    }
+
+    .feature-icon svg {
+      width: 30px;
+    }
+
+    .feature-title {
+      color: #5e442a;
+      margin-bottom: 8px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 13px;
+      font-family: 'Begum';
+    }
+
+    .feature-title br {
+      display: none;
+    }
+
+    .feature-icon {
+      padding: 0;
+      margin: 0;
+      line-height: 40px;
+      margin-right: 11px;
+    }
+
+    h2 {
+      font-size: 32px;
+      text-align: center;
+      line-height: 1.2em;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.2em;
+    }
+
+    .feature-icon {
+      padding: 0;
+      margin: 0;
+      line-height: 40px;
+      margin-right: 11px;
+    }
+
+    h2 {
+      font-size: 32px;
+      text-align: center;
+      line-height: 1.2em;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.2em;
+    }
+
+    .faq-grid {
+      flex-direction: column;
+    }
+
+    .faq-title {
+      text-align: left;
+    }
+
+    .column-left,
+    .column-right {
+      width: 100%;
+    }
+
+    .m-order-1 {
+      order: 1;
+    }
+    .m-order-2 {
+      order: 2;
+    }
+    .m-order-3 {
+      order: 3;
+    }
+    .m-order-4 {
+      order: 4;
+    }
+
+    .show-mobile {
+      display: block !important;
+    }
+
+    .hide-mobile {
+      display: none !important;
+    }
+
+    .am-image.show-mobile {
+      margin-right: -30px;
+      margin-left: -30px;
+    }
+
+    .am-image.show-mobile img {
+      height: 400px;
+    }
+
+    .am-inner h2 {
+      text-align: left;
+      margin-left: 0;
+    }
+
+    .am-text {
+      padding-top: 0 !important;
+    }
+
+    .am-inner h2 {
+      margin-top: 33px;
+    }
+  }
+
+  /* ---- Mobile carousel ≤900px ---- */
+  @media (max-width: 900px) {
+    /* turn the grid into a horizontal scroller */
+    .ap-grid {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 76%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+    }
+    .ap-card {
+      box-shadow: none;
+      height: 507px;
+    }
+
+    div#alardCarousel {
+      margin-right: -10px;
+    }
+
+    .ap-card {
+      scroll-snap-align: start;
+      /* keep your existing card styles */
+    }
+    /* hide scrollbar */
+    .ap-grid::-webkit-scrollbar {
+      display: none;
+    }
+    .ap-grid {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    /* optional nav buttons */
+    .ap-carousel-nav {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      margin-top: 6px;
+    }
+    .ap-nav {
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 999px;
+      background: #233816;
+      color: #fff;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+      font-size: 18px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .ap-grid {
+      display: flex !important; /* override any grid rules */
+      grid-template-columns: unset !important;
+      overflow-x: auto;
+      gap: 16px;
+      padding: 8px 20px 16px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .ap-card {
+      flex: 0 0 86%; /* one card per view (86% width) */
+      max-width: none; /* prevent theme caps */
+      scroll-snap-align: start;
+    }
+    .ap-grid::-webkit-scrollbar {
+      display: none;
+    }
+    .ap-grid {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+  }
+  @media (min-width: 901px) {
+    .ap-carousel-nav {
+      display: none;
+    } /* arrows only on mobile */
+  }
+  .ap-body p {
+    height: 43px;
+  }
+
+  .ap-grid a {
+    text-decoration: none;
+  }
+
+  .btn-pre {
+    display: inline-block;
+    margin-top: 14px;
+    background: #ded5ce;
+    color: #1b1b1a;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: opacity 0.2s ease;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+</style>
+
+<script>
+  function addToCart(variantId, btn) {
+    event.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'Adding...';
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: variantId, quantity: 1 }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        btn.textContent = 'Added!';
+        refreshCart();
+        setTimeout(() => {
+          btn.textContent = 'Order Now';
+        }, 500);
+      })
+      .catch((err) => {
+        btn.textContent = 'Error';
+        console.error(err);
+      })
+      .finally(() => (btn.disabled = false));
+  }
+
+  function refreshCart() {
+    fetch('/?sections=cart-drawer,cart-icon-bubble')
+      .then((response) => response.json())
+      .then((sections) => {
+        // Update the Cart Drawer
+        const drawerHTML = sections['cart-drawer'];
+        const parser = new DOMParser();
+        const drawerDoc = parser.parseFromString(drawerHTML, 'text/html');
+        const newDrawer = drawerDoc.querySelector('.drawer');
+        const oldDrawer = document.querySelector('.drawer');
+        if (newDrawer && oldDrawer) oldDrawer.replaceWith(newDrawer);
+
+        // Update the Cart Icon Bubble
+        const bubbleHTML = sections['cart-icon-bubble'];
+        const bubbleDoc = parser.parseFromString(bubbleHTML, 'text/html');
+        const newBubble = bubbleDoc.querySelector('#cart-icon-bubble');
+        const oldBubble = document.querySelector('#cart-icon-bubble');
+        if (newBubble && oldBubble) oldBubble.replaceWith(newBubble);
+        setTimeout(() => {
+          document.querySelector('#cart-icon-bubble').click();
+        }, 200);
+      })
+      .catch((err) => console.error('Cart refresh failed:', err));
+  }
+</script>
+
+<section id="alard-harvest-2025" class="alard">
+  <section class="alard-hero">
+    <div class="container wrap">
+      <h1>Order the 2025 Harvest</h1>
+      <p>
+        Reserve your share of this year’s freshly pressed Palestinian olive oil and be among the first to receive it
+        once it arrives.
+      </p>
+      <p>From Palestine’s leading olive oil producer. Trusted worldwide. Limited annual harvest.</p>
+
+      <a href="#alard-products" style="margin-top:24px;">
+        <button class="btn-pre">Order Now</button>
+      </a>
+
+      {% form 'customer', id: 'harvest-signup' %}
+        <input type="hidden" name="contact[tags]" value="Harvest 2025 harvest-2025-signup">
+
+        <div class="form-line" style="display: none">
+          <input
+            type="email"
+            name="contact[email]"
+            placeholder="Enter your email"
+            required
+            class="text-input"
+          >
+          <input type="hidden" name="return_to" value="/pages/palestine-s-olive-oil-harvest-2025-thanks">
+          <button type="submit">Sign up now</button>
+        </div>
+
+        {% if form.posted_successfully? %}
+          <p style="margin-top:8px;color:green;">Thanks! You’re on the list for Harvest 2025.</p>
+        {% endif %}
+
+        {% if form.errors %}
+          <p style="margin-top:8px;color:red;">{{ form.errors | default_errors }}</p>
+        {% endif %}
+      {% endform %}
+    </div>
+  </section>
+
+  <section class="alard-why color-s10-bg">
+    <div class="container wrap">
+      <h2 class="color-s9">Why Order?</h2>
+      <p class="color-s8 m-0 p-0">Freshly pressed. Carefully selected!</p>
+
+      <section class="alard-features">
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                version="1.1"
+                id="Layer_1"
+                x="0px"
+                y="0px"
+                width="44px"
+                viewBox="0 0 524 520"
+                enable-background="new 0 0 524 520"
+                xml:space="preserve"
+              >
+                <path fill="#A6C219" opacity="1.000000" stroke="none" d=" M505.126923,270.039429   C504.467407,299.699585 497.246124,327.833130 485.546356,354.960815   C476.684998,375.507141 465.148224,394.325653 450.974274,411.684692   C431.602783,435.409149 408.714752,454.784363 382.177460,469.990692   C358.321503,483.660522 332.769073,492.761047 305.848175,497.784485   C295.233643,499.765137 284.309235,500.398010 273.491577,500.890778   C262.312683,501.399963 251.019318,501.807648 239.905197,500.814453   C218.236542,498.878021 197.115570,494.024384 176.680847,486.334686   C152.328812,477.170868 129.755630,464.847443 109.793213,448.138336   C100.033943,439.969574 90.481209,431.405334 81.821159,422.102112   C62.029884,400.840881 47.040726,376.411377 35.942085,349.529541   C29.130337,333.030853 24.560587,315.938568 21.314091,298.471039   C20.088211,291.875305 19.568275,285.129120 19.048485,278.426575   C18.499109,271.342560 18.025723,264.227692 18.052048,257.128235   C18.181829,222.127350 25.494112,188.699280 39.984703,156.782654   C49.101341,136.702545 60.890862,118.459923 74.908928,101.454391   C99.088959,72.121193 128.827744,50.324402 163.393036,34.978931   C184.037247,25.813799 205.611160,19.953146 228.068207,16.821022   C245.389648,14.405172 262.737885,14.276279 279.990845,15.230809   C305.874420,16.662832 330.864838,22.970192 354.864105,32.961193   C376.095520,41.799911 395.964111,53.083557 413.814819,67.527496   C428.163025,79.137383 441.121735,92.200302 452.642944,106.819702   C463.027252,119.996490 472.268066,133.843964 479.715210,148.716812   C489.497162,168.252563 497.301086,188.691055 500.908508,210.392136   C502.759796,221.528854 503.680054,232.820328 505.000854,244.965439   C505.029419,253.939148 505.078156,261.989288 505.126923,270.039429  M334.496307,207.996216   C345.570770,196.922211 356.618805,185.821655 367.729340,174.783951   C374.611115,167.947296 374.847076,159.647964 371.386993,154.002029   C365.509125,144.410889 353.936737,143.579544 345.586395,151.927811   C282.556854,214.941605 219.565323,277.993530 156.451157,340.922455   C151.922943,345.437347 149.569794,350.126648 149.891312,356.649353   C150.372818,366.417725 159.448975,373.466461 168.575592,369.954468   C172.693192,368.369965 176.694199,365.627319 179.838623,362.496643   C231.310654,311.249664 282.637085,259.856445 334.496307,207.996216  M225.333649,239.931808   C232.670929,233.396179 238.219070,225.537979 241.810974,216.442810   C250.023224,195.648422 248.579346,175.449387 236.696365,156.447723   C222.528793,133.792847 196.311096,124.219635 171.920792,133.012924   C148.099945,141.600906 134.756226,163.217453 133.141312,187.756836   C132.045334,204.410919 136.507706,219.654739 147.317688,232.991180   C158.016678,246.190720 171.918213,253.075134 188.350296,253.759506   C201.943817,254.325653 214.279373,249.280228 225.333649,239.931808  M288.932617,286.335571   C287.294159,288.195953 285.478729,289.930023 284.046234,291.937378   C275.280792,304.220551 271.438049,317.872772 271.910828,333.017395   C272.424774,349.480621 277.911163,363.925964 289.296051,375.553497   C300.220032,386.710297 313.622742,392.696777 329.853241,392.123077   C347.651123,391.494019 361.170074,383.303436 371.920563,369.990448   C382.012115,357.493469 385.646729,342.935883 385.144775,326.871002   C384.659760,311.347992 379.156952,297.971344 369.075714,286.781860   C347.641388,262.991150 311.996307,262.472565 288.932617,286.335571  z"/>
+                <path fill="#CEE0B6" opacity="1.000000" stroke="none" d=" M494.082947,502.075714   C488.146027,506.263611 481.984833,509.932892 474.501129,511.120544   C480.815460,507.854218 486.891327,504.711273 493.385376,501.598022   C493.896667,501.777039 493.989807,501.926361 494.082947,502.075714  z"/>
+                <path fill="#D1E3BB" opacity="1.000000" stroke="none" d=" M505.503235,269.822144   C505.078156,261.989288 505.029419,253.939148 505.052856,245.422623   C505.407654,248.745132 505.829498,252.530090 505.936493,256.323944   C506.061188,260.746887 505.910645,265.177551 505.503235,269.822144  z"/>
+                <path fill="#CEE0B6" opacity="1.000000" stroke="none" d=" M494.158020,500.559906   C494.798187,499.994995 495.438324,499.430084 496.078461,498.865173   C496.282379,499.020874 496.486267,499.176605 496.690186,499.332306   C496.353302,499.840118 496.016449,500.347931 495.156250,500.825073   C494.474640,500.716278 494.316315,500.638092 494.158020,500.559906  z"/>
+                <path fill="#CEE0B6" opacity="1.000000" stroke="none" d=" M493.690826,501.389069   C493.640259,500.964081 493.749817,500.811859 494.032349,500.626770   C494.316315,500.638092 494.474640,500.716278 494.855591,500.937866   C494.908752,501.363525 494.739288,501.645721 494.326385,502.001831   C493.989807,501.926361 493.896667,501.777039 493.690826,501.389069  z"/>
+
+
+
+                <path fill="#A6C219" opacity="1.000000" stroke="none" d=" M215.000000,191.998352   C215.693176,204.959641 206.648331,218.901520 192.911865,221.615021   C186.553726,222.870987 181.150787,220.428879 176.516586,216.845459   C160.954773,204.812103 160.642548,181.635117 173.168594,168.684326   C184.033386,157.451141 201.462189,159.801117 210.085007,174.398575   C213.213928,179.695480 215.501190,185.207169 215.000000,191.998352  z"/>
+                <path fill="#A6C219" opacity="1.000000" stroke="none" d=" M303.000000,330.015656   C303.914825,319.237335 306.835693,309.592743 316.255371,304.079987   C329.895905,296.097076 346.003387,302.361816 352.026733,319.502197   C356.254883,331.534058 354.140381,342.612762 346.190399,352.062897   C337.882416,361.938629 323.032196,363.170715 313.369812,354.037506   C306.437347,347.484711 303.567474,339.592987 303.000000,330.015656  z"/>
+              </svg>
+            </div>
+            <div class="feature-title">Special Order Offer</div>
+            <div class="feature-text">
+              As Palestine’s largest olive oil producer, we’re offering an exclusive order discount on all Fresh
+              Harvest products.
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <mask id="mask0_25_225" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="44" height="44">
+                <rect width="44" height="44" fill="#D9D9D9"/>
+                </mask>
+                <g mask="url(#mask0_25_225)">
+                <path d="M3.66666 36.6667V33H14.2083C13.5361 30.4028 12.2604 28.1646 10.3812 26.2855C8.50207 24.4063 6.26388 23.1306 3.66666 22.4584C4.27777 22.3056 4.88124 22.191 5.47707 22.1146C6.07291 22.0382 6.69166 22 7.33332 22C11.4278 22 14.8958 23.4209 17.7375 26.2625C20.5792 29.1042 22 32.5723 22 36.6667H3.66666ZM25.6667 36.6667C25.6667 35.3834 25.5292 34.1077 25.2542 32.8396C24.9792 31.5716 24.5819 30.357 24.0625 29.1959C25.3458 27.0264 27.0951 25.2848 29.3104 23.9709C31.5257 22.657 33.9778 22 36.6667 22C37.3083 22 37.9271 22.0382 38.5229 22.1146C39.1187 22.191 39.7222 22.3056 40.3333 22.4584C37.7361 23.1306 35.5055 24.4063 33.6417 26.2855C31.7778 28.1646 30.4944 30.4028 29.7917 33H40.3333V36.6667H25.6667ZM22 25.7125C22 23.7264 22.3667 21.8625 23.1 20.1209C23.8333 18.3792 24.8417 16.8438 26.125 15.5146C27.4083 14.1855 28.9132 13.1237 30.6396 12.3292C32.366 11.5348 34.2069 11.107 36.1625 11.0459C34.4514 12.1153 32.9542 13.4292 31.6708 14.9875C30.3875 16.5459 29.3944 18.2875 28.6917 20.2125C27.3472 20.8542 26.1173 21.641 25.0021 22.573C23.8868 23.5049 22.8861 24.5514 22 25.7125ZM18.6542 22.275C18.2875 22 17.9208 21.7403 17.5542 21.4959C17.1875 21.2514 16.8055 21.007 16.4083 20.7625C16.4083 20.5792 16.4236 20.3882 16.4542 20.1896C16.4847 19.991 16.5 19.8 16.5 19.6167C16.5 17.2945 16.1333 15.0945 15.4 13.0167C14.6667 10.9389 13.6278 9.04449 12.2833 7.33337C14.3 8.15837 16.0493 9.3424 17.5312 10.8855C19.0132 12.4285 20.1514 14.2084 20.9458 16.225C20.3958 17.1417 19.9222 18.1118 19.525 19.1355C19.1278 20.1591 18.8375 21.2056 18.6542 22.275Z" fill="#A2B739"/>
+                </g>
+              </svg>
+            </div>
+            <div class="feature-title">
+              Extremely<br>
+              Limited Harvest
+            </div>
+            <div class="feature-text">
+              This year’s yield is smaller than usual. By signing up you secure your share of the 2025 Harvest before it
+              runs out.
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="30" height="38" viewBox="0 0 30 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.5042 31.8333C15.8708 31.8027 16.184 31.6576 16.4438 31.3979C16.7035 31.1382 16.8333 30.825 16.8333 30.4583C16.8333 30.0305 16.6958 29.6868 16.4208 29.427C16.1458 29.1673 15.7944 29.0527 15.3667 29.0833C14.1139 29.175 12.7847 28.8312 11.3792 28.052C9.97361 27.2729 9.0875 25.8597 8.72083 23.8125C8.65972 23.4763 8.49931 23.2013 8.23958 22.9875C7.97986 22.7736 7.68194 22.6666 7.34583 22.6666C6.91806 22.6666 6.56667 22.827 6.29167 23.1479C6.01667 23.4687 5.925 23.843 6.01667 24.2708C6.53611 27.0513 7.75833 29.0375 9.68333 30.2291C11.6083 31.4208 13.5486 31.9555 15.5042 31.8333ZM15 37.3333C10.8139 37.3333 7.32292 35.8972 4.52708 33.025C1.73125 30.1527 0.333333 26.5777 0.333333 22.3C0.333333 19.2444 1.54792 15.9215 3.97708 12.3312C6.40625 8.74093 10.0806 4.85274 15 0.666626C19.9194 4.85274 23.5937 8.74093 26.0229 12.3312C28.4521 15.9215 29.6667 19.2444 29.6667 22.3C29.6667 26.5777 28.2688 30.1527 25.4729 33.025C22.6771 35.8972 19.1861 37.3333 15 37.3333ZM15 33.6666C18.1778 33.6666 20.8056 32.5895 22.8833 30.4354C24.9611 28.2812 26 25.5694 26 22.3C26 20.0694 25.0757 17.5486 23.2271 14.7375C21.3785 11.9263 18.6361 8.85551 15 5.52496C11.3639 8.85551 8.62153 11.9263 6.77292 14.7375C4.92431 17.5486 4 20.0694 4 22.3C4 25.5694 5.03889 28.2812 7.11667 30.4354C9.19445 32.5895 11.8222 33.6666 15 33.6666Z" fill="#A2B739"/>
+              </svg>
+            </div>
+            <div class="feature-title">
+              First Cold<br>
+              Pressed
+            </div>
+            <div class="feature-text">Crafted from early-harvest olives for peak flavor, aroma, and nutrition.</div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 37.3333C16.4944 37.3333 14.1264 36.852 11.8958 35.8895C9.66527 34.927 7.71735 33.6132 6.05207 31.9479C4.3868 30.2826 3.07291 28.3347 2.11041 26.1041C1.14791 23.8736 0.666656 21.5055 0.666656 19C0.666656 16.4638 1.14791 14.0882 2.11041 11.8729C3.07291 9.6576 4.3868 7.71732 6.05207 6.05204C7.71735 4.38676 9.66527 3.07288 11.8958 2.11038C14.1264 1.14788 16.4944 0.666626 19 0.666626C21.5361 0.666626 23.9118 1.14788 26.1271 2.11038C28.3424 3.07288 30.2826 4.38676 31.9479 6.05204C33.6132 7.71732 34.9271 9.6576 35.8896 11.8729C36.8521 14.0882 37.3333 16.4638 37.3333 19C37.3333 21.5055 36.8521 23.8736 35.8896 26.1041C34.9271 28.3347 33.6132 30.2826 31.9479 31.9479C30.2826 33.6132 28.3424 34.927 26.1271 35.8895C23.9118 36.852 21.5361 37.3333 19 37.3333ZM19 33.575C19.7944 32.475 20.4819 31.3291 21.0625 30.1375C21.643 28.9458 22.1167 27.6777 22.4833 26.3333H15.5167C15.8833 27.6777 16.3569 28.9458 16.9375 30.1375C17.518 31.3291 18.2055 32.475 19 33.575ZM14.2333 32.8416C13.6833 31.8333 13.2021 30.7868 12.7896 29.702C12.3771 28.6173 12.0333 27.4944 11.7583 26.3333H6.34999C7.2361 27.8611 8.34374 29.1902 9.67291 30.3208C11.0021 31.4513 12.5222 32.2916 14.2333 32.8416ZM23.7667 32.8416C25.4778 32.2916 26.9979 31.4513 28.3271 30.3208C29.6562 29.1902 30.7639 27.8611 31.65 26.3333H26.2417C25.9667 27.4944 25.6229 28.6173 25.2104 29.702C24.7979 30.7868 24.3167 31.8333 23.7667 32.8416ZM4.79166 22.6666H11.025C10.9333 22.0555 10.8646 21.452 10.8187 20.8562C10.7729 20.2604 10.75 19.6416 10.75 19C10.75 18.3583 10.7729 17.7395 10.8187 17.1437C10.8646 16.5479 10.9333 15.9444 11.025 15.3333H4.79166C4.63888 15.9444 4.5243 16.5479 4.44791 17.1437C4.37152 17.7395 4.33332 18.3583 4.33332 19C4.33332 19.6416 4.37152 20.2604 4.44791 20.8562C4.5243 21.452 4.63888 22.0555 4.79166 22.6666ZM14.6917 22.6666H23.3083C23.4 22.0555 23.4687 21.452 23.5146 20.8562C23.5604 20.2604 23.5833 19.6416 23.5833 19C23.5833 18.3583 23.5604 17.7395 23.5146 17.1437C23.4687 16.5479 23.4 15.9444 23.3083 15.3333H14.6917C14.6 15.9444 14.5312 16.5479 14.4854 17.1437C14.4396 17.7395 14.4167 18.3583 14.4167 19C14.4167 19.6416 14.4396 20.2604 14.4854 20.8562C14.5312 21.452 14.6 22.0555 14.6917 22.6666ZM26.975 22.6666H33.2083C33.3611 22.0555 33.4757 21.452 33.5521 20.8562C33.6285 20.2604 33.6667 19.6416 33.6667 19C33.6667 18.3583 33.6285 17.7395 33.5521 17.1437C33.4757 16.5479 33.3611 15.9444 33.2083 15.3333H26.975C27.0667 15.9444 27.1354 16.5479 27.1812 17.1437C27.2271 17.7395 27.25 18.3583 27.25 19C27.25 19.6416 27.2271 20.2604 27.1812 20.8562C27.1354 21.452 27.0667 22.0555 26.975 22.6666ZM26.2417 11.6666H31.65C30.7639 10.1388 29.6562 8.80968 28.3271 7.67913C26.9979 6.54857 25.4778 5.70829 23.7667 5.15829C24.3167 6.16663 24.7979 7.21315 25.2104 8.29788C25.6229 9.3826 25.9667 10.5055 26.2417 11.6666ZM15.5167 11.6666H22.4833C22.1167 10.3222 21.643 9.05413 21.0625 7.86246C20.4819 6.67079 19.7944 5.52496 19 4.42496C18.2055 5.52496 17.518 6.67079 16.9375 7.86246C16.3569 9.05413 15.8833 10.3222 15.5167 11.6666ZM6.34999 11.6666H11.7583C12.0333 10.5055 12.3771 9.3826 12.7896 8.29788C13.2021 7.21315 13.6833 6.16663 14.2333 5.15829C12.5222 5.70829 11.0021 6.54857 9.67291 7.67913C8.34374 8.80968 7.2361 10.1388 6.34999 11.6666Z" fill="#A2B739"/>
+              </svg>
+            </div>
+            <div class="feature-title">
+              Straight out of<br>
+              Palestine
+            </div>
+            <div class="feature-text">
+              Harvested by our farmers in Palestine, bottled locally in Nablus, and shipped directly to our US
+              warehouses.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="alard-rate ">
+        <h2 class="color-s9">Hear From The People Who Keep Our Mission Alive!</h2>
+
+        <div class="jdgm-wrap">
+          <div class="jdgm-carousel-wrapper">
+            <h3>Total Reviews: (796)</h3>
+            {% assign jm_metafields = shop.metafields.judgeme %}
+            {{ jm_metafields.featured_carousel }}
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section id="alard-products" class="alard-products">
+    <div class="ap-container">
+      <header class="ap-header">
+        <h2 class="color-white">This Year, Olive Oil Harvest Collection Comes In 3 Sizes</h2>
+        <p>Produced in our state-of-the-art Nablus facility, in Palestine, and shipped directly to you</p>
+      </header>
+
+      <div class="ap-grid" id="alardCarousel">
+        <!-- Card 1 -->
+        <article class="ap-card">
+          <div class="ap-media">
+            <img
+              src="{{'750ml.png'|asset_img_url:'original'}}"
+              alt="Al'Ard Extra Virgin Olive Oil 750ml bottle"
+            >
+          </div>
+          <div class="ap-body">
+            <h3>Al'Ard Extra Virgin Olive Oil – Harvest 2025 – 750ml</h3>
+            <p>Rich, peppery, and aromatic, perfect for drizzling or dipping.</p>
+            <!-- Optional CTA onclick="addToCart('47429961875710', this)"-->
+            <a href="https://www.alardproducts.com/products/preorder-extra-virgin-olive-oil-750ml-25-33fl-oz"  class="ap-btn">Order Now</a>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="ap-card">
+          <div class="ap-media">
+            <img
+              src="{{'3gk.png'|asset_img_url:'original'}}"
+              alt="Al'Ard Extra Virgin Olive Oil 3L bottle"
+            >
+          </div>
+          <div class="ap-body">
+            <h3>Al'Ard Extra Virgin Olive Oil – Harvest 2025 – 3L</h3>
+            <p>Ideal for home chefs and family kitchens.</p>
+            <!--  onclick="addToCart('47429948670206', this)" -->
+            <a href="https://www.alardproducts.com/products/preorder-extra-virgin-olive-oil-tin-3l-101-4fl-oz" class="ap-btn">Order Now</a>
+          </div>
+        </article>
+
+        <!-- Card 3 onclick="addToCart('47395310272766', this)" -->
+        <article class="ap-card">
+          <div class="ap-media">
+            <img
+              src="{{'15gk.png'|asset_img_url:'original'}}"
+              alt="Al'Ard Extra Virgin Olive Oil 16.4L container"
+            >
+          </div>
+          <div class="ap-body">
+            <h3>Al'Ard Extra Virgin Olive Oil – Harvest 2025 – 16.4L</h3>
+            <p>The best value for frequent cooks.</p>
+            <a href="https://www.alardproducts.com/products/preorder-extra-virgin-palestinian-olive-oil-16-4l-15kg-tin "  class="ap-btn">Order Now</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="alard-from-cta" style="display:none;">
+    <div class="container wrap">
+      <h2>Sign Up Now And Be The First To Order!</h2>
+
+      {% form 'customer', id: 'harvest-signup-section' %}
+        <input type="hidden" name="contact[tags]" value="Harvest 2025 harvest-2025-signup">
+
+        <div class="form-line" style="display: none">
+          <input
+            type="email"
+            name="contact[email]"
+            placeholder="Enter your email"
+            required
+            class="text-input"
+          >
+          <input type="hidden" name="return_to" value="/pages/palestine-s-olive-oil-harvest-2025-thanks">
+          <button type="submit">Sign up now</button>
+        </div>
+
+        {% if form.posted_successfully? %}
+          <p style="margin-top:8px;color:green;">Thanks! You’re on the list for Harvest 2025.</p>
+        {% endif %}
+
+        {% if form.errors %}
+          <p style="margin-top:8px;color:red;">{{ form.errors | default_errors }}</p>
+        {% endif %}
+      {% endform %}
+    </div>
+  </section>
+
+  <section id="alard-meaning" class="alard-meaning">
+    <div class="am-grid">
+      <!-- Block 1: Text Left -->
+      <div class="am-text am-bg-gold">
+        <div class="am-inner">
+          <div class="am-image show-mobile">
+            <img
+              src="{{'mean.png'|asset_img_url:'original'}}"
+              alt="Palestinian woman harvesting wheat"
+            >
+          </div>
+
+          <h2>Al’Ard Means “The Land”</h2>
+
+          <p>
+            As the biggest olive oil producer in Palestine, Al’Ard is proud to carry the responsibility of sharing this
+            heritage with the world. Our farmers, groves, and facilities make us uniquely able to guarantee
+            authenticity, quality, and scale, without ever compromising tradition.
+          </p>
+          <p>
+            This season is full of challenges, but together we can ensure that the story of resilience, and the finest
+            olive oil of Palestine, reaches your table.
+          </p>
+          <p class="am-highlight">Buy ethically. Support Palestinian farmers.</p>
+        </div>
+      </div>
+
+      <!-- Block 2: Image Right -->
+      <div class="am-image hide-mobile">
+        <img
+          src="{{'mean.png'|asset_img_url:'original'}}"
+          alt="Palestinian woman harvesting wheat"
+        >
+      </div>
+
+      <!-- Block 3: Image Left -->
+      <div class="am-image hide-mobile">
+        <img
+          src="{{'mean2.png'|asset_img_url:'original'}}"
+          alt="Palestinian farmer planting olive tree"
+        >
+      </div>
+
+      <!-- Block 4: Text Right -->
+      <div class="am-text am-bg-brown">
+        <div class="am-inner">
+          <div class="am-image show-mobile">
+            <img
+              src="{{'mean2.png'|asset_img_url:'original'}}"
+              alt="Palestinian woman harvesting wheat"
+            >
+          </div>
+
+          <h2>What Does The Olive Tree Mean To Palestinians?</h2>
+
+          <p>
+            For Palestinians, the olive tree is far more than a crop, it is a living symbol of heritage, resilience, and
+            identity. Rooted in the land for thousands of years, it connects generations through family groves passed
+            down over time, while sustaining entire communities through the harvest and production of olive oil.
+          </p>
+          <p>
+            Each season, families and neighbors come together to pick the olives, turning the harvest into a shared
+            cultural and social ritual. Deeply tied to faith and tradition, the olive tree also represents peace,
+            blessing, and steadfastness, standing strong in the face of hardship just as Palestinians have done for
+            generations.
+          </p>
+          <p>
+            At Al’Ard, we honor this legacy by bringing the fruit of these ancient trees from our farmers in Palestine
+            to homes around the world, sharing not only the richness of the oil but also the story of resilience and
+            rootedness it carries.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="alard-faq" class="alard-faq">
+    <div class="faq-wrap">
+      <h2 class="faq-title">FAQ</h2>
+
+      <div class="faq-grid">
+        <div class="column-left">
+          <!-- 1 -->
+          <details class="faq-item">
+            <summary>
+              <span>Who gets access first?</span>
+              <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </summary>
+            <div class="faq-body">
+              Only people on this waiting list. As Palestine’s largest olive oil producer, Al’Ard guarantees that our
+              subscribers are the very first to access the 2025 harvest before it reaches stores or distributors.
+            </div>
+          </details>
+
+          <!-- 2 -->
+          <details class="faq-item">
+            <summary>
+              <span>How fresh is the olive oil I’ll receive?</span>
+              <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </summary>
+            <div class="faq-body">
+              Extremely fresh, pressed and bottled from the current 2025 harvest. You’ll be among the first outside
+              Palestine to taste this year’s oil.
+            </div>
+          </details>
+
+          <!-- 3 -->
+          <details class="faq-item">
+            <summary>
+              <span>When will my olive oil arrive?</span>
+              <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </summary>
+            <div class="faq-body">
+              Now available in the U.S. and ready for immediate delivery, your order ships straight from our U.S. warehouses so you receive your olive oil quickly and at peak freshness.
+            </div>
+          </details>
+
+          <!-- 4 -->
+          <details class="faq-item">
+            <summary>
+              <span>Do you have certifications or awards?</span>
+              <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </summary>
+            <div class="faq-body">
+              Yes — Al’Ard olive oils have received international recognition, including Great Taste Awards and
+              certifications that meet export standards in the US, Europe, and the Gulf.
+            </div>
+          </details>
+
+          <!-- 5 -->
+          <details class="faq-item">
+            <summary>
+              <span>Do you really produce in Palestine?</span>
+              <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </summary>
+            <div class="faq-body">
+              Yes, every bottle is harvested by Palestinian farmers, pressed and bottled in our Nablus facility, then
+              shipped to you. No blends, no middlemen — 100% Palestinian.
+            </div>
+          </details>
+        </div>
+
+        <div class="column-right">
+          <!-- 6 -->
+          <details class="faq-item">
+            <summary>
+              <span>Can I order more than one size?</span>
+              <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </summary>
+            <div class="faq-body">
+              Yes, you can mix and match sizes (750ml, 3L, 16.4L) depending on availability. Many customers order
+              multiple bottles because stock is limited.
+            </div>
+          </details>
+
+          <!-- 7 -->
+          <details class="faq-item">
+            <summary>
+              <span>Where do you ship?</span>
+              <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </summary>
+            <div class="faq-body">
+              We deliver directly from Palestine to our warehouses in the US ensuring quick and reliable shipping.
+            </div>
+          </details>
+
+          <!-- 8 -->
+          <details class="faq-item">
+            <summary>
+              <span>Does my purchase support Palestinian farmers?</span>
+              <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </summary>
+            <div class="faq-body">
+              Absolutely. Every bottle purchased sustains Palestinian farmers, strengthens the local economy, and helps
+              preserve centuries-old groves.
+            </div>
+          </details>
+
+          <!-- 9 -->
+          <details class="faq-item">
+            <summary>
+              <span>What makes this olive oil different?</span>
+              <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </summary>
+            <div class="faq-body">
+              Our early-harvest, first cold-pressed oil is bold, peppery, and rich in antioxidants. More importantly,
+              every bottle carries the story of Palestinian resilience and heritage.
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alard-from-cta" style="display:none;">
+    <div class="container wrap">
+      <h2>Don’t Miss Palestine’s 2025 Harvest!</h2>
+      <p style="padding: 0; margin-bottom: 20px; margin-top: 0px;">Sign up now and be the first to order!</p>
+
+      {% form 'customer', id: 'harvest-signup-section2' %}
+        <input type="hidden" name="contact[tags]" value="Harvest 2025 harvest-2025-signup">
+
+        <div class="form-line" style="display: none">
+          <input
+            type="email"
+            name="contact[email]"
+            placeholder="Enter your email"
+            required
+            class="text-input"
+          >
+          <input type="hidden" name="return_to" value="/pages/palestine-s-olive-oil-harvest-2025-thanks">
+          <button type="submit">Sign up now</button>
+        </div>
+
+        {% if form.posted_successfully? %}
+          <p style="margin-top:8px;color:green;">Thanks! You’re on the list for Harvest 2025.</p>
+        {% endif %}
+
+        {% if form.errors %}
+          <p style="margin-top:8px;color:red;">{{ form.errors | default_errors }}</p>
+        {% endif %}
+      {% endform %}
+    </div>
+  </section>
+</section>

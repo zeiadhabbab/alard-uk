@@ -1,0 +1,178 @@
+/* Break Fast With Meaning Section */
+
+.section--break-fast-meaning {
+    padding: 56px;
+    background: #5E442A;
+}
+
+
+.section--break-fast-meaning.break-fast-meaning {
+    background-color: #897048;
+    padding: 3rem 0;
+}
+
+.break-fast-meaning__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    min-height: 500px;
+    overflow: hidden;
+    border-radius: 24px;
+}
+
+.break-fast-meaning__content {
+    background-color: #916600;
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 24px 0 0 24px;
+}
+
+.break-fast-meaning__heading {
+    margin: 0 0 1.5rem;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #ffffff;
+}
+
+.break-fast-meaning__body {
+    margin: 0 0 2rem;
+}
+
+.break-fast-meaning__body p {
+    margin: 0 0 1rem;
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.break-fast-meaning__body p:last-child {
+    margin-bottom: 0;
+}
+
+.break-fast-meaning__tagline {
+    margin-top: 0.5rem !important;
+    font-size: 15px !important;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.break-fast-meaning__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    background-color: #ffffff;
+    color: #1a1a1a;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    border: 2px solid #ffffff;
+    transition: all 0.3s ease;
+    width: fit-content;
+    margin-top: 1rem;
+}
+
+.break-fast-meaning__button:hover {
+    background-color: transparent;
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+.break-fast-meaning__media {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0 24px 24px 0;
+}
+
+.break-fast-meaning__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.break-fast-meaning__placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    background-color: #6b5a3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.break-fast-meaning__placeholder svg {
+    width: 50%;
+    height: auto;
+    opacity: 0.3;
+}
+
+/* Tablet */
+@media screen and (max-width: 989px) {
+    .break-fast-meaning__inner {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .break-fast-meaning__content {
+        padding: 3rem;
+        border-radius: 24px 24px 0 0;
+        order: 1;
+    }
+
+    .break-fast-meaning__media {
+        border-radius: 0 0 24px 24px;
+        order: 2;
+        min-height: 350px;
+    }
+
+    .break-fast-meaning__heading {
+        font-size: 34px;
+    }
+}
+
+/* Mobile */
+@media screen and (max-width: 749px) {
+    .section--break-fast-meaning.break-fast-meaning {
+        padding: 2rem 0;
+    }
+
+    .break-fast-meaning__content {
+        padding: 2rem 1.5rem;
+        border-radius: 0;
+    }
+
+    .break-fast-meaning__media {
+        border-radius: 0;
+        min-height: 280px;
+    }
+
+    .break-fast-meaning__inner {
+        border-radius: 16px;
+    }
+
+    .break-fast-meaning__heading {
+        font-size: 28px;
+        margin-bottom: 1rem;
+    }
+
+    .break-fast-meaning__body p {
+        font-size: 14px;
+    }
+
+    .break-fast-meaning__button {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+
+    .section--break-fast-meaning {
+        padding: 3rem;
+    }
+
+   
+}

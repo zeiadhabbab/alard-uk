@@ -1,0 +1,648 @@
+{{ 'section-build-your-box.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }} .build-your-box__header {
+    text-align: {{ section.settings.heading_alignment }};
+  }
+
+  .section-{{ section.id }} .build-your-box__heading {
+    font-size: {{ section.settings.heading_size_mobile }}px;
+    color: {{ section.settings.heading_color }};
+  }
+
+  .section-{{ section.id }} .build-your-box__tag-wrapper {
+    margin-top: {{ section.settings.tag_margin_top }}px;
+    margin-bottom: {{ section.settings.tag_margin_bottom }}px;
+  }
+
+  .section-{{ section.id }} .build-your-box__tag {
+    background-color: {{ section.settings.tag_background_color }};
+    color: {{ section.settings.tag_text_color }};
+    font-size: {{ section.settings.tag_font_size }}px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .section-{{ section.id }} .build-your-box__heading {
+      font-size: {{ section.settings.heading_size }}px;
+    }
+  }
+{%- endstyle -%}
+
+
+<section class="build-your-box section-{{ section.id }} build-your-box" id="build-your-box">
+  <div class="page-width build-your-box__inner">
+    <div class="build-your-box__header">
+      <h2 class="build-your-box__heading">{{ section.settings.heading }}</h2>
+      {%- if section.settings.tag_text != blank -%}
+        <div class="build-your-box__tag-wrapper">
+          <span class="build-your-box__tag">{{ section.settings.tag_text }}</span>
+        </div>
+      {%- endif -%}
+      <p class="build-your-box__subheading">{{ section.settings.subheading }}</p>
+      <p class="build-your-box__description">{{ section.settings.description }}</p>
+    </div>
+
+    <div class="build-your-box__content">
+      <div class="build-your-box__products" id="build-your-box-products">
+        {%- if section.settings.collection != blank -%}
+          {%- for product in section.settings.collection.products limit: section.settings.products_limit -%}
+          {%- assign variant = product.selected_or_first_available_variant -%}
+          {%- unless variant.available == false -%}
+          {%- assign is_in_cart = false -%}
+          {%- for item in cart.items -%}
+            {%- if item.variant_id == variant.id -%}
+              {%- assign is_in_cart = true -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <div class="box-product-card{% if is_in_cart %} box-product-card--selected{% endif %}" data-product-id="{{ product.id }}" data-variant-id="{{ variant.id }}"
+            data-product-title="{{ product.title | escape }}" data-product-price="{{ variant.price }}"
+            data-product-compare-price="{{ variant.compare_at_price }}"
+            data-product-image="{{ product.featured_image | image_url: width: 400 }}">
+            {%- if section.settings.show_badges -%}
+            <span class="box-product-card__badge box-product-card__badge--{{ section.settings.default_badge_style }}">{{
+              section.settings.default_badge_text }}</span>
+            {%- endif -%}
+            <div class="box-product-card__checkbox">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0.5" y="0.5" width="19" height="19" rx="3.5" fill="white" stroke="#D0D5DD" />
+                <path class="checkmark" d="M14.5 7L8.5 13L5.5 10" stroke="#A2B739" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" style="display: {% if is_in_cart %}block{% else %}none{% endif %};" />
+              </svg>
+            </div>
+            <div class="box-product-card__media">
+              {%- if product.featured_image != blank -%}
+              {{ product.featured_image | image_url: width: 400 | image_tag: loading: 'lazy', class:
+              'box-product-card__image' }}
+              {%- else -%}
+              <div class="box-product-card__placeholder">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+              {%- endif -%}
+            </div>
+            <div class="box-product-card__info">
+              <h3 class="box-product-card__title">{{ product.title }}</h3>
+              <div class="box-product-card__rating">
+                <span class="box-product-card__rating-value">5.0</span>
+                <div class="box-product-card__stars">
+                  {%- for i in (1..5) -%}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="#F59E0B" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M7 1L8.854 4.854L13 5.527L10 8.527L10.708 12.673L7 10.727L3.292 12.673L4 8.527L1 5.527L5.146 4.854L7 1Z" />
+                  </svg>
+                  {%- endfor -%}
+                </div>
+                <span class="box-product-card__reviews">(121)</span>
+              </div>
+              <div class="box-product-card__price">
+                <span class="box-product-card__price-current">{{ variant.price | money }}</span>
+                {%- if variant.compare_at_price > variant.price -%}
+                <span class="box-product-card__price-compare">{{
+                  variant.compare_at_price | money }}</span>
+                {%- endif -%}
+              </div>
+              <button type="button" class="box-product-card__button box-product-card__button--add" style="display: {% if is_in_cart %}none{% else %}block{% endif %};">Add to box</button>
+              <button type="button" class="box-product-card__button box-product-card__button--remove"
+                style="display: {% if is_in_cart %}block{% else %}none{% endif %};">Remove from box</button>
+            </div>
+          </div>
+          {%- endunless -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+          {%- if block.type == 'product' and block.settings.product != blank -%}
+          {%- assign product = block.settings.product -%}
+          {%- assign variant = product.selected_or_first_available_variant -%}
+          {%- unless variant.available == false -%}
+          <div class="box-product-card" data-product-id="{{ product.id }}" data-variant-id="{{ variant.id }}"
+            data-product-title="{{ product.title | escape }}" data-product-price="{{ variant.price }}"
+            data-product-compare-price="{{ variant.compare_at_price }}"
+            data-product-image="{{ product.featured_image | image_url: width: 400 }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.badge != blank -%}
+            <span class="box-product-card__badge box-product-card__badge--{{ block.settings.badge_style }}">{{
+              block.settings.badge }}</span>
+            {%- endif -%}
+            <div class="box-product-card__checkbox">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0.5" y="0.5" width="19" height="19" rx="3.5" fill="white" stroke="#D0D5DD" />
+                <path class="checkmark" d="M14.5 7L8.5 13L5.5 10" stroke="#A2B739" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" style="display: none;" />
+              </svg>
+            </div>
+            <div class="box-product-card__media">
+              {%- if product.featured_image != blank -%}
+              {{ product.featured_image | image_url: width: 400 | image_tag: loading: 'lazy', class:
+              'box-product-card__image' }}
+              {%- else -%}
+              <div class="box-product-card__placeholder">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+              {%- endif -%}
+            </div>
+            <div class="box-product-card__info">
+              <h3 class="box-product-card__title">{{ product.title }}</h3>
+              <div class="box-product-card__rating">
+                <span class="box-product-card__rating-value">5.0</span>
+                <div class="box-product-card__stars">
+                  {%- for i in (1..5) -%}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="#F59E0B" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M7 1L8.854 4.854L13 5.527L10 8.527L10.708 12.673L7 10.727L3.292 12.673L4 8.527L1 5.527L5.146 4.854L7 1Z" />
+                  </svg>
+                  {%- endfor -%}
+                </div>
+                <span class="box-product-card__reviews">(121)</span>
+              </div>
+              <div class="box-product-card__price">
+                <span class="box-product-card__price-current">{{ variant.price | money }}</span>
+                {%- if variant.compare_at_price > variant.price -%}
+                <span class="box-product-card__price-compare">{{
+                  variant.compare_at_price | money }}</span>
+                {%- endif -%}
+              </div>
+              <button type="button" class="box-product-card__button box-product-card__button--add">Add to box</button>
+              <button type="button" class="box-product-card__button box-product-card__button--remove"
+                style="display: none;">Remove from box</button>
+            </div>
+          </div>
+          {%- endunless -%}
+          {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+      <div class="build-your-box__sidebar">
+        <div class="box-summary">
+          <div class="box-summary__header">
+            <span class="box-summary__label">Items Selected</span>
+            <span class="box-summary__count">
+              <span id="box-items-count">0</span>/{{
+              section.settings.min_items_for_discount }}</span>
+          </div>
+          <div class="box-summary__body">
+            <h3 class="box-summary__title">Your Box Summary</h3>
+            <div class="box-summary__row">
+              <span>Subtotal:</span>
+              <span id="box-subtotal">$0.00</span>
+            </div>
+            <div class="box-summary__row box-summary__row--discount">
+              <span>Discount ({{ section.settings.discount_percent }}%):</span>
+              <span id="box-discount">-$0.00</span>
+            </div>
+            <div class="box-summary__divider"></div>
+            <div class="box-summary__row box-summary__row--total">
+              <span>Total:</span>
+              <span id="box-total">$0.00</span>
+            </div>
+            <div class="box-summary__unlock" id="box-unlock-message">
+              <span>Select
+                <span id="items-remaining">{{ section.settings.min_items_for_discount }}</span>
+                more
+                items</span>
+              <span>to unlock your {{ section.settings.discount_percent }}% discount</span>
+            </div>
+            <div class="box-summary__unlocked" id="box-unlocked-message" style="display: none;">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.6668 5L7.50016 14.1667L3.3335 10" stroke="#A2B739" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+              <span>{{ section.settings.discount_percent }}% discount unlocked!</span>
+            </div>
+            <button type="button" class="box-summary__button" id="box-add-to-cart" disabled>Add to cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const section = document.querySelector('.build-your-box');
+    if (!section) return;
+    const minItemsForDiscount = {{ section.settings.min_items_for_discount }};
+    const discountPercent = {{ section.settings.discount_percent }};
+    let selectedItems = [];
+    
+    // Initialize product cards after DOM content loads
+    function initializeProductCards() {
+      const productCards = section.querySelectorAll('.box-product-card');
+    const itemsCountEl = document.getElementById('box-items-count');
+    const subtotalEl = document.getElementById('box-subtotal');
+  const discountEl = document.getElementById('box-discount');
+  const totalEl = document.getElementById('box-total');
+    const itemsRemainingEl = document.getElementById('items-remaining');
+    const unlockMessageEl = document.getElementById('box-unlock-message');
+    const unlockedMessageEl = document.getElementById('box-unlocked-message');
+    const addToCartBtn = document.getElementById('box-add-to-cart');
+    
+    function formatMoney(cents) { return '$' + (cents / 100).toFixed(2); }
+    
+    function updateSummary() {
+    const count = selectedItems.length;
+    const subtotal = selectedItems.reduce((sum, item) => sum + item.price, 0);
+    const hasDiscount = count >= minItemsForDiscount;
+    const discountAmount = hasDiscount ? Math.round(subtotal * (discountPercent / 100)) : 0;
+    const total = subtotal - discountAmount;
+      const itemsRemaining = Math.max(0, minItemsForDiscount - count);
+      itemsCountEl.textContent = count;
+      subtotalEl.textContent = formatMoney(subtotal);
+      discountEl.textContent = '-' + formatMoney(discountAmount);
+      totalEl.textContent = formatMoney(total);
+      itemsRemainingEl.textContent = itemsRemaining;
+      if (hasDiscount) {
+        unlockMessageEl.style.display = 'none';
+        unlockedMessageEl.style.display = 'flex';
+        discountEl.parentElement.classList.add('box-summary__row--active');
+      } else {
+        unlockMessageEl.style.display = 'flex';
+        unlockedMessageEl.style.display = 'none';
+        discountEl.parentElement.classList.remove('box-summary__row--active');
+      }
+      addToCartBtn.disabled = count === 0;
+    }
+    
+    function updateCardVisuals(card, isSelected) {
+        const addBtn = card.querySelector('.box-product-card__button--add');
+        const removeBtn = card.querySelector('.box-product-card__button--remove');
+        const checkbox = card.querySelector('.checkmark');
+        
+        if (isSelected) {
+          card.classList.add('box-product-card--selected');
+          addBtn.style.display = 'none';
+          removeBtn.style.display = 'block';
+          checkbox.style.display = 'block';
+        } else {
+          card.classList.remove('box-product-card--selected');
+          addBtn.style.display = 'block';
+          removeBtn.style.display = 'none';
+          checkbox.style.display = 'none';
+        }
+      }
+
+      async function removeFromCart(variantId) {
+        try {
+          const response = await fetch('/cart/change.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: variantId.toString(), quantity: 0 })
+          });
+          return response.ok;
+        } catch (e) {
+          console.error('Error removing from cart', e);
+          return false;
+        }
+      }
+
+    async function toggleProduct(card) {
+      const productId = card.dataset.productId;
+      const variantId = card.dataset.variantId;
+      const price = parseInt(card.dataset.productPrice);
+      const title = card.dataset.productTitle;
+      const existingIndex = selectedItems.findIndex(item => item.productId === productId);
+      const existingItem = selectedItems[existingIndex];
+
+      if (existingItem) {
+        // REMOVING
+        if (existingItem.synced) {
+            // It is in the real cart, we must remove it via AJAX
+            const removeBtn = card.querySelector('.box-product-card__button--remove');
+            const originalText = removeBtn.textContent;
+            removeBtn.textContent = '...';
+            removeBtn.disabled = true;
+
+            const success = await removeFromCart(variantId);
+            
+            removeBtn.textContent = originalText;
+            removeBtn.disabled = false;
+
+            if (success) {
+              selectedItems.splice(existingIndex, 1);
+              updateCardVisuals(card, false);
+            } else {
+              alert('Failed to remove item from cart. Please try again.');
+            }
+        } else {
+             // Local only
+            selectedItems.splice(existingIndex, 1);
+            updateCardVisuals(card, false);
+        }
+      } else {
+        // ADDING
+        selectedItems.push({ productId, variantId, price, title, quantity: 1, synced: false });
+        updateCardVisuals(card, true);
+      }
+      updateSummary();
+    }
+    
+    // Attach event listeners to all product cards
+    productCards.forEach(card => {
+        // Initialize from DOM state (Liquid)
+        if (card.classList.contains('box-product-card--selected')) {
+          const productId = card.dataset.productId;
+          const variantId = card.dataset.variantId;
+          const price = parseInt(card.dataset.productPrice);
+          const title = card.dataset.productTitle;
+          
+          if (!selectedItems.some(item => item.variantId === variantId)) {
+            selectedItems.push({ productId, variantId, price, title, quantity: 1, synced: true });
+          }
+        }
+
+      const addBtn = card.querySelector('.box-product-card__button--add');
+      const removeBtn = card.querySelector('.box-product-card__button--remove');
+      const checkbox = card.querySelector('.box-product-card__checkbox');
+      
+      const handler = (e) => { e.preventDefault(); toggleProduct(card); };
+
+      addBtn.addEventListener('click', handler);
+      removeBtn.addEventListener('click', handler);
+      checkbox.addEventListener('click', handler);
+    });
+
+    // Add to cart functionality
+    addToCartBtn.addEventListener('click', async function () {
+    if (selectedItems.length === 0) return;
+    
+    // Filter out items that are already synced (in cart)
+    const itemsToAdd = selectedItems
+        .filter(item => !item.synced)
+        .map(item => ({ id: parseInt(item.variantId), quantity: item.quantity }));
+
+    if (itemsToAdd.length === 0) {
+        // No NEW items to add, but we might have satisfied the requirement with existing items.
+        // Just proceed to checkout/cart.
+       sessionStorage.setItem('reloaded_after_cart', '1');
+        window.location.href = '/cart/';
+        return;
+    }
+
+    addToCartBtn.disabled = true;
+    addToCartBtn.textContent = 'Adding...';
+    try {
+      // Use itemsToAdd to avoid duplicates and include sections for drawer update
+      const body = JSON.stringify({
+        items: itemsToAdd,
+        sections: 'cart-drawer,cart-icon-bubble'
+      });
+
+      const response = await fetch('/cart/add.js', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: body
+      });
+      
+      const data = await response.json();
+      
+      if (data.status === 422) {
+        // Handle specific 422 error - maximum quantity already in cart
+        const errorMessage = data.description || data.message || 'Maximum quantity already in cart';
+        throw new Error(errorMessage);
+      } else if (!response.ok) {
+        throw new Error('Failed to add items to cart');
+      }
+
+      // Update Cart Drawer if available
+      const cartDrawer = document.querySelector('cart-drawer');
+      if (cartDrawer && cartDrawer.renderContents) {
+          cartDrawer.renderContents(data);
+      }
+      
+      // Success - delayed redirect to checkout
+      setTimeout(() => {
+        sessionStorage.setItem('reloaded_after_cart', '1');
+        window.location.href = '/cart/';
+      }, 0);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      // On error, redirect to cart anyway
+      sessionStorage.setItem('reloaded_after_cart', '1');
+      window.location.href = '/cart/';
+    }
+  });
+  
+  // Initialize everything
+  updateSummary();
+  }
+  
+  // Initialize the product cards
+  initializeProductCards();
+});
+</script>
+{% schema %}
+{
+  "name": "Build Your Own Box",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Build Your Own Box"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 10,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "text",
+      "id": "tag_text",
+      "label": "Tag Text",
+      "info": "Optional tag box under the title"
+    },
+    {
+      "type": "color",
+      "id": "tag_background_color",
+      "label": "Tag Background Color",
+      "default": "#D0B24F"
+    },
+    {
+      "type": "color",
+      "id": "tag_text_color",
+      "label": "Tag Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "tag_font_size",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "tag_margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "tag_margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Tag Margin Bottom",
+      "default": 24
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Choose 5 products and enjoy 20% off."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "A thoughtful gift."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Product Collection",
+      "info": "Select a collection to automatically populate products. If left blank, use manual product blocks below."
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "min": 2,
+      "max": 100,
+      "step": 1,
+      "label": "Number of Products to Show",
+      "default": 6
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "label": "Show Badges on Products",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "default_badge_text",
+      "label": "Default Badge Text",
+      "default": "Popular"
+    },
+    {
+      "type": "select",
+      "id": "default_badge_style",
+      "label": "Default Badge Style",
+      "options": [
+        { "value": "red", "label": "Red" },
+        { "value": "green", "label": "Green" },
+        { "value": "gold", "label": "Gold" }
+      ],
+      "default": "green"
+    },
+    {
+      "type": "range",
+      "id": "min_items_for_discount",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "label": "Min items",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "discount_percent",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "label": "Discount %",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product (Manual)",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge"
+        },
+        {
+          "type": "select",
+          "id": "badge_style",
+          "label": "Badge style",
+          "options": [
+            { "value": "red", "label": "Red" },
+            { "value": "green", "label": "Green" },
+            { "value": "gold", "label": "Gold" }
+          ],
+          "default": "green"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Build Your Own Box - Collection",
+      "settings": {
+        "collection": "",
+        "products_limit": 6,
+        "show_badges": false,
+        "default_badge_text": "Popular",
+        "default_badge_style": "green"
+      }
+    },
+    {
+      "name": "Build Your Own Box - Manual Products",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

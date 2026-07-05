@@ -1,0 +1,139 @@
+<!-- snippets/geo-redirect.liquid -->
+<script>
+  // ====== Configuration ======
+  // Storage keys
+  const GEO_CACHE_KEY      = 'alardGeoRedirect';      // cached geo info
+  const STORE_SELECT_KEY   = 'alardSelectedStore';    // user manual selection
+  const REDIRECT_DONE_KEY  = 'geoRedirectDone';       // session redirect flag
+  const DISABLE_PARAM      = 'no_geo_redirect';       // URL param to disable auto-redirect
+
+  // Available store options
+  const STORES = [
+    { name: "Al'ard USA",      url: 'https://www.alardproducts.com' },
+    { name: "Al'ard KSA",      url: 'https://www.alardsaudi.com' },
+    { name: "Al'ard Palestine",url: 'https://alardproducts.ps' },
+    { name: "Al'ard Europe",   url: 'https://www.alardproducts.eu' },
+    { name: "Al'ard Hong Kong",url: 'https://alardproducts.hk' }
+  ];
+
+  // Helper: get current path + query string
+  const getPathAndQuery = () => window.location.pathname + window.location.search;
+
+  // Helper: check for disable flag in query string
+  const urlParams = new URLSearchParams(window.location.search);
+  const disableAuto = urlParams.has(DISABLE_PARAM);
+
+  // Manual store override: if user selected a store before, honor it
+  const selectedStore = localStorage.getItem(STORE_SELECT_KEY);
+  if (selectedStore && !window.Shopify.designMode) {
+    const origin = window.location.origin;
+    if (origin !== selectedStore) {
+      // Avoid infinite loops
+      sessionStorage.setItem(REDIRECT_DONE_KEY, '1');
+      window.location.href = selectedStore + getPathAndQuery();
+    }
+  }
+
+  // Auto geolocation redirect: only if not disabled and not already redirected
+  if (!disableAuto && !sessionStorage.getItem(REDIRECT_DONE_KEY) && !window.Shopify.designMode) {
+    // Function to map geo -> target domain
+    const resolveTarget = (country, continent) => {
+      const countryMap = {
+        US: 'https://www.alardproducts.com', CA: 'https://www.alardproducts.com',
+        SA: 'https://www.alardsaudi.com', AE: 'https://www.alardsaudi.com',
+        QA: 'https://www.alardsaudi.com', BH: 'https://www.alardsaudi.com',
+        PS: 'https://alardproducts.ps', IL: 'https://alardproducts.ps', JO: 'https://alardproducts.ps',
+        DE: 'https://www.alardproducts.eu', FR: 'https://www.alardproducts.eu',
+        ES: 'https://www.alardproducts.eu', IT: 'https://www.alardproducts.eu',
+        HK: 'https://alardproducts.hk', CN: 'https://alardproducts.hk'
+      };
+      const continentMap = {
+        NA: 'https://www.alardproducts.com', EU: 'https://www.alardproducts.eu',
+        AS: 'https://alardproducts.hk', AF: 'https://www.alardproducts.eu',
+        SA: 'https://www.alardproducts.com', OC: 'https://www.alardproducts.com',
+        AN: 'https://www.alardproducts.eu'
+      };
+      return countryMap[country] || continentMap[continent] || 'https://www.alardproducts.com';
+    };
+
+    // Try cached geo data
+    const saved = localStorage.getItem(GEO_CACHE_KEY);
+    if (saved) {
+      try {
+        const { country, continent, target } = JSON.parse(saved);
+        sessionStorage.setItem(REDIRECT_DONE_KEY, '1');
+        window.location.href = target + getPathAndQuery();
+      } catch {
+        localStorage.removeItem(GEO_CACHE_KEY);
+      }
+    }
+
+    // Otherwise, fetch geo info
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        const country = data.country;
+        const continent = data.continent_code;
+        const target = resolveTarget(country, continent);
+        // Cache for future visits
+        localStorage.setItem(GEO_CACHE_KEY, JSON.stringify({ country, continent, target }));
+        // Redirect once
+        sessionStorage.setItem(REDIRECT_DONE_KEY, '1');
+        window.location.href = target + getPathAndQuery();
+      })
+      .catch(e => console.warn('Geo redirect error:', e));
+  }
+
+  // ====== UI: Manual store selector ======
+  document.addEventListener('DOMContentLoaded', () => {
+    // Locate header icon container
+    const container = document.querySelector('.header__icons');
+    if (!container) return;
+
+    // Inject search icon button
+    const btn = document.createElement('button');
+    btn.className = 'geo-selector-btn header__icon header__icon--cart link focus-inset';
+    btn.setAttribute('aria-label', 'Choose your store');
+    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" height="800px" width="800px" version="1.1" id="Layer_1" viewBox="0 0 511.999 511.999" xml:space="preserve" style="height: 22px;margin-top: 3px;margin-left: 7px;opacity: 0.8;">
+      <g><g><path d="M508.045,211.558c-11.871-67.324-49.248-125.995-105.248-165.205c-56-39.211-123.915-54.267-191.24-42.397    C144.234,15.826,85.563,53.204,46.352,109.203C7.141,165.201-7.915,233.119,3.955,300.443    c11.871,67.324,49.248,125.995,105.248,165.205c43.514,30.468,94.219,46.351,146.253,46.351c14.931,0,29.975-1.309,44.985-3.955    c67.324-11.87,125.995-49.248,165.205-105.248S519.915,278.881,508.045,211.558z M466.804,141.245l-5.951,1.049    c-6.567,1.157-12.585,4.205-17.407,8.81l-4.938,4.717c-4.901,4.682-12.159,6.14-18.488,3.716l-18.126-6.945    c-4.651-1.781-9.486-2.954-14.389-3.522c0.125-0.395,0.253-0.79,0.358-1.194l4.488-17.234l15.229-2.685l2.481,14.069    c0.686,3.889,4.067,6.624,7.883,6.624c0.462,0,0.931-0.041,1.401-0.123c4.359-0.769,7.27-4.925,6.501-9.284l-1.944-11.022    l6.918,2.058c6.249,1.858,12.944,2.243,19.363,1.11l9.879-1.742C462.417,133.45,464.669,137.314,466.804,141.245z M375.874,82.711    l-3.155-17.885c-0.126-0.714,0.028-1.434,0.434-2.032l8.209-11.345c4.142,2.545,8.225,5.22,12.242,8.033    c1.675,1.177,3.333,2.37,4.974,3.581l-6.33,5.795c-3.266,2.989-3.489,8.058-0.5,11.323c1.581,1.727,3.743,2.603,5.914,2.603    c1.933,0,3.872-0.695,5.409-2.103l8.236-7.54c14.758,12.49,27.812,26.571,38.987,41.955l-2.892,0.511    c-3.982,0.701-8.134,0.464-12.01-0.689l-7.627-2.269c-6.248-1.858-12.944-2.243-19.364-1.111l-23.896,4.214    c-3.087,0.544-5.574,2.838-6.365,5.872l-5.786,22.212c-0.892,3.428-3.723,6.04-7.211,6.655l-14.187,2.502    c-0.001,0-0.001,0-0.001,0l-0.26,0.046c-4.931,0.87-9.654-2.435-10.523-7.368l-2.165-12.278c-0.716-4.06,1.399-8.101,5.143-9.827    l16.261-7.496c0.156-0.072,0.31-0.149,0.461-0.231c4.272-2.314,8.004-5.64,10.789-9.619    C375.481,99.334,377.332,90.987,375.874,82.711z M59.482,118.397c2.854-4.077,5.831-8.035,8.902-11.898l8.069,5.65    c3.625,2.538,8.021,3.514,12.378,2.744c4.357-0.768,8.154-3.188,10.691-6.811l4.459-6.369c4.01-5.729,10.013-9.552,16.9-10.766    l2.316-0.408l2.61,14.802c0.686,3.889,4.067,6.624,7.883,6.624c0.462,0,0.931-0.039,1.401-0.123    c4.359-0.768,7.27-4.925,6.501-9.284l-0.487-2.761l33.38-18.3l38.174-6.731l-6.738,3.006c-5.611,2.503-9.08,7.874-9.051,14.017    c0.028,6.145,3.546,11.483,9.179,13.934l22.796,9.917c0.254,0.111,0.381,0.393,0.295,0.656l-1.625,4.961    c-0.062,0.188-0.221,0.326-0.416,0.36l-12.698,2.239c-4.358,0.768-8.155,3.188-10.693,6.812c-0.063,0.089-0.123,0.18-0.182,0.271    l-53.532,83.531l-13.743,2.424c-18.279,3.224-30.528,20.716-27.305,38.995l0.251,1.427l-14.065-0.322    c-5.479-0.126-10.494-2.722-13.758-7.123l-6.886-9.284c-1.808-2.439-4.842-3.645-7.829-3.118l-5.929,1.045    c-5.749,1.013-11.481-1.755-14.262-6.889l-21.682-40.042C32.01,165.737,43.637,141.027,59.482,118.397z M452.514,393.598    c-36.753,52.497-91.749,87.533-154.856,98.661c-14.075,2.481-28.169,3.708-42.169,3.707    c-48.773-0.001-96.309-14.891-137.094-43.449c-52.492-36.755-87.529-91.751-98.655-154.859    c-4.876-27.656-4.904-55.417-0.305-82.299l12.939,23.895c6.071,11.211,18.584,17.255,31.14,15.042l1.05-0.185l3.936,5.306    c6.233,8.403,15.807,13.36,26.268,13.599l37.233,0.851c1.799,0.042,3.529,0.608,5.002,1.64l2.446,1.713    c3.526,2.47,7.535,3.962,11.7,4.407l-3.61,23.73c-0.131,0.862-0.121,1.74,0.03,2.598l3.743,21.23    c1.607,9.118,7.498,17.06,15.758,21.245l28.846,14.615c3.783,1.917,6.48,5.554,7.216,9.73l4.99,28.302    c2.188,12.401,6.768,24.047,13.616,34.614l16.964,26.178c3.425,5.284,9.288,8.407,15.51,8.406c0.944,0,1.898-0.072,2.851-0.219    c4.942-0.763,9.268-3.423,12.179-7.489c2.911-4.066,4.037-9.017,3.168-13.942l-4.828-27.379l12.273-11.725    c5.851-5.589,9.494-13.104,10.259-21.161l2.027-21.36c0.222-1.112,1.103-1.978,2.229-2.177l5.292-0.933    c8.508-1.5,14.875-8.567,15.483-17.185l1.514-21.453c0.827-11.727-4.641-23.201-14.27-29.944l-4.377-3.065    c-7.365-5.157-16.296-7.138-25.153-5.576l-3.794,0.668c-2.386,0.423-4.8-0.112-6.788-1.505l-29.643-20.757    c-11.107-7.776-24.578-10.762-37.928-8.409l-39.281,6.926c-2.387,0.422-4.799-0.113-6.787-1.505l-2.446-1.713    c-4.075-2.853-8.857-4.422-13.83-4.535l-6.824-0.156l-0.808-4.584c-1.688-9.575,4.728-18.738,14.302-20.427l8.945-1.577    l1.577,8.945c0.686,3.889,4.067,6.624,7.883,6.624c0.462,0,0.931-0.041,1.401-0.123c4.359-0.769,7.27-4.925,6.501-9.284    l-2.355-13.36L216.88,139.8c0.079-0.088,0.187-0.147,0.305-0.168l12.698-2.24c6.029-1.062,10.958-5.337,12.864-11.154l1.625-4.962    c2.676-8.17-1.25-16.916-9.133-20.345l-21.218-9.23l24.036-10.72c3.359-1.497,5.267-5.09,4.629-8.71l-1.871-10.616    c-0.37-2.093-1.555-3.955-3.296-5.174c-1.742-1.219-3.896-1.697-5.989-1.327l-61.13,10.779c-0.862,0.152-1.694,0.443-2.461,0.866    l-29.774,16.322l-0.576-3.265c-0.37-2.093-1.555-3.954-3.296-5.173c-1.741-1.219-3.897-1.697-5.989-1.328l-10.21,1.801    c-11.104,1.958-20.78,8.122-27.247,17.357l-4.459,6.369c-0.032,0.045-0.127,0.181-0.345,0.22c-0.218,0.04-0.354-0.057-0.4-0.089    l-6.84-4.79c35.524-39.07,82.681-65.169,135.534-74.489c14.075-2.481,28.169-3.707,42.169-3.707    c38.638,0,76.497,9.355,110.841,27.438l-7.232,9.996c-0.025,0.034-0.048,0.067-0.073,0.103c-2.879,4.112-3.985,9.098-3.113,14.043    l3.155,17.886c0.716,4.059-0.192,8.152-2.556,11.529c-1.322,1.888-3.078,3.476-5.089,4.606l-16.002,7.377    c-10.35,4.771-16.196,15.943-14.218,27.166l2.165,12.278c1.024,5.803,3.988,10.774,8.09,14.405    c-4.25,4.443-7.3,10.059-8.625,16.399l-3.92,18.76c-1.5,7.179-1.615,14.481-0.342,21.703c3.12,17.695,14.551,33.106,30.579,41.227    l1.427,0.723c11.003,5.575,23.756,7.465,35.903,5.324l0.63-0.111c4.64-0.818,9.317,0.22,13.175,2.921    c3.858,2.7,6.433,6.744,7.25,11.381l4.985,28.271c1.807,10.248,5.612,19.86,11.31,28.567l18.61,28.44    c4.283,6.545,10.628,11.292,17.835,13.655C458.524,384.682,455.607,389.183,452.514,393.598z M251.055,421.806l5.572,31.603    c0.146,0.826-0.145,1.449-0.415,1.825c-0.269,0.376-0.765,0.853-1.662,0.991c-0.934,0.146-1.879-0.277-2.396-1.073l-16.964-26.178    c-5.674-8.755-9.47-18.405-11.282-28.68l-4.99-28.302c-1.607-9.118-7.498-17.059-15.758-21.244l-28.846-14.616    c-3.783-1.916-6.48-5.553-7.216-9.729l-3.516-19.934l4.07-26.752l29.84-5.262c9.136-1.611,18.352,0.433,25.951,5.753    l29.643,20.757c5.496,3.848,12.158,5.325,18.765,4.16l3.795-0.669c4.637-0.818,9.317,0.22,13.175,2.921l4.377,3.065    c5.044,3.533,7.909,9.543,7.475,15.685l-1.514,21.452c-0.089,1.268-1.026,2.307-2.277,2.528l-5.292,0.933    c-7.979,1.406-14.139,7.737-15.327,15.751c-0.02,0.139-0.037,0.278-0.05,0.418l-2.054,21.639    c-0.401,4.22-2.309,8.157-5.374,11.084l-15.375,14.688C251.474,416.47,250.59,419.168,251.055,421.806z M469.423,365.617    c-5.073-0.693-9.685-3.552-12.549-7.93l-18.61-28.44c-4.502-6.881-7.509-14.476-8.938-22.574l-4.985-28.271    c-1.561-8.854-6.478-16.571-13.843-21.728s-16.296-7.138-25.152-5.576l-0.63,0.111c-8.754,1.543-17.944,0.181-25.875-3.837    l-1.427-0.722c-11.551-5.853-19.79-16.96-22.038-29.712c-0.918-5.205-0.835-10.468,0.246-15.641l3.92-18.761    c1.483-7.098,7.055-12.497,14.195-13.758l19.425-3.425c7.724-1.362,15.675-0.598,23,2.208l18.126,6.944    c12.083,4.63,25.937,1.847,35.295-7.092l4.938-4.717c2.525-2.413,5.679-4.008,9.117-4.615l10.618-1.872    c8.335,18.313,14.417,37.799,18.003,58.134C501.475,266.608,493.359,319.25,469.423,365.617z"></path></g></g><g><g>
+		<path d="M181.137,101.163c-2.743-3.473-7.783-4.065-11.257-1.322l-12.921,10.204c-3.473,2.743-4.066,7.784-1.322,11.257    c1.58,2.003,3.925,3.048,6.294,3.048c1.739,0,3.491-0.564,4.963-1.726l12.921-10.204    C183.288,109.676,183.881,104.637,181.137,101.163z"></path>
+	</g></g><g><g><path d="M346.618,83.768l-2.969-16.838c-0.768-4.36-4.922-7.27-9.284-6.501c-4.359,0.768-7.27,4.925-6.501,9.284l2.969,16.838    c0.686,3.889,4.067,6.624,7.883,6.624c0.462,0,0.931-0.041,1.401-0.123C344.476,92.283,347.387,88.127,346.618,83.768z"></path>
+	</g></g></svg>`;
+    container.appendChild(btn);
+
+    // Create popup overlay (hidden by default)
+    const overlay = document.createElement('div');
+    overlay.id = 'geo-modal-overlay';
+    overlay.style.cssText = '\n      position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:100000000000;'+
+                             'background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;';
+    overlay.innerHTML = `
+      <div style="background:#fff;padding:1.5rem;border-radius:8px;max-width:90%;width:300px;text-align:center;">
+        <h2 style="margin-bottom:1rem;">Select your store</h2>
+        ${STORES.map(s => `<button class="geo-store-option" data-url="${s.url}" `+
+                          `style="display:block;width:100%;margin:0.25rem 0;padding:0.5rem;">${s.name}</button>`).join('')}
+        <button id="geo-close-btn" style="margin-top:1rem;padding:0.5rem 1rem;">Cancel</button>
+      </div>`;
+    document.body.appendChild(overlay);
+
+    // Show overlay on click
+    btn.addEventListener('click', () => {
+      overlay.style.display = 'flex';
+    });
+
+    // Handle store selection
+    overlay.addEventListener('click', e => {
+      // Close if clicking outside content or on cancel
+      if (e.target.id === 'geo-close-btn' || e.target === overlay) {
+        overlay.style.display = 'none';
+      }
+      // If a store button clicked
+      if (e.target.classList.contains('geo-store-option')) {
+        const url = e.target.getAttribute('data-url');
+        // Save manual selection
+        localStorage.setItem(STORE_SELECT_KEY, url);
+        sessionStorage.setItem(REDIRECT_DONE_KEY, '1');
+        window.location.href = url + getPathAndQuery();
+      }
+    });
+  });
+</script>

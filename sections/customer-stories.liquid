@@ -1,0 +1,180 @@
+{{ 'section-customer-stories.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    background-color: {{ section.settings.background_color }};
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="customer-stories section-{{ section.id }}-padding">
+  <div class="page-width customer-stories__container">
+    {%- if section.settings.title != blank -%}
+      <h2 class="customer-stories__heading inline-richtext h1">
+        {{ section.settings.title }}
+      </h2>
+    {%- endif -%}
+
+    <div class="customer-stories__carousel-wrapper">
+      {% if section.settings.story_source == 'judgeme' %}
+        {% assign jm_metafields = shop.metafields.judgeme %}
+        {% if jm_metafields.featured_carousel != blank %}
+          {{ jm_metafields.featured_carousel }}
+        {% else %}
+          <div class="center">
+            <p>Please configure your Judge.me featured carousel in the app settings.</p>
+          </div>
+        {% endif %}
+      {% else %}
+        <slider-component class="slider-mobile-gutter">
+          <div class="jdgm-carousel-wrapper">
+             <div class="jdgm-carousel">
+                <div class="jdgm-carousel__item-container">
+                  <ul id="Slider-{{ section.id }}" class="jdgm-carousel__item-wrapper grid grid--1-col grid--2-col-tablet grid--4-col-desktop slider slider--mobile slider--tablet slider--desktop" role="list" style="gap: 0;">
+                    {%- for block in section.blocks -%}
+                      <li id="Slide-{{ section.id }}-{{ forloop.index }}" class="jdgm-carousel-item slider__slide grid__item" {{ block.shopify_attributes }}>
+                        <div class="jdgm-carousel-item__review">
+                          <div class="jdgm-carousel-item__review-rating" role="img" aria-label="{{ block.settings.rating }} stars">
+                            {% for i in (1..5) %}
+                              <span class="jdgm-star {% if i <= block.settings.rating %}jdgm--on{% else %}jdgm--off{% endif %}"></span>
+                            {% endfor %}
+                          </div>
+                          <div class="jdgm-carousel-item__review-content">
+                            <div class="jdgm-carousel-item__review-body">
+                              <p>{{ block.settings.text }}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="jdgm-carousel-item__reviewer-name-wrapper">
+                          <div class="jdgm-carousel-item__reviewer-name">{{ block.settings.name }}</div>
+                          {% if block.settings.location != blank %}
+                            <div class="jdgm-carousel-item__timestamp">{{ block.settings.location }}</div>
+                          {% endif %}
+                        </div>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+                
+                <div class="slider-buttons no-js-hidden">
+                  <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="Previous slide">
+                    {% render 'icon-caret' %}
+                  </button>
+                  <button type="button" class="slider-button slider-button--next" name="next" aria-label="Next slide">
+                    {% render 'icon-caret' %}
+                  </button>
+                </div>
+             </div>
+          </div>
+        </slider-component>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Customer Stories",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Stories From Customers",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "story_source",
+      "label": "Story Source",
+      "options": [
+        { "value": "judgeme", "label": "Judge.me (Metafields)" },
+        { "value": "manual", "label": "Manual (Blocks)" }
+      ],
+      "default": "judgeme"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#d8ccbf"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "story",
+      "name": "Story",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer Name",
+          "default": "Sarah M."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location",
+          "default": "New York"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Rating",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review Text",
+          "default": "The most authentic Palestinian olive oil I've ever tasted. You can taste the heritage in every drop."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer Stories"
+    }
+  ]
+}
+{% endschema %}

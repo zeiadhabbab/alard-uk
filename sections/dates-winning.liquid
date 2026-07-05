@@ -1,0 +1,83 @@
+{{ 'section-dates-hero.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="dates-winning section-{{ section.id }}"
+  {% if section.settings.background_image != blank %}
+    style="background-image: url({{ section.settings.background_image | image_url: width: 2400 }});"
+  {% endif %}
+>
+  <div class="dates-winning__bg">
+    <div class="page-width dates-winning__inner">
+      <div class="dates-winning__badge">
+        {%- if section.settings.badge_image != blank -%}
+          {{
+            section.settings.badge_image
+            | image_url: width: 260
+            | image_tag:
+              loading: 'lazy',
+              class: 'dates-winning__badge-image',
+              alt: section.settings.badge_alt | escape
+          }}
+        {%- endif -%}
+      </div>
+
+      <div class="dates-winning__content">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="dates-winning__title">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.body != blank -%}
+          <p class="dates-winning__body">
+            {{ section.settings.body }}
+          </p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Dates winning banner",
+  "tag": "section",
+  "class": "section section--dates-winning",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "badge_image",
+      "label": "Badge image"
+    },
+    {
+      "type": "text",
+      "id": "badge_alt",
+      "label": "Badge image alt text",
+      "default": "Great Taste award badge"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Medjool Dates."
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body text",
+      "default": "“The aroma is rich and sweet, reminiscent of winter puddings... Fabulous-looking dates, unblemished and well presented. Extremely satisfying, with a moreish texture that is fudgy and soft.”"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dates winning banner"
+    }
+  ]
+}
+{% endschema %}
+

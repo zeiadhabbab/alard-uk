@@ -1,0 +1,227 @@
+{{ 'section-dates-hero.css' | asset_url | stylesheet_tag }}
+
+<section class="dates-process section-{{ section.id }}">
+  <div class="page-width dates-process__container">
+    <h2 class="dates-process__heading">{{ section.settings.heading }}</h2>
+
+    <div class="dates-process__grid">
+      <div class="dates-process__col dates-process__col--top">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'step' and block.settings.position == 'top' -%}
+            <div class="dates-process__step" {{ block.shopify_attributes }}>
+              <div class="dates-process__step-head">
+                <span class="dates-process__step-number dates-process__step-number--{{ block.settings.number_color }}">
+                  {{ block.settings.number }}
+                </span>
+                <h3 class="dates-process__step-title">{{ block.settings.title }}</h3>
+              </div>
+              <div class="dates-process__step-body">{{ block.settings.body }}</div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="dates-process__middle">
+        {%- if section.settings.icons_image != blank -%}
+          {{
+            section.settings.icons_image
+            | image_url: width: 2000
+            | image_tag:
+              loading: 'lazy',
+              class: 'dates-process__icons',
+              alt: 'Production process icons'
+          }}
+        {%- endif -%}
+      </div>
+
+      <div class="dates-process__col dates-process__col--bottom">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'step' and block.settings.position == 'bottom' -%}
+            <div class="dates-process__step" {{ block.shopify_attributes }}>
+              <div class="dates-process__step-head">
+                <span class="dates-process__step-number dates-process__step-number--{{ block.settings.number_color }}">
+                  {{ block.settings.number }}
+                </span>
+                <h3 class="dates-process__step-title">{{ block.settings.title }}</h3>
+              </div>
+              <div class="dates-process__step-body">{{ block.settings.body }}</div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="dates-process__footer">
+      {%- if section.settings.quality_line_image != blank -%}
+        {{
+          section.settings.quality_line_image
+          | image_url: width: 2400
+          | image_tag:
+            loading: 'lazy',
+            class: 'dates-process__quality-line',
+            alt: 'Quality control line'
+        }}
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.side_pattern_image != blank -%}
+    <div class="dates-process__side-pattern" aria-hidden="true">
+      {{
+        section.settings.side_pattern_image
+        | image_url: width: 600
+        | image_tag:
+          loading: 'lazy',
+          class: 'dates-process__side-pattern-image',
+          alt: ''
+      }}
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Dates controlled process",
+  "tag": "section",
+  "class": "section section--dates-process",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Controlled Production Process"
+    },
+    {
+      "type": "image_picker",
+      "id": "icons_image",
+      "label": "Icons strip image"
+    },
+    {
+      "type": "image_picker",
+      "id": "side_pattern_image",
+      "label": "Right side pattern image"
+    },
+    {
+      "type": "image_picker",
+      "id": "quality_line_image",
+      "label": "Quality control line image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Position",
+          "default": "top",
+          "options": [
+            { "value": "top", "label": "Top row" },
+            { "value": "bottom", "label": "Bottom row" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "1"
+        },
+        {
+          "type": "select",
+          "id": "number_color",
+          "label": "Number color",
+          "default": "gold",
+          "options": [
+            { "value": "green", "label": "Green" },
+            { "value": "teal", "label": "Teal" },
+            { "value": "gold", "label": "Gold" },
+            { "value": "red", "label": "Red" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Farming"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Body",
+          "default": "Step description..."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dates controlled process",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "position": "top",
+            "number": "1",
+            "number_color": "green",
+            "title": "Farming",
+            "body": "Our farmers combine traditional agricultural knowledge passed down through generations with modern scientific expertise, caring for each tree using methods rooted in Palestinian heritage and sustainable practices."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "position": "top",
+            "number": "3",
+            "number_color": "gold",
+            "title": "Processing",
+            "body": "After harvest, our dates are cleaned, sorted, and prepared by skilled workers. No additives, no shortcuts, just pure dates."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "position": "top",
+            "number": "5",
+            "number_color": "gold",
+            "title": "Packaging",
+            "body": "Our dates are packed with care using food-safe materials that protect the product and maintain its natural integrity, ready to travel from Palestine to your table."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "position": "bottom",
+            "number": "2",
+            "number_color": "teal",
+            "title": "Harvesting",
+            "body": "Dates are handpicked at peak ripeness to preserve their natural sweetness, and nutritional value. Every harvest is done with care to ensure the highest quality."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "position": "bottom",
+            "number": "4",
+            "number_color": "red",
+            "title": "Storage",
+            "body": "We store our dates in temperature-controlled environments that meet international standards, preserving freshness and preventing moisture loss while keeping the product as close to harvest condition as possible."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "position": "bottom",
+            "number": "6",
+            "number_color": "teal",
+            "title": "To the market",
+            "body": "From farm to box, our process supports fair trade, transparency, and the livelihoods of Palestinian farmers. Every box of dates is a commitment to quality, sustainability, and dignity."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
