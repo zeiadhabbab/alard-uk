@@ -785,7 +785,7 @@
     align-items: center;
     gap: 0.6rem;
     color: {{ section.settings.about_accent_color }};
-    font-size: 0.75rem;
+    font-size: 2.25rem;
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -810,7 +810,7 @@
 
   #{{ section_id }} .sl-about__heading {
     font-family: var(--font-heading-family);
-    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-size: clamp(6rem, 9vw, 8.4rem);
     font-weight: 700;
     line-height: 1.15;
     color: {{ section.settings.about_heading_color }};
@@ -842,7 +842,7 @@
   }
 
   #{{ section_id }} .sl-about__body {
-    font-size: 0.97rem;
+    font-size: 2.91rem;
     line-height: 1.75;
     color: {{ section.settings.about_text_color }};
     display: flex;
@@ -879,7 +879,7 @@
   }
 
   #{{ section_id }} .sl-about__icon-label {
-    font-size: 0.62rem;
+    font-size: 1.86rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -1076,6 +1076,75 @@
     </div>
   </div>
 
+  {%- if section.settings.show_about -%}
+    <div class="sl-about">
+      <div class="sl-shell">
+        <div class="sl-about__card">
+
+          <div class="sl-about__image">
+            {%- if section.settings.about_image != blank -%}
+              <img
+                src="{{ section.settings.about_image | image_url: width: 900 }}"
+                alt="{{ section.settings.about_image.alt | escape | default: shop.name }}"
+                width="{{ section.settings.about_image.width }}"
+                height="{{ section.settings.about_image.height }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              <div class="sl-about__image-placeholder">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="sl-about__content">
+            {%- if section.settings.about_label != blank -%}
+              <span class="sl-about__label">{{ section.settings.about_label }}</span>
+            {%- endif -%}
+
+            {%- if section.settings.about_heading != blank -%}
+              <h2 class="sl-about__heading">{{ section.settings.about_heading }}</h2>
+            {%- endif -%}
+
+            <div class="sl-about__divider" aria-hidden="true">
+              <svg viewBox="0 0 60 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M30 10 C24 2, 10 2, 2 10 C10 18, 24 18, 30 10Z" stroke="currentColor" stroke-width="1" fill="none"/>
+                <path d="M30 10 C36 2, 50 2, 58 10 C50 18, 36 18, 30 10Z" stroke="currentColor" stroke-width="1" fill="none"/>
+              </svg>
+            </div>
+
+            {%- if section.settings.about_body != blank -%}
+              <div class="sl-about__body">{{ section.settings.about_body }}</div>
+            {%- endif -%}
+
+            {%- assign icon_pillars = section.blocks | where: 'type', 'icon_pillar' -%}
+            {%- if icon_pillars.size > 0 -%}
+              <div class="sl-about__icons">
+                {%- for block in icon_pillars -%}
+                  <div class="sl-about__icon-item" {{ block.shopify_attributes }}>
+                    {%- if block.settings.icon_image != blank -%}
+                      <img
+                        src="{{ block.settings.icon_image | image_url: width: 88 }}"
+                        alt="{{ block.settings.label | escape }}"
+                        width="42"
+                        height="42"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                    {%- if block.settings.label != blank -%}
+                      <span class="sl-about__icon-label">{{ block.settings.label }}</span>
+                    {%- endif -%}
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
   <div class="sl-community">
     <div class="sl-shell">
       <h2 class="sl-heading">{{ section.settings.community_heading }}</h2>
@@ -1150,75 +1219,6 @@
       </p>
     </div>
   </div>
-
-  {%- if section.settings.show_about -%}
-    <div class="sl-about">
-      <div class="sl-shell">
-        <div class="sl-about__card">
-
-          <div class="sl-about__image">
-            {%- if section.settings.about_image != blank -%}
-              <img
-                src="{{ section.settings.about_image | image_url: width: 900 }}"
-                alt="{{ section.settings.about_image.alt | escape | default: shop.name }}"
-                width="{{ section.settings.about_image.width }}"
-                height="{{ section.settings.about_image.height }}"
-                loading="lazy"
-              >
-            {%- else -%}
-              <div class="sl-about__image-placeholder">
-                {{ 'image' | placeholder_svg_tag }}
-              </div>
-            {%- endif -%}
-          </div>
-
-          <div class="sl-about__content">
-            {%- if section.settings.about_label != blank -%}
-              <span class="sl-about__label">{{ section.settings.about_label }}</span>
-            {%- endif -%}
-
-            {%- if section.settings.about_heading != blank -%}
-              <h2 class="sl-about__heading">{{ section.settings.about_heading }}</h2>
-            {%- endif -%}
-
-            <div class="sl-about__divider" aria-hidden="true">
-              <svg viewBox="0 0 60 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M30 10 C24 2, 10 2, 2 10 C10 18, 24 18, 30 10Z" stroke="currentColor" stroke-width="1" fill="none"/>
-                <path d="M30 10 C36 2, 50 2, 58 10 C50 18, 36 18, 30 10Z" stroke="currentColor" stroke-width="1" fill="none"/>
-              </svg>
-            </div>
-
-            {%- if section.settings.about_body != blank -%}
-              <div class="sl-about__body">{{ section.settings.about_body }}</div>
-            {%- endif -%}
-
-            {%- assign icon_pillars = section.blocks | where: 'type', 'icon_pillar' -%}
-            {%- if icon_pillars.size > 0 -%}
-              <div class="sl-about__icons">
-                {%- for block in icon_pillars -%}
-                  <div class="sl-about__icon-item" {{ block.shopify_attributes }}>
-                    {%- if block.settings.icon_image != blank -%}
-                      <img
-                        src="{{ block.settings.icon_image | image_url: width: 88 }}"
-                        alt="{{ block.settings.label | escape }}"
-                        width="42"
-                        height="42"
-                        loading="lazy"
-                      >
-                    {%- endif -%}
-                    {%- if block.settings.label != blank -%}
-                      <span class="sl-about__icon-label">{{ block.settings.label }}</span>
-                    {%- endif -%}
-                  </div>
-                {%- endfor -%}
-              </div>
-            {%- endif -%}
-          </div>
-
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
 
   {%- if section.settings.show_trust_bar -%}
     <div class="sl-trust">
