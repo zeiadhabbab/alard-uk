@@ -1,0 +1,143 @@
+{{ 'section-coming-soon.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .coming-soon {
+    --cs-bg: {{ section.settings.bg_color }};
+    --cs-text: {{ section.settings.text_color }};
+    --cs-accent: {{ section.settings.accent_color }};
+  }
+</style>
+
+<section class="coming-soon" data-target="{{ section.settings.countdown_date }}">
+  <div class="coming-soon__inner">
+
+    {%- if section.settings.logo != blank -%}
+      <div class="coming-soon__logo">
+        <img
+          src="{{ section.settings.logo | image_url: width: 240 }}"
+          alt="{{ shop.name }}"
+          width="240"
+          height="auto"
+          loading="eager"
+        >
+      </div>
+    {%- else -%}
+      <div class="coming-soon__logo coming-soon__logo--text">
+        {{ shop.name }}
+      </div>
+    {%- endif -%}
+
+    <h1 class="coming-soon__heading">{{ section.settings.heading }}</h1>
+
+    {%- if section.settings.subheading != blank -%}
+      <p class="coming-soon__subheading">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+
+    <div class="coming-soon__countdown" id="countdown">
+      <div class="coming-soon__unit">
+        <span class="coming-soon__number" id="cd-days">00</span>
+        <span class="coming-soon__label">{{ 'coming_soon.days' | t | default: 'Days' }}</span>
+      </div>
+      <div class="coming-soon__sep">:</div>
+      <div class="coming-soon__unit">
+        <span class="coming-soon__number" id="cd-hours">00</span>
+        <span class="coming-soon__label">{{ 'coming_soon.hours' | t | default: 'Hours' }}</span>
+      </div>
+      <div class="coming-soon__sep">:</div>
+      <div class="coming-soon__unit">
+        <span class="coming-soon__number" id="cd-minutes">00</span>
+        <span class="coming-soon__label">{{ 'coming_soon.minutes' | t | default: 'Minutes' }}</span>
+      </div>
+      <div class="coming-soon__sep">:</div>
+      <div class="coming-soon__unit">
+        <span class="coming-soon__number" id="cd-seconds">00</span>
+        <span class="coming-soon__label">{{ 'coming_soon.seconds' | t | default: 'Seconds' }}</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  (function () {
+    var target = new Date('{{ section.settings.countdown_date }}T00:00:00');
+    var days    = document.getElementById('cd-days');
+    var hours   = document.getElementById('cd-hours');
+    var minutes = document.getElementById('cd-minutes');
+    var seconds = document.getElementById('cd-seconds');
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function tick() {
+      var diff = target - Date.now();
+      if (diff <= 0) {
+        days.textContent = hours.textContent = minutes.textContent = seconds.textContent = '00';
+        return;
+      }
+      var totalSec = Math.floor(diff / 1000);
+      days.textContent    = pad(Math.floor(totalSec / 86400));
+      hours.textContent   = pad(Math.floor((totalSec % 86400) / 3600));
+      minutes.textContent = pad(Math.floor((totalSec % 3600) / 60));
+      seconds.textContent = pad(totalSec % 60);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Coming Soon",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Coming Soon"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Something exciting is on its way. Stay tuned."
+    },
+    {
+      "type": "text",
+      "id": "countdown_date",
+      "label": "Countdown target date (YYYY-MM-DD)",
+      "default": "2026-08-04"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background colour",
+      "default": "#faf7f2"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#1c1c1c"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent colour (countdown numbers)",
+      "default": "#6b4c2a"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coming Soon"
+    }
+  ]
+}
+{% endschema %}
