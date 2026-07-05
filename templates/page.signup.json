@@ -75,48 +75,7 @@
             "title": "Trusted Quality",
             "text": "Lab-tested & certified extra virgin."
           }
-        }
-      },
-      "block_order": [
-        "forms_inline_wVLiNJ",
-        "benefit_offers",
-        "benefit_products",
-        "benefit_stories",
-        "trust_origin",
-        "trust_shipping",
-        "trust_delivery",
-        "trust_quality"
-      ],
-      "settings": {
-        "section_label": "Al'Ard signup landing page",
-        "hide_theme_chrome": true,
-        "background_color": "#efe3d0",
-        "text_color": "#202020",
-        "accent_color": "#56642f",
-        "secondary_accent_color": "#d8b94a",
-        "hero_heading": "<strong>The Taste of Palestine Is Coming to the UK<\/strong>",
-        "hero_text": "Be the first to know when we launch.\n\nSign up today and receive 15% OFF your first order, plus exclusive launch offers and early access to our products.",
-        "hero_image": "shopify:\/\/shop_images\/Bring_Palestine_to_Your_Table_desktop_1.png",
-        "hero_button_label": "Join the Launch List",
-        "first_name_placeholder": "First Name",
-        "email_placeholder": "Email Address",
-        "customer_tags": "Launch Campaign",
-        "success_message": "Thank you for signing up.",
-        "assurance_text": "No spam. Just thoughtful updates, exclusive offers, and authentic Palestinian products.",
-        "benefits_heading": "Why Join?",
-        "benefits_subheading": "Good reasons to stay close",
-        "story_heading": "More Than Food",
-        "story_text": "Every Al'Ard product supports Palestinian farmers, preserves traditional food heritage, and connects your table to the land it comes from.",
-        "community_heading": "Join the Al'Ard Community",
-        "community_text": "Be the first to hear about new arrivals, gift ideas, and special offers.",
-        "community_pattern_image": "shopify:\/\/shop_images\/Frame_5_11_1.png",
-        "community_button_label": "Get Updates",
-        "show_trust_bar": true
-      }
-    },
-    "about_alard": {
-      "type": "about-alard",
-      "blocks": {
+        },
         "pillar_1": {
           "type": "icon_pillar",
           "settings": {
@@ -142,20 +101,57 @@
           }
         }
       },
-      "block_order": ["pillar_1", "pillar_2", "pillar_3", "pillar_4"],
+      "block_order": [
+        "forms_inline_wVLiNJ",
+        "benefit_offers",
+        "benefit_products",
+        "benefit_stories",
+        "trust_origin",
+        "trust_shipping",
+        "trust_delivery",
+        "trust_quality",
+        "pillar_1",
+        "pillar_2",
+        "pillar_3",
+        "pillar_4"
+      ],
       "settings": {
-        "label": "About AL'ARD",
-        "heading": "We are Palestinian;\nwe like to feed people",
-        "body_text": "<p>We are a third generation family-run company passionate about bringing the best of Palestinian artisanal food to your dining table. We believe in environmentally-friendly practices, organic farming and putting the farmers and their glorious land at the heart of what we do. The land is so critical to us that we named our company after it, with Al Ard meaning the land in Arabic.<\/p><p>We know that healthy food makes healthy bodies, and that is what we are about. And just like our family, our company thrives on bringing together traditional knowledge and modern practices to provide you with nothing but the finest quality goods.<\/p>",
+        "section_label": "Al'Ard signup landing page",
+        "hide_theme_chrome": true,
         "background_color": "#efe3d0",
-        "card_color": "#faf6ef",
-        "text_color": "#3a3530",
-        "heading_color": "#2c3d1e",
+        "text_color": "#202020",
         "accent_color": "#56642f",
-        "padding_top": 0,
-        "padding_bottom": 60
+        "secondary_accent_color": "#d8b94a",
+        "hero_heading": "<strong>The Taste of Palestine Is Coming to the UK<\/strong>",
+        "hero_text": "Be the first to know when we launch.\n\nSign up today and receive 15% OFF your first order, plus exclusive launch offers and early access to our products.",
+        "hero_image": "shopify:\/\/shop_images\/Bring_Palestine_to_Your_Table_desktop_1.png",
+        "hero_button_label": "Join the Launch List",
+        "first_name_placeholder": "First Name",
+        "email_placeholder": "Email Address",
+        "customer_tags": "Launch Campaign",
+        "success_message": "Thank you for signing up.",
+        "assurance_text": "No spam. Just thoughtful updates, exclusive offers, and authentic Palestinian products.",
+        "benefits_heading": "Why Join?",
+        "benefits_subheading": "Good reasons to stay close",
+        "story_heading": "More Than Food",
+        "story_text": "Every Al'Ard product supports Palestinian farmers, preserves traditional food heritage, and connects your table to the land it comes from.",
+        "community_heading": "Join the Al'Ard Community",
+        "community_text": "Be the first to hear about new arrivals, gift ideas, and special offers.",
+        "community_pattern_image": "shopify:\/\/shop_images\/Frame_5_11_1.png",
+        "community_button_label": "Get Updates",
+        "show_trust_bar": true,
+        "show_about": true,
+        "about_label": "About AL'ARD",
+        "about_heading": "We are Palestinian;\nwe like to feed people",
+        "about_body": "<p>We are a third generation family-run company passionate about bringing the best of Palestinian artisanal food to your dining table. We believe in environmentally-friendly practices, organic farming and putting the farmers and their glorious land at the heart of what we do. The land is so critical to us that we named our company after it, with Al Ard meaning the land in Arabic.<\/p><p>We know that healthy food makes healthy bodies, and that is what we are about. And just like our family, our company thrives on bringing together traditional knowledge and modern practices to provide you with nothing but the finest quality goods.<\/p>",
+        "about_card_color": "#faf6ef",
+        "about_text_color": "#3a3530",
+        "about_heading_color": "#2c3d1e",
+        "about_accent_color": "#56642f",
+        "about_padding_top": 0,
+        "about_padding_bottom": 60
       }
     }
   },
-  "order": ["main", "about_alard"]
+  "order": ["main"]
 }

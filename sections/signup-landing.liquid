@@ -731,6 +731,189 @@
     background-repeat: no-repeat;
     background-size: contain;
 }
+
+  /* ── About Al'Ard ── */
+  #{{ section_id }} .sl-about {
+    padding: {{ section.settings.about_padding_top }}px 0 {{ section.settings.about_padding_bottom }}px;
+    background-color: var(--sl-cream);
+  }
+
+  #{{ section_id }} .sl-about__card {
+    background: {{ section.settings.about_card_color }};
+    border: 1px solid var(--sl-border);
+    border-radius: 20px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 520px;
+  }
+
+  #{{ section_id }} .sl-about__image {
+    position: relative;
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .sl-about__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  #{{ section_id }} .sl-about__image-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    background: #ddd3bb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9e8f78;
+  }
+
+  #{{ section_id }} .sl-about__content {
+    padding: 3.5rem 3rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.25rem;
+    color: {{ section.settings.about_text_color }};
+  }
+
+  #{{ section_id }} .sl-about__label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: {{ section.settings.about_accent_color }};
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  #{{ section_id }} .sl-about__label::before {
+    content: '';
+    width: 0.4rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.6;
+  }
+
+  #{{ section_id }} .sl-about__label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.3;
+    max-width: 2rem;
+  }
+
+  #{{ section_id }} .sl-about__heading {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: {{ section.settings.about_heading_color }};
+    margin: 0;
+    white-space: pre-line;
+  }
+
+  #{{ section_id }} .sl-about__divider {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: {{ section.settings.about_accent_color }};
+    opacity: 0.5;
+  }
+
+  #{{ section_id }} .sl-about__divider::before,
+  #{{ section_id }} .sl-about__divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    max-width: 2.5rem;
+  }
+
+  #{{ section_id }} .sl-about__divider svg {
+    width: 22px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .sl-about__body {
+    font-size: 0.97rem;
+    line-height: 1.75;
+    color: {{ section.settings.about_text_color }};
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  #{{ section_id }} .sl-about__body p { margin: 0; }
+
+  #{{ section_id }} .sl-about__icons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--sl-border);
+    margin-top: 0.5rem;
+    padding-top: 1.25rem;
+  }
+
+  #{{ section_id }} .sl-about__icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+    border-right: 1px solid var(--sl-border);
+    text-align: center;
+  }
+
+  #{{ section_id }} .sl-about__icon-item:last-child { border-right: none; }
+
+  #{{ section_id }} .sl-about__icon-item img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+  }
+
+  #{{ section_id }} .sl-about__icon-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: {{ section.settings.about_text_color }};
+    opacity: 0.7;
+    line-height: 1.3;
+  }
+
+  @media screen and (max-width: 768px) {
+    #{{ section_id }} .sl-about__card {
+      grid-template-columns: 1fr;
+    }
+
+    #{{ section_id }} .sl-about__image {
+      min-height: 260px;
+    }
+
+    #{{ section_id }} .sl-about__content {
+      padding: 2rem 1.5rem;
+    }
+
+    #{{ section_id }} .sl-about__icons {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem 0;
+    }
+
+    #{{ section_id }} .sl-about__icon-item:nth-child(2) { border-right: none; }
+    #{{ section_id }} .sl-about__icon-item:nth-child(3) { border-right: 1px solid var(--sl-border); }
+    #{{ section_id }} .sl-about__icon-item:nth-child(3),
+    #{{ section_id }} .sl-about__icon-item:nth-child(4) {
+      border-top: 1px solid var(--sl-border);
+      padding-top: 1rem;
+    }
+  }
 {%- endstyle -%}
 
 <section id="{{ section_id }}" class="sl-page" aria-label="{{ section.settings.section_label | escape }}">
@@ -967,6 +1150,75 @@
       </p>
     </div>
   </div>
+
+  {%- if section.settings.show_about -%}
+    <div class="sl-about">
+      <div class="sl-shell">
+        <div class="sl-about__card">
+
+          <div class="sl-about__image">
+            {%- if section.settings.about_image != blank -%}
+              <img
+                src="{{ section.settings.about_image | image_url: width: 900 }}"
+                alt="{{ section.settings.about_image.alt | escape | default: shop.name }}"
+                width="{{ section.settings.about_image.width }}"
+                height="{{ section.settings.about_image.height }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              <div class="sl-about__image-placeholder">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="sl-about__content">
+            {%- if section.settings.about_label != blank -%}
+              <span class="sl-about__label">{{ section.settings.about_label }}</span>
+            {%- endif -%}
+
+            {%- if section.settings.about_heading != blank -%}
+              <h2 class="sl-about__heading">{{ section.settings.about_heading }}</h2>
+            {%- endif -%}
+
+            <div class="sl-about__divider" aria-hidden="true">
+              <svg viewBox="0 0 60 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M30 10 C24 2, 10 2, 2 10 C10 18, 24 18, 30 10Z" stroke="currentColor" stroke-width="1" fill="none"/>
+                <path d="M30 10 C36 2, 50 2, 58 10 C50 18, 36 18, 30 10Z" stroke="currentColor" stroke-width="1" fill="none"/>
+              </svg>
+            </div>
+
+            {%- if section.settings.about_body != blank -%}
+              <div class="sl-about__body">{{ section.settings.about_body }}</div>
+            {%- endif -%}
+
+            {%- assign icon_pillars = section.blocks | where: 'type', 'icon_pillar' -%}
+            {%- if icon_pillars.size > 0 -%}
+              <div class="sl-about__icons">
+                {%- for block in icon_pillars -%}
+                  <div class="sl-about__icon-item" {{ block.shopify_attributes }}>
+                    {%- if block.settings.icon_image != blank -%}
+                      <img
+                        src="{{ block.settings.icon_image | image_url: width: 88 }}"
+                        alt="{{ block.settings.label | escape }}"
+                        width="42"
+                        height="42"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                    {%- if block.settings.label != blank -%}
+                      <span class="sl-about__icon-label">{{ block.settings.label }}</span>
+                    {%- endif -%}
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
 
   {%- if section.settings.show_trust_bar -%}
     <div class="sl-trust">
@@ -1337,6 +1589,83 @@
       "id": "show_trust_bar",
       "label": "Show bottom trust bar",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "About Al'Ard"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_about",
+      "label": "Show About section",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "about_image",
+      "label": "About image"
+    },
+    {
+      "type": "text",
+      "id": "about_label",
+      "label": "Label",
+      "default": "About AL'ARD"
+    },
+    {
+      "type": "textarea",
+      "id": "about_heading",
+      "label": "Heading",
+      "default": "We are Palestinian;\nwe like to feed people"
+    },
+    {
+      "type": "richtext",
+      "id": "about_body",
+      "label": "Body text",
+      "default": "<p>We are a third generation family-run company passionate about bringing the best of Palestinian artisanal food to your dining table. We believe in environmentally-friendly practices, organic farming and putting the farmers and their glorious land at the heart of what we do. The land is so critical to us that we named our company after it, with Al Ard meaning the land in Arabic.<\/p><p>We know that healthy food makes healthy bodies, and that is what we are about. And just like our family, our company thrives on bringing together traditional knowledge and modern practices to provide you with nothing but the finest quality goods.<\/p>"
+    },
+    {
+      "type": "color",
+      "id": "about_card_color",
+      "label": "Card background",
+      "default": "#faf6ef"
+    },
+    {
+      "type": "color",
+      "id": "about_text_color",
+      "label": "Body text colour",
+      "default": "#3a3530"
+    },
+    {
+      "type": "color",
+      "id": "about_heading_color",
+      "label": "Heading colour",
+      "default": "#2c3d1e"
+    },
+    {
+      "type": "color",
+      "id": "about_accent_color",
+      "label": "Accent colour",
+      "default": "#56642f"
+    },
+    {
+      "type": "range",
+      "id": "about_padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "about_padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
     }
   ],
   "blocks": [
@@ -1424,6 +1753,24 @@
     },
     {
       "type": "@app"
+    },
+    {
+      "type": "icon_pillar",
+      "name": "About icon pillar",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Palestinian Heritage"
+        }
+      ]
     }
   ],
   "presets": [
