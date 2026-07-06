@@ -759,7 +759,7 @@
     overflow: hidden;
     border: 1px solid rgba(94, 91, 64, 0.08);
     border-radius: 9px;
-    background: {{ section.settings.ea_background_color | default: '#e8e3cb' }};
+    background: #e6e0d0;
     box-shadow: 0 8px 22px rgba(82, 70, 45, 0.06);
   }
 
@@ -802,11 +802,12 @@
 
   #{{ section_id }} .sl-ea__heading {
     font-family: var(--font-heading-family);
-    font-size: clamp(1.95rem, 1.85vw, 2.35rem);
+    font-size: 3rem;
     font-weight: 700;
     color: #2c3d1e;
     margin: 0;
     line-height: 1.14;
+    margin-bottom: 28px;
   }
 
   #{{ section_id }} .sl-ea__subtext {
@@ -852,7 +853,7 @@
 
   #{{ section_id }} .sl-ea-form input {
     width: 100%;
-    height: 34px;
+    height: 49px;
     min-height: 34px;
     padding: 0 12px 0 34px;
     border: 1px solid rgba(200, 202, 190, 0.9);
@@ -860,7 +861,7 @@
     background: #fff;
     color: var(--sl-text);
     font-family: var(--font-body-family);
-    font-size: 1rem;
+    font-size: 1.5rem;
     line-height: 34px;
     box-shadow: none;
     outline-offset: 2px;
@@ -873,7 +874,7 @@
 
   #{{ section_id }} .sl-ea-form__button {
     width: 100%;
-    height: 34px;
+    height: 48px;
     min-height: 34px;
     white-space: nowrap;
     padding: 0 1.4rem;
@@ -882,7 +883,7 @@
     background: var(--sl-olive);
     color: #fff;
     font-family: var(--font-body-family);
-    font-size: 1rem;
+    font-size: 1.4rem;
     line-height: 34px;
     font-weight: 700;
     cursor: pointer;
@@ -1045,7 +1046,7 @@
   }
 
   #{{ section_id }} .sl-about__body {
-    font-size: 1.91rem;
+    font-size: 1.6rem;
     line-height: 1.75;
     color: {{ section.settings.about_text_color }};
     display: flex;
