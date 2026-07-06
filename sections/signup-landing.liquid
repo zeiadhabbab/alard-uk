@@ -741,7 +741,7 @@
   }
 
   #{{ section_id }} .sl-ea > .sl-shell {
-    width: var(--sl-page);
+    width: min(1120px, calc(100vw - 32px));
   }
 
   #{{ section_id }} .sl-ea__inner {
@@ -754,7 +754,7 @@
     align-items: center;
     column-gap: clamp(2rem, 4.2vw, 6.2rem);
     row-gap: 12px;
-    min-height: 180px;
+    min-height: 126px;
     padding: 18px clamp(24px, 5.2vw, 78px) 14px clamp(18px, 3vw, 34px);
     overflow: hidden;
     border: 1px solid rgba(94, 91, 64, 0.08);
@@ -808,11 +808,10 @@
 
   #{{ section_id }} .sl-ea__subtext {
     max-width: 570px;
-    font-size: 1.3rem;
+    font-size: clamp(1rem, 0.82vw, 1.16rem);
     color: #2f321f;
     margin: 0;
     line-height: 1.32;
-    padding: 15px;
   }
 
   #{{ section_id }} .sl-ea__form-wrap {
@@ -858,7 +857,7 @@
     background: #fff;
     color: var(--sl-text);
     font-family: var(--font-body-family);
-    font-size: 1.5rem;
+    font-size: 1rem;
     line-height: 34px;
     box-shadow: none;
     outline-offset: 2px;
