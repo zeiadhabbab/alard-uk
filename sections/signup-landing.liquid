@@ -6,6 +6,9 @@
 {%- liquid
   assign section_id = 'signup-landing-' | append: section.id
   assign has_app_blocks = false
+  assign app_blocks = section.blocks | where: 'type', '@app'
+  assign hero_app_block = app_blocks[0]
+  assign ea_app_block   = app_blocks[1]
 
   for block in section.blocks
     if block.type == '@app'
@@ -732,6 +735,114 @@
     background-size: contain;
 }
 
+  /* ── Early Access Banner ── */
+  #{{ section_id }} .sl-ea {
+    padding: 40px 0;
+    background: #f0e8d8;
+  }
+
+  #{{ section_id }} .sl-ea__inner {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    align-items: center;
+    gap: clamp(1.5rem, 3vw, 3rem);
+  }
+
+  #{{ section_id }} .sl-ea__deco {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #{{ section_id }} .sl-ea__deco svg {
+    width: 110px;
+    height: auto;
+    opacity: 0.85;
+  }
+
+  #{{ section_id }} .sl-ea__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  #{{ section_id }} .sl-ea__heading {
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.8rem, 2.2vw, 2.6rem);
+    font-weight: 700;
+    color: #2c3d1e;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  #{{ section_id }} .sl-ea__subtext {
+    font-size: 1.35rem;
+    color: #5a5345;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  #{{ section_id }} .sl-ea__form-wrap {
+    min-width: 420px;
+  }
+
+  #{{ section_id }} .sl-ea__form-wrap .sl-app-block {
+    width: 100%;
+  }
+
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"],
+  #{{ section_id }} .sl-ea__form-wrap shopify-forms-embed {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr auto !important;
+    gap: 10px !important;
+    align-items: start !important;
+    width: 100% !important;
+  }
+
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] > div:has(shop-lead-capture) {
+    display: none !important;
+  }
+
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] button[type="submit"],
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] button[data-testid="btn-form-submit"] {
+    grid-column: unset !important;
+    min-height: 58px !important;
+    white-space: nowrap;
+    padding: 0 1.5rem !important;
+    background: var(--sl-olive) !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    font-family: var(--font-body-family) !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+  }
+
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] button[type="submit"]:hover,
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] button[data-testid="btn-form-submit"]:hover {
+    background: var(--sl-olive-dark) !important;
+  }
+
+  @media screen and (max-width: 989px) {
+    #{{ section_id }} .sl-ea__inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    #{{ section_id }} .sl-ea__deco { display: none; }
+
+    #{{ section_id }} .sl-ea__form-wrap {
+      min-width: 0;
+      width: 100%;
+    }
+
+    #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"],
+    #{{ section_id }} .sl-ea__form-wrap shopify-forms-embed {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
   /* ── About Al'Ard ── */
   #{{ section_id }} .sl-about {
     padding: 60px 0 60px;
@@ -928,13 +1039,11 @@
 
         {%- if has_app_blocks -%}
           <div class="sl-app-blocks">
-            {%- for block in section.blocks -%}
-              {%- if block.type == '@app' -%}
-                <div class="sl-app-block" {{ block.shopify_attributes }}>
-                  {% render block %}
-                </div>
-              {%- endif -%}
-            {%- endfor -%}
+            {%- if hero_app_block -%}
+              <div class="sl-app-block" {{ hero_app_block.shopify_attributes }}>
+                {% render hero_app_block %}
+              </div>
+            {%- endif -%}
           </div>
         {%- else -%}
           {% form 'customer', class: 'sl-form' %}
@@ -1138,6 +1247,45 @@
                     {%- endif -%}
                   </div>
                 {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_early_access -%}
+    <div class="sl-ea">
+      <div class="sl-shell">
+        <div class="sl-ea__inner">
+
+          <div class="sl-ea__deco" aria-hidden="true">
+            <svg viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M60 150 C60 150 20 110 20 70 C20 40 38 20 60 20 C82 20 100 40 100 70 C100 110 60 150 60 150Z" stroke="#56642f" stroke-width="1.5" fill="none" opacity="0.4"/>
+              <path d="M60 20 L60 150" stroke="#56642f" stroke-width="1.2" opacity="0.5"/>
+              <ellipse cx="40" cy="65" rx="18" ry="10" transform="rotate(-35 40 65)" fill="#56642f" opacity="0.35"/>
+              <ellipse cx="80" cy="55" rx="18" ry="10" transform="rotate(35 80 55)" fill="#56642f" opacity="0.35"/>
+              <ellipse cx="35" cy="90" rx="16" ry="9" transform="rotate(-25 35 90)" fill="#56642f" opacity="0.3"/>
+              <ellipse cx="85" cy="82" rx="16" ry="9" transform="rotate(25 85 82)" fill="#56642f" opacity="0.3"/>
+              <circle cx="38" cy="72" r="4" fill="#7a9a3a" opacity="0.6"/>
+              <circle cx="82" cy="62" r="4" fill="#7a9a3a" opacity="0.6"/>
+              <circle cx="34" cy="97" r="3.5" fill="#7a9a3a" opacity="0.55"/>
+            </svg>
+          </div>
+
+          <div class="sl-ea__text">
+            <h2 class="sl-ea__heading">{{ section.settings.ea_heading }}</h2>
+            {%- if section.settings.ea_subtext != blank -%}
+              <p class="sl-ea__subtext">{{ section.settings.ea_subtext }}</p>
+            {%- endif -%}
+          </div>
+
+          <div class="sl-ea__form-wrap">
+            {%- if ea_app_block -%}
+              <div class="sl-app-block" {{ ea_app_block.shopify_attributes }}>
+                {% render ea_app_block %}
               </div>
             {%- endif -%}
           </div>
@@ -1591,6 +1739,28 @@
       "id": "show_trust_bar",
       "label": "Show bottom trust bar",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Early Access Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_early_access",
+      "label": "Show early access banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "ea_heading",
+      "label": "Heading",
+      "default": "Get Early Access to the UK Launch"
+    },
+    {
+      "type": "textarea",
+      "id": "ea_subtext",
+      "label": "Subtext",
+      "default": "Join our email list to receive 15% OFF your first order, launch news, and first access to authentic Palestinian products."
     },
     {
       "type": "header",
