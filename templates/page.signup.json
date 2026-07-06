@@ -75,7 +75,7 @@
           "settings": {
             "icon": "leaf",
             "title": "Authentic Palestinian Origin",
-            "text": "100% Pure & Traditional Olive Oil from Palestine."
+            "text": "100% Traditional Olive Oil from Palestine."
           }
         },
         "trust_shipping": {
@@ -83,7 +83,7 @@
           "settings": {
             "icon": "truck",
             "title": "Free shipping",
-            "text": "Free Shipping for orders over $99"
+            "text": "Free Shipping for orders over 50£"
           }
         },
         "trust_delivery": {
@@ -91,7 +91,7 @@
           "settings": {
             "icon": "bolt",
             "title": "Fast & Secure Delivery",
-            "text": "Worldwide shipping, carefully packed."
+            "text": "Fast shipping, carefully packed."
           }
         },
         "trust_quality": {
