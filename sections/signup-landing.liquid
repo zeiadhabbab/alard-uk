@@ -934,6 +934,150 @@
     }
   }
 
+  /* ── Coming to Store ── */
+  #{{ section_id }} .sl-coming {
+    padding: clamp(46px, 6vw, 78px) 0 clamp(54px, 6vw, 82px);
+    background: {{ section.settings.coming_background_color | default: '#f4efe5' }};
+    color: {{ section.settings.coming_text_color | default: '#2f321f' }};
+  }
+
+  #{{ section_id }} .sl-coming__header {
+    max-width: 720px;
+    margin: 0 auto 30px;
+    text-align: center;
+  }
+
+  #{{ section_id }} .sl-coming__heading {
+    margin: 0;
+    color: {{ section.settings.coming_heading_color | default: '#56642f' }};
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.9rem, 3.2vw, 4.3rem);
+    font-weight: 700;
+    line-height: 1.08;
+  }
+
+  #{{ section_id }} .sl-coming__subtext {
+    max-width: 520px;
+    margin: 8px auto 0;
+    color: {{ section.settings.coming_text_color | default: '#2f321f' }};
+    font-size: clamp(1.2rem, 1vw, 1.45rem);
+    line-height: 1.42;
+  }
+
+  #{{ section_id }} .sl-coming__groups {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+    align-items: start;
+  }
+
+  #{{ section_id }} .sl-coming__group {
+    min-width: 0;
+  }
+
+  #{{ section_id }} .sl-coming__group-heading {
+    display: grid;
+    grid-template-columns: 16px auto 1fr;
+    gap: 8px;
+    align-items: center;
+    margin: 0 0 10px;
+    color: {{ section.settings.coming_heading_color | default: '#56642f' }};
+    font-family: var(--font-heading-family);
+    font-size: clamp(1.35rem, 1.08vw, 1.65rem);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  #{{ section_id }} .sl-coming__group-heading::before,
+  #{{ section_id }} .sl-coming__group-heading::after {
+    content: "";
+    height: 1px;
+    background: {{ section.settings.coming_accent_color | default: '#9f9b68' }};
+    opacity: 0.55;
+  }
+
+  #{{ section_id }} .sl-coming__products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
+    gap: 10px;
+  }
+
+  #{{ section_id }} .sl-coming__product {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 7px;
+    color: inherit;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  #{{ section_id }} .sl-coming__product-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1.16;
+    padding: 10px;
+    border: 1px solid rgba(92, 82, 55, 0.14);
+    border-radius: 7px;
+    background: {{ section.settings.coming_card_background_color | default: '#fbf8f0' }};
+    box-shadow: 0 6px 14px rgba(88, 72, 42, 0.04);
+  }
+
+  #{{ section_id }} .sl-coming__product-media img,
+  #{{ section_id }} .sl-coming__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #{{ section_id }} .sl-coming__placeholder {
+    color: rgba(86, 100, 47, 0.22);
+  }
+
+  #{{ section_id }} .sl-coming__product-title {
+    display: block;
+    color: {{ section.settings.coming_text_color | default: '#2f321f' }};
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  @media screen and (max-width: 1180px) {
+    #{{ section_id }} .sl-coming__groups {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    #{{ section_id }} .sl-coming {
+      padding: 42px 0 52px;
+    }
+
+    #{{ section_id }} .sl-coming__header {
+      margin-bottom: 24px;
+    }
+
+    #{{ section_id }} .sl-coming__groups {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    #{{ section_id }} .sl-coming__products {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scroll-snap-type: x proximity;
+    }
+
+    #{{ section_id }} .sl-coming__product {
+      flex: 0 0 128px;
+      scroll-snap-align: start;
+    }
+  }
+
   /* ── About Al'Ard ── */
   #{{ section_id }} .sl-about {
     padding: 60px 0 60px;
@@ -1471,6 +1615,173 @@
     </div>
   {%- endif -%}
 
+  {%- liquid
+    assign coming_olive_oil_products = section.settings.coming_olive_oil_products
+    assign coming_pantry_products = section.settings.coming_pantry_products
+    assign coming_spices_products = section.settings.coming_spices_products
+    assign coming_heritage_products = section.settings.coming_heritage_products
+    assign has_coming_store_products = false
+
+    if coming_olive_oil_products != blank or coming_pantry_products != blank or coming_spices_products != blank or coming_heritage_products != blank
+      assign has_coming_store_products = true
+    endif
+  -%}
+
+  {%- if section.settings.show_coming_store and has_coming_store_products -%}
+    <div class="sl-coming">
+      <div class="sl-shell">
+        <div class="sl-coming__header">
+          <h2 class="sl-coming__heading">{{ section.settings.coming_heading }}</h2>
+          {%- if section.settings.coming_subtext != blank -%}
+            <p class="sl-coming__subtext">{{ section.settings.coming_subtext }}</p>
+          {%- endif -%}
+        </div>
+
+        <div class="sl-coming__groups">
+          {%- if coming_olive_oil_products != blank -%}
+            <div class="sl-coming__group">
+              <h3 class="sl-coming__group-heading">Palestinian olive oil</h3>
+              <div class="sl-coming__products">
+                {%- for product in coming_olive_oil_products -%}
+                  {%- capture coming_product_inner -%}
+                    <span class="sl-coming__product-media">
+                      {%- if product.featured_image != blank -%}
+                        {%- assign coming_product_image_alt = product.featured_image.alt | default: product.title | escape -%}
+                        {{
+                          product.featured_image
+                          | image_url: width: 360
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '120, 180, 240, 360',
+                            sizes: '(max-width: 640px) 108px, 120px',
+                            alt: coming_product_image_alt
+                        }}
+                      {%- else -%}
+                        {{ 'product-apparel-1' | placeholder_svg_tag: 'sl-coming__placeholder' }}
+                      {%- endif -%}
+                    </span>
+                    <span class="sl-coming__product-title">{{ product.title }}</span>
+                  {%- endcapture -%}
+
+                  {%- if product.url != blank -%}
+                    <a class="sl-coming__product" href="{{ product.url }}">{{ coming_product_inner }}</a>
+                  {%- else -%}
+                    <div class="sl-coming__product">{{ coming_product_inner }}</div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if coming_pantry_products != blank -%}
+            <div class="sl-coming__group">
+              <h3 class="sl-coming__group-heading">Palestinian Pantry</h3>
+              <div class="sl-coming__products">
+                {%- for product in coming_pantry_products -%}
+                  {%- capture coming_product_inner -%}
+                    <span class="sl-coming__product-media">
+                      {%- if product.featured_image != blank -%}
+                        {%- assign coming_product_image_alt = product.featured_image.alt | default: product.title | escape -%}
+                        {{
+                          product.featured_image
+                          | image_url: width: 360
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '120, 180, 240, 360',
+                            sizes: '(max-width: 640px) 108px, 120px',
+                            alt: coming_product_image_alt
+                        }}
+                      {%- else -%}
+                        {{ 'product-apparel-1' | placeholder_svg_tag: 'sl-coming__placeholder' }}
+                      {%- endif -%}
+                    </span>
+                    <span class="sl-coming__product-title">{{ product.title }}</span>
+                  {%- endcapture -%}
+
+                  {%- if product.url != blank -%}
+                    <a class="sl-coming__product" href="{{ product.url }}">{{ coming_product_inner }}</a>
+                  {%- else -%}
+                    <div class="sl-coming__product">{{ coming_product_inner }}</div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if coming_spices_products != blank -%}
+            <div class="sl-coming__group">
+              <h3 class="sl-coming__group-heading">Za'atar, Herbes and Spices</h3>
+              <div class="sl-coming__products">
+                {%- for product in coming_spices_products -%}
+                  {%- capture coming_product_inner -%}
+                    <span class="sl-coming__product-media">
+                      {%- if product.featured_image != blank -%}
+                        {%- assign coming_product_image_alt = product.featured_image.alt | default: product.title | escape -%}
+                        {{
+                          product.featured_image
+                          | image_url: width: 360
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '120, 180, 240, 360',
+                            sizes: '(max-width: 640px) 108px, 120px',
+                            alt: coming_product_image_alt
+                        }}
+                      {%- else -%}
+                        {{ 'product-apparel-1' | placeholder_svg_tag: 'sl-coming__placeholder' }}
+                      {%- endif -%}
+                    </span>
+                    <span class="sl-coming__product-title">{{ product.title }}</span>
+                  {%- endcapture -%}
+
+                  {%- if product.url != blank -%}
+                    <a class="sl-coming__product" href="{{ product.url }}">{{ coming_product_inner }}</a>
+                  {%- else -%}
+                    <div class="sl-coming__product">{{ coming_product_inner }}</div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if coming_heritage_products != blank -%}
+            <div class="sl-coming__group">
+              <h3 class="sl-coming__group-heading">Kufiya and heritage</h3>
+              <div class="sl-coming__products">
+                {%- for product in coming_heritage_products -%}
+                  {%- capture coming_product_inner -%}
+                    <span class="sl-coming__product-media">
+                      {%- if product.featured_image != blank -%}
+                        {%- assign coming_product_image_alt = product.featured_image.alt | default: product.title | escape -%}
+                        {{
+                          product.featured_image
+                          | image_url: width: 360
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '120, 180, 240, 360',
+                            sizes: '(max-width: 640px) 108px, 120px',
+                            alt: coming_product_image_alt
+                        }}
+                      {%- else -%}
+                        {{ 'product-apparel-1' | placeholder_svg_tag: 'sl-coming__placeholder' }}
+                      {%- endif -%}
+                    </span>
+                    <span class="sl-coming__product-title">{{ product.title }}</span>
+                  {%- endcapture -%}
+
+                  {%- if product.url != blank -%}
+                    <a class="sl-coming__product" href="{{ product.url }}">{{ coming_product_inner }}</a>
+                  {%- else -%}
+                    <div class="sl-coming__product">{{ coming_product_inner }}</div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
   <div class="sl-community">
     <div class="sl-shell">
       <h2 class="sl-heading">{{ section.settings.community_heading }}</h2>
@@ -1954,6 +2265,82 @@
       "id": "ea_button_label",
       "label": "Button label",
       "default": "Join the List"
+    },
+    {
+      "type": "header",
+      "content": "Coming to Store"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_coming_store",
+      "label": "Show coming to store section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "coming_heading",
+      "label": "Heading",
+      "default": "What's Coming to the Online Store"
+    },
+    {
+      "type": "textarea",
+      "id": "coming_subtext",
+      "label": "Subtext",
+      "default": "A curated collection of Palestinian favourites - from olive oil and pantry essentials to spices, natural care, and heritage pieces."
+    },
+    {
+      "type": "color",
+      "id": "coming_background_color",
+      "label": "Background color",
+      "default": "#f4efe5"
+    },
+    {
+      "type": "color",
+      "id": "coming_card_background_color",
+      "label": "Product card background",
+      "default": "#fbf8f0"
+    },
+    {
+      "type": "color",
+      "id": "coming_heading_color",
+      "label": "Heading color",
+      "default": "#56642f"
+    },
+    {
+      "type": "color",
+      "id": "coming_text_color",
+      "label": "Text color",
+      "default": "#2f321f"
+    },
+    {
+      "type": "color",
+      "id": "coming_accent_color",
+      "label": "Accent line color",
+      "default": "#9f9b68"
+    },
+    {
+      "type": "product_list",
+      "id": "coming_olive_oil_products",
+      "label": "Palestinian olive oil products",
+      "limit": 8
+    },
+    {
+      "type": "product_list",
+      "id": "coming_pantry_products",
+      "label": "Palestinian Pantry products",
+      "limit": 8
+    },
+    {
+      "type": "product_list",
+      "id": "coming_spices_products",
+      "label": "Za'atar, Herbes and Spices products",
+      "limit": 8
+    },
+    {
+      "type": "product_list",
+      "id": "coming_heritage_products",
+      "label": "Kufiya and heritage products",
+      "limit": 8
     },
     {
       "type": "header",
