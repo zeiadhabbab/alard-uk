@@ -737,53 +737,79 @@
 
   /* ── Early Access Banner ── */
   #{{ section_id }} .sl-ea {
-    padding: 40px 0;
-    background: #f0e8d8;
+    padding: 14px 0 40px;
+    background: transparent;
   }
 
   #{{ section_id }} .sl-ea__inner {
+    position: relative;
     display: grid;
-    grid-template-columns: 120px 1fr auto;
+    grid-template-columns: 170px minmax(0, 1fr);
+    grid-template-areas:
+      "deco text"
+      "deco form";
     align-items: center;
-    gap: clamp(1.5rem, 3vw, 3rem);
+    column-gap: clamp(1.8rem, 4vw, 5.8rem);
+    row-gap: 14px;
+    min-height: 162px;
+    padding: 25px clamp(18px, 4.4vw, 58px) 14px clamp(16px, 3vw, 42px);
+    overflow: hidden;
+    border: 1px solid rgba(94, 91, 64, 0.08);
+    border-radius: 9px;
+    background:
+      linear-gradient(90deg, rgba(226, 219, 193, 0.74), rgba(239, 235, 213, 0.94) 40%, rgba(226, 219, 193, 0.76)),
+      #e8e3cb;
+    box-shadow: 0 8px 22px rgba(82, 70, 45, 0.06);
   }
 
   #{{ section_id }} .sl-ea__deco {
+    grid-area: deco;
     display: flex;
     align-items: center;
     justify-content: center;
+    align-self: stretch;
   }
 
   #{{ section_id }} .sl-ea__deco svg {
-    width: 110px;
+    width: min(100%, 166px);
     height: auto;
-    opacity: 0.85;
+    margin: -16px 0 -10px -18px;
+    opacity: 0.92;
   }
 
   #{{ section_id }} .sl-ea__text {
+    grid-area: text;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    align-items: center;
+    gap: 0.25rem;
+    max-width: 710px;
+    margin: 0 auto;
+    text-align: center;
   }
 
   #{{ section_id }} .sl-ea__heading {
     font-family: var(--font-heading-family);
-    font-size: clamp(1.8rem, 2.2vw, 2.6rem);
+    font-size: clamp(1.9rem, 1.85vw, 2.55rem);
     font-weight: 700;
     color: #2c3d1e;
     margin: 0;
-    line-height: 1.2;
+    line-height: 1.14;
   }
 
   #{{ section_id }} .sl-ea__subtext {
-    font-size: 1.35rem;
-    color: #5a5345;
+    max-width: 595px;
+    font-size: clamp(1.05rem, 0.86vw, 1.28rem);
+    color: #2f321f;
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.32;
   }
 
   #{{ section_id }} .sl-ea__form-wrap {
-    min-width: 420px;
+    grid-area: form;
+    width: min(100%, 650px);
+    min-width: 0;
+    margin: 0 auto;
   }
 
   #{{ section_id }} .sl-ea__form-wrap .sl-app-block {
@@ -793,30 +819,103 @@
   #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"],
   #{{ section_id }} .sl-ea__form-wrap shopify-forms-embed {
     display: grid !important;
-    grid-template-columns: 1fr 1fr auto !important;
-    gap: 10px !important;
-    align-items: start !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(130px, 0.73fr) !important;
+    gap: 12px !important;
+    align-items: center !important;
     width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
   }
 
   #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] > div:has(shop-lead-capture) {
     display: none !important;
   }
 
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] [class*="_formFieldContainer"] {
+    position: relative;
+    margin: 0 !important;
+  }
+
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] [class*="_formFieldContainer"]::before {
+    content: "";
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    z-index: 2;
+    width: 14px;
+    height: 14px;
+    background-color: #8c9188;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] [class*="_formFieldContainer"]:has(input[data-testid="field-first_name"])::before,
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] [class*="_formFieldContainer"]:has(input#first_name)::before {
+    mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 21a8 8 0 0 0-16 0' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='7' r='4' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") center / contain no-repeat;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 21a8 8 0 0 0-16 0' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='7' r='4' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] [class*="_formFieldContainer"]:has(input[data-testid="field-email"])::before,
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] [class*="_formFieldContainer"]:has(input#email)::before {
+    mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='3' y='5' width='18' height='14' rx='2' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='m3.5 7 8.5 6 8.5-6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='3' y='5' width='18' height='14' rx='2' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='m3.5 7 8.5 6 8.5-6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] input {
+    width: 100% !important;
+    min-height: 33px !important;
+    height: 33px !important;
+    padding: 0 12px 0 34px !important;
+    border: 1px solid rgba(200, 202, 190, 0.88) !important;
+    border-radius: 3px !important;
+    background: #fff !important;
+    color: var(--sl-text) !important;
+    font-family: var(--font-body-family) !important;
+    font-size: 1rem !important;
+    line-height: 33px !important;
+    box-shadow: none !important;
+    outline-offset: 2px;
+  }
+
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] label {
+    position: absolute !important;
+    left: 34px !important;
+    top: 50% !important;
+    color: #777a72 !important;
+    font-family: var(--font-body-family) !important;
+    font-size: 0.98rem !important;
+    line-height: 1 !important;
+    transform: translateY(-50%) !important;
+    transition: opacity 160ms ease, visibility 160ms ease !important;
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] input:focus + label,
+  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] input:not(:placeholder-shown) + label {
+    opacity: 0;
+  }
+
   #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] button[type="submit"],
   #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] button[data-testid="btn-form-submit"] {
     grid-column: unset !important;
-    min-height: 58px !important;
+    width: 100% !important;
+    min-height: 33px !important;
+    height: 33px !important;
     white-space: nowrap;
-    padding: 0 1.5rem !important;
+    padding: 0 1.4rem !important;
     background: var(--sl-olive) !important;
     color: #fff !important;
     border: 0 !important;
-    border-radius: 8px !important;
+    border-radius: 4px !important;
     font-family: var(--font-body-family) !important;
-    font-size: 1.5rem !important;
+    font-size: 1rem !important;
+    line-height: 33px !important;
     font-weight: 700 !important;
     cursor: pointer;
+    box-shadow: none !important;
   }
 
   #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] button[type="submit"]:hover,
@@ -827,10 +926,24 @@
   @media screen and (max-width: 989px) {
     #{{ section_id }} .sl-ea__inner {
       grid-template-columns: 1fr;
+      grid-template-areas:
+        "deco"
+        "text"
+        "form";
+      min-height: 0;
+      padding: 26px 18px 22px;
       text-align: center;
     }
 
-    #{{ section_id }} .sl-ea__deco { display: none; }
+    #{{ section_id }} .sl-ea__deco {
+      max-height: 78px;
+      overflow: hidden;
+    }
+
+    #{{ section_id }} .sl-ea__deco svg {
+      width: 128px;
+      margin: -34px auto -16px;
+    }
 
     #{{ section_id }} .sl-ea__form-wrap {
       min-width: 0;
@@ -1262,16 +1375,35 @@
         <div class="sl-ea__inner">
 
           <div class="sl-ea__deco" aria-hidden="true">
-            <svg viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M60 150 C60 150 20 110 20 70 C20 40 38 20 60 20 C82 20 100 40 100 70 C100 110 60 150 60 150Z" stroke="#56642f" stroke-width="1.5" fill="none" opacity="0.4"/>
-              <path d="M60 20 L60 150" stroke="#56642f" stroke-width="1.2" opacity="0.5"/>
-              <ellipse cx="40" cy="65" rx="18" ry="10" transform="rotate(-35 40 65)" fill="#56642f" opacity="0.35"/>
-              <ellipse cx="80" cy="55" rx="18" ry="10" transform="rotate(35 80 55)" fill="#56642f" opacity="0.35"/>
-              <ellipse cx="35" cy="90" rx="16" ry="9" transform="rotate(-25 35 90)" fill="#56642f" opacity="0.3"/>
-              <ellipse cx="85" cy="82" rx="16" ry="9" transform="rotate(25 85 82)" fill="#56642f" opacity="0.3"/>
-              <circle cx="38" cy="72" r="4" fill="#7a9a3a" opacity="0.6"/>
-              <circle cx="82" cy="62" r="4" fill="#7a9a3a" opacity="0.6"/>
-              <circle cx="34" cy="97" r="3.5" fill="#7a9a3a" opacity="0.55"/>
+            <svg viewBox="0 0 180 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 133 C48 104 76 79 111 53 C129 40 145 29 163 17" stroke="#6f6d4b" stroke-width="3.2" stroke-linecap="round"/>
+              <path d="M43 109 C31 101 23 91 18 77" stroke="#6f6d4b" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M58 94 C51 82 47 70 47 55" stroke="#6f6d4b" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M75 80 C68 68 65 55 67 40" stroke="#6f6d4b" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M94 65 C88 54 87 41 91 27" stroke="#6f6d4b" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M111 52 C106 41 107 30 112 19" stroke="#6f6d4b" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M46 108 C58 110 71 108 83 101" stroke="#6f6d4b" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M65 91 C78 93 91 89 102 81" stroke="#6f6d4b" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M84 76 C98 77 110 72 120 62" stroke="#6f6d4b" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M103 61 C116 60 127 55 136 44" stroke="#6f6d4b" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M122 47 C133 45 143 39 151 30" stroke="#6f6d4b" stroke-width="1.6" stroke-linecap="round"/>
+
+              <ellipse cx="20" cy="74" rx="7" ry="22" transform="rotate(-30 20 74)" fill="#858660"/>
+              <ellipse cx="48" cy="54" rx="7" ry="22" transform="rotate(-6 48 54)" fill="#858660"/>
+              <ellipse cx="69" cy="38" rx="7" ry="21" transform="rotate(6 69 38)" fill="#858660"/>
+              <ellipse cx="93" cy="26" rx="6.5" ry="19" transform="rotate(15 93 26)" fill="#858660"/>
+              <ellipse cx="115" cy="19" rx="6" ry="17" transform="rotate(24 115 19)" fill="#858660"/>
+              <ellipse cx="83" cy="100" rx="7" ry="22" transform="rotate(63 83 100)" fill="#858660"/>
+              <ellipse cx="103" cy="81" rx="7" ry="21" transform="rotate(57 103 81)" fill="#858660"/>
+              <ellipse cx="121" cy="62" rx="6.5" ry="20" transform="rotate(50 121 62)" fill="#858660"/>
+              <ellipse cx="136" cy="44" rx="6" ry="18" transform="rotate(45 136 44)" fill="#858660"/>
+              <ellipse cx="151" cy="30" rx="5.5" ry="16" transform="rotate(41 151 30)" fill="#858660"/>
+
+              <circle cx="39" cy="116" r="9" fill="#8b8242"/>
+              <circle cx="47" cy="112" r="6.5" fill="#b5a44a"/>
+              <circle cx="56" cy="99" r="7" fill="#6f742e"/>
+              <circle cx="112" cy="58" r="5.5" fill="#a99842"/>
+              <circle cx="126" cy="47" r="5" fill="#77772e"/>
             </svg>
           </div>
 
