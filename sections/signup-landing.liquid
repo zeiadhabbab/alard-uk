@@ -55,7 +55,7 @@
 
   #{{ section_id }} .sl-shell {
     width: var(--sl-page);
-    margin: 0 auto;
+    margin: 30px auto 0;
   }
 
   #{{ section_id }} .sl-heading {
@@ -1507,6 +1507,16 @@
     </div>
   {%- endif -%}
 
+  <div class="sl-story">
+    <div class="sl-shell sl-story__grid">
+      <div class="sl-story__content">
+        <h2 class="sl-heading">{{ section.settings.story_heading }}</h2>
+        <span class="sl-rule" aria-hidden="true"></span>
+        <p class="sl-copy">{{ section.settings.story_text }}</p>
+      </div>
+    </div>
+  </div>
+
   <div class="sl-benefits">
     <div class="sl-shell sl-center">
       <h2 class="sl-heading">{{ section.settings.benefits_heading }}</h2>
@@ -1543,16 +1553,6 @@
             </article>
           {%- endif -%}
         {%- endfor -%}
-      </div>
-    </div>
-  </div>
-
-  <div class="sl-story">
-    <div class="sl-shell sl-story__grid">
-      <div class="sl-story__content">
-        <h2 class="sl-heading">{{ section.settings.story_heading }}</h2>
-        <span class="sl-rule" aria-hidden="true"></span>
-        <p class="sl-copy">{{ section.settings.story_text }}</p>
       </div>
     </div>
   </div>
