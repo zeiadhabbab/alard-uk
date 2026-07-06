@@ -187,19 +187,33 @@
         "coming_accent_color": "#9f9b68",
         "coming_olive_oil_products": [
           "palestinian-extra-virgin-olive-oil-500-ml-1",
-          "premium-extra-virgin-olive-oil"
+          "premium-extra-virgin-olive-oil",
+          "palestinian-extra-virgin-olive-oil-1-l-1",
+          "palestinian-extra-virgin-olive-oil-500-ml-2",
+          "palestinian-extra-virgin-olive-oil-750-ml",
+          "palestinian-extra-virgin-olive-oil-1-l"
         ],
         "coming_pantry_products": [
           "palestinian-tahini-paste",
-          "premium-palestinian-dried-zaatar-leaves-thyme-100g-3-53oz-copy-1"
+          "premium-palestinian-dried-zaatar-leaves-thyme-100g-3-53oz-copy-1",
+          "green-olive-pickles-907g-2lb-copy",
+          "black-seed-paste-blend-qizha-500g-1-1ib",
+          "freekeh",
+          "palestinian-maftoul-couscous"
         ],
         "coming_spices_products": [
           "chicken-shawarma-spice-mix-120g-4-23oz-copy",
-          "premium-palestinian-zaatar-thyme-mixture"
+          "premium-palestinian-zaatar-thyme-mixture",
+          "palestinian-green-freekeh-copy",
+          "7-spices-mix-120g-4-23oz",
+          "premium-palestinian-dried-zaatar-leaves-thyme-100g-3-53oz-copy",
+          "maqlobah-spice-mix-120g-4-23oz-copy"
         ],
         "coming_heritage_products": [
           "palestinian-red-and-white-kufiya-made-in-palestine-copy",
-          "palestinian-black-and-white-kufiya-made-in-palestine"
+          "palestinian-black-and-white-kufiya-made-in-palestine",
+          "premium-nabulsi-soap",
+          "palestinian-liquid-nabulsi-soap-with-olive-oil-250ml"
         ],
         "show_about": true,
         "about_image": "shopify://shop_images/WhatsApp_Image_2026-07-05_at_16.02.14.jpg",
