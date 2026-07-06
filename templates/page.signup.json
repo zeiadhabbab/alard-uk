@@ -12,23 +12,6 @@
     "main": {
       "type": "signup-landing",
       "blocks": {
-        "forms_inline_early_access": {
-          "type": "shopify://apps/forms/blocks/inline/8744a304-fcb1-4347-b211-bb6b4759a76a",
-          "settings": {
-            "form_id": "1059950",
-            "text_color": "#202020",
-            "button_background_color": "#56642f",
-            "button_label_color": "#ffffff",
-            "links_color": "#1878b9",
-            "errors_color": "#e02229",
-            "text_alignment": "center",
-            "form_alignment": "center",
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_right": 0,
-            "padding_left": 0
-          }
-        },
         "forms_inline_wVLiNJ": {
           "type": "shopify://apps/forms/blocks/inline/8744a304-fcb1-4347-b211-bb6b4759a76a",
           "settings": {
@@ -42,6 +25,23 @@
             "form_alignment": "center",
             "padding_top": 0,
             "padding_bottom": 24,
+            "padding_right": 0,
+            "padding_left": 0
+          }
+        },
+        "forms_inline_early_access": {
+          "type": "shopify://apps/forms/blocks/inline/8744a304-fcb1-4347-b211-bb6b4759a76a",
+          "settings": {
+            "form_id": "1059950",
+            "text_color": "#202020",
+            "button_background_color": "#56642f",
+            "button_label_color": "#ffffff",
+            "links_color": "#1878b9",
+            "errors_color": "#e02229",
+            "text_alignment": "center",
+            "form_alignment": "center",
+            "padding_top": 0,
+            "padding_bottom": 0,
             "padding_right": 0,
             "padding_left": 0
           }
@@ -172,14 +172,17 @@
         "community_button_label": "Get Updates",
         "show_trust_bar": true,
         "show_early_access": true,
+        "ea_background_color": "#E8E7CB",
+        "ea_deco_image": "shopify://shop_images/ChatGPT_Image_Jul_6_2026_12_41_14_PM.png",
         "ea_heading": "Get Early Access to the UK Launch",
         "ea_subtext": "Join our email list to receive 15% OFF your first order, launch news, and first access to authentic Palestinian products.",
+        "ea_button_label": "Join the List",
         "show_about": true,
         "about_image": "shopify://shop_images/WhatsApp_Image_2026-07-05_at_16.02.14.jpg",
         "about_label": "About AL'ARD",
         "about_heading": "We are Palestinian;\nwe like to feed people",
         "about_body": "<p>We are a third generation family-run company passionate about bringing the best of Palestinian artisanal food to your dining table. We believe in environmentally-friendly practices, organic farming and putting the farmers and their glorious land at the heart of what we do. The land is so critical to us that we named our company after it, with Al Ard meaning the land in Arabic.</p><p>We know that healthy food makes healthy bodies, and that is what we are about. And just like our family, our company thrives on bringing together traditional knowledge and modern practices to provide you with nothing but the finest quality goods.</p>",
-        "about_card_color": "#faf6ef",
+        "about_card_color": "#F6F1EB",
         "about_text_color": "#3a3530",
         "about_heading_color": "#2c3d1e",
         "about_accent_color": "#56642f",
