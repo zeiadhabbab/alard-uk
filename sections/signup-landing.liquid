@@ -8,7 +8,6 @@
   assign has_app_blocks = false
   assign app_blocks = section.blocks | where: 'type', '@app'
   assign hero_app_block = app_blocks[0]
-  assign ea_app_block   = app_blocks[1]
 
   for block in section.blocks
     if block.type == '@app'
@@ -737,22 +736,26 @@
 
   /* ── Early Access Banner ── */
   #{{ section_id }} .sl-ea {
-    padding: 14px 0 40px;
+    padding: 12px 0 36px;
     background: transparent;
+  }
+
+  #{{ section_id }} .sl-ea > .sl-shell {
+    width: min(1120px, calc(100vw - 32px));
   }
 
   #{{ section_id }} .sl-ea__inner {
     position: relative;
     display: grid;
-    grid-template-columns: 170px minmax(0, 1fr);
+    grid-template-columns: 176px minmax(0, 1fr);
     grid-template-areas:
       "deco text"
       "deco form";
     align-items: center;
-    column-gap: clamp(1.8rem, 4vw, 5.8rem);
-    row-gap: 14px;
-    min-height: 162px;
-    padding: 25px clamp(18px, 4.4vw, 58px) 14px clamp(16px, 3vw, 42px);
+    column-gap: clamp(2rem, 4.2vw, 6.2rem);
+    row-gap: 12px;
+    min-height: 126px;
+    padding: 18px clamp(24px, 5.2vw, 78px) 14px clamp(18px, 3vw, 34px);
     overflow: hidden;
     border: 1px solid rgba(94, 91, 64, 0.08);
     border-radius: 9px;
@@ -771,10 +774,12 @@
   }
 
   #{{ section_id }} .sl-ea__deco svg {
-    width: min(100%, 166px);
+    width: min(100%, 156px);
     height: auto;
-    margin: -16px 0 -10px -18px;
+    margin: -22px 0 -12px -16px;
     opacity: 0.92;
+    transform: rotate(-11deg);
+    transform-origin: center;
   }
 
   #{{ section_id }} .sl-ea__text {
@@ -782,7 +787,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.2rem;
     max-width: 710px;
     margin: 0 auto;
     text-align: center;
@@ -790,7 +795,7 @@
 
   #{{ section_id }} .sl-ea__heading {
     font-family: var(--font-heading-family);
-    font-size: clamp(1.9rem, 1.85vw, 2.55rem);
+    font-size: clamp(1.95rem, 1.85vw, 2.35rem);
     font-weight: 700;
     color: #2c3d1e;
     margin: 0;
@@ -798,8 +803,8 @@
   }
 
   #{{ section_id }} .sl-ea__subtext {
-    max-width: 595px;
-    font-size: clamp(1.05rem, 0.86vw, 1.28rem);
+    max-width: 570px;
+    font-size: clamp(1rem, 0.82vw, 1.16rem);
     color: #2f321f;
     margin: 0;
     line-height: 1.32;
@@ -812,115 +817,83 @@
     margin: 0 auto;
   }
 
-  #{{ section_id }} .sl-ea__form-wrap .sl-app-block {
+  #{{ section_id }} .sl-ea-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 170px;
+    gap: 12px;
+    align-items: center;
     width: 100%;
+    margin: 0;
   }
 
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"],
-  #{{ section_id }} .sl-ea__form-wrap shopify-forms-embed {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(130px, 0.73fr) !important;
-    gap: 12px !important;
-    align-items: center !important;
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    background: transparent !important;
-  }
-
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] > div:has(shop-lead-capture) {
-    display: none !important;
-  }
-
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] [class*="_formFieldContainer"] {
+  #{{ section_id }} .sl-ea-form__field {
     position: relative;
-    margin: 0 !important;
+    min-width: 0;
   }
 
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] [class*="_formFieldContainer"]::before {
-    content: "";
+  #{{ section_id }} .sl-ea-form__icon {
     position: absolute;
     left: 13px;
     top: 50%;
     z-index: 2;
     width: 14px;
     height: 14px;
-    background-color: #8c9188;
+    color: #8c9188;
     transform: translateY(-50%);
     pointer-events: none;
   }
 
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] [class*="_formFieldContainer"]:has(input[data-testid="field-first_name"])::before,
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] [class*="_formFieldContainer"]:has(input#first_name)::before {
-    mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 21a8 8 0 0 0-16 0' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='7' r='4' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") center / contain no-repeat;
-    -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 21a8 8 0 0 0-16 0' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='7' r='4' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") center / contain no-repeat;
-  }
-
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] [class*="_formFieldContainer"]:has(input[data-testid="field-email"])::before,
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] [class*="_formFieldContainer"]:has(input#email)::before {
-    mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='3' y='5' width='18' height='14' rx='2' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='m3.5 7 8.5 6 8.5-6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
-    -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='3' y='5' width='18' height='14' rx='2' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='m3.5 7 8.5 6 8.5-6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
-  }
-
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] input {
-    width: 100% !important;
-    min-height: 33px !important;
-    height: 33px !important;
-    padding: 0 12px 0 34px !important;
-    border: 1px solid rgba(200, 202, 190, 0.88) !important;
-    border-radius: 3px !important;
-    background: #fff !important;
-    color: var(--sl-text) !important;
-    font-family: var(--font-body-family) !important;
-    font-size: 1rem !important;
-    line-height: 33px !important;
-    box-shadow: none !important;
+  #{{ section_id }} .sl-ea-form input {
+    width: 100%;
+    height: 34px;
+    min-height: 34px;
+    padding: 0 12px 0 34px;
+    border: 1px solid rgba(200, 202, 190, 0.9);
+    border-radius: 3px;
+    background: #fff;
+    color: var(--sl-text);
+    font-family: var(--font-body-family);
+    font-size: 1rem;
+    line-height: 34px;
+    box-shadow: none;
     outline-offset: 2px;
   }
 
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] label {
-    position: absolute !important;
-    left: 34px !important;
-    top: 50% !important;
-    color: #777a72 !important;
-    font-family: var(--font-body-family) !important;
-    font-size: 0.98rem !important;
-    line-height: 1 !important;
-    transform: translateY(-50%) !important;
-    transition: opacity 160ms ease, visibility 160ms ease !important;
-    pointer-events: none;
+  #{{ section_id }} .sl-ea-form input::placeholder {
+    color: #676b63;
+    opacity: 1;
   }
 
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] input:focus + label,
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] input:not(:placeholder-shown) + label {
-    opacity: 0;
-  }
-
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] button[type="submit"],
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] button[data-testid="btn-form-submit"] {
-    grid-column: unset !important;
-    width: 100% !important;
-    min-height: 33px !important;
-    height: 33px !important;
+  #{{ section_id }} .sl-ea-form__button {
+    width: 100%;
+    height: 34px;
+    min-height: 34px;
     white-space: nowrap;
-    padding: 0 1.4rem !important;
-    background: var(--sl-olive) !important;
-    color: #fff !important;
-    border: 0 !important;
-    border-radius: 4px !important;
-    font-family: var(--font-body-family) !important;
-    font-size: 1rem !important;
-    line-height: 33px !important;
-    font-weight: 700 !important;
+    padding: 0 1.4rem;
+    border: 0;
+    border-radius: 4px;
+    background: var(--sl-olive);
+    color: #fff;
+    font-family: var(--font-body-family);
+    font-size: 1rem;
+    line-height: 34px;
+    font-weight: 700;
     cursor: pointer;
-    box-shadow: none !important;
+    box-shadow: none;
+    transition: background-color 160ms ease;
   }
 
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] button[type="submit"]:hover,
-  #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"] button[data-testid="btn-form-submit"]:hover {
-    background: var(--sl-olive-dark) !important;
+  #{{ section_id }} .sl-ea-form__button:hover,
+  #{{ section_id }} .sl-ea-form__button:focus-visible {
+    background: var(--sl-olive-dark);
+  }
+
+  #{{ section_id }} .sl-ea-form .sl-message {
+    grid-column: 1 / -1;
+    margin: -4px 0 0;
+    font-size: 1.1rem;
+    line-height: 1.25;
+    text-align: center;
   }
 
   @media screen and (max-width: 989px) {
@@ -950,9 +923,8 @@
       width: 100%;
     }
 
-    #{{ section_id }} .sl-ea__form-wrap form[data-testid="form"],
-    #{{ section_id }} .sl-ea__form-wrap shopify-forms-embed {
-      grid-template-columns: 1fr !important;
+    #{{ section_id }} .sl-ea-form {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -1415,11 +1387,65 @@
           </div>
 
           <div class="sl-ea__form-wrap">
-            {%- if ea_app_block -%}
-              <div class="sl-app-block" {{ ea_app_block.shopify_attributes }}>
-                {% render ea_app_block %}
+            {% form 'customer', id: 'SignupLandingEarlyAccess', class: 'sl-ea-form' %}
+              <input type="hidden" name="contact[tags]" value="{{ section.settings.customer_tags | escape }}">
+
+              <div class="sl-ea-form__field">
+                <label class="visually-hidden" for="SignupLandingEarlyAccessFirstName-{{ section.id }}">{{ section.settings.first_name_placeholder }}</label>
+                <svg class="sl-ea-form__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M20 21a8 8 0 0 0-16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <input
+                  id="SignupLandingEarlyAccessFirstName-{{ section.id }}"
+                  type="text"
+                  name="contact[first_name]"
+                  autocomplete="given-name"
+                  placeholder="{{ section.settings.first_name_placeholder | escape }}"
+                >
               </div>
-            {%- endif -%}
+
+              <div class="sl-ea-form__field">
+                <label class="visually-hidden" for="SignupLandingEarlyAccessEmail-{{ section.id }}">{{ section.settings.email_placeholder }}</label>
+                <svg class="sl-ea-form__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+                  <path d="m3.5 7 8.5 6 8.5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <input
+                  id="SignupLandingEarlyAccessEmail-{{ section.id }}"
+                  type="email"
+                  name="contact[email]"
+                  value="{{ form.email }}"
+                  autocomplete="email"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  placeholder="{{ section.settings.email_placeholder | escape }}"
+                  required
+                  {% if form.errors %}
+                    aria-invalid="true"
+                    aria-describedby="SignupLandingEarlyAccessError-{{ section.id }}"
+                  {% elsif form.posted_successfully? %}
+                    aria-describedby="SignupLandingEarlyAccessSuccess-{{ section.id }}"
+                  {% endif %}
+                >
+              </div>
+
+              <button type="submit" class="sl-ea-form__button" name="commit">
+                {{ section.settings.ea_button_label | default: 'Join the List' | escape }}
+              </button>
+
+              {%- if form.errors -%}
+                <p class="sl-message sl-message--error" id="SignupLandingEarlyAccessError-{{ section.id }}">
+                  {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+                </p>
+              {%- endif -%}
+
+              {%- if form.posted_successfully? -%}
+                <p class="sl-message sl-message--success" id="SignupLandingEarlyAccessSuccess-{{ section.id }}" tabindex="-1">
+                  {{ section.settings.success_message }}
+                </p>
+              {%- endif -%}
+            {% endform %}
           </div>
 
         </div>
@@ -1893,6 +1919,12 @@
       "id": "ea_subtext",
       "label": "Subtext",
       "default": "Join our email list to receive 15% OFF your first order, launch news, and first access to authentic Palestinian products."
+    },
+    {
+      "type": "text",
+      "id": "ea_button_label",
+      "label": "Button label",
+      "default": "Join the List"
     },
     {
       "type": "header",
