@@ -7,6 +7,25 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="">
     <link rel="canonical" href="{{ canonical_url }}">
+    {%- unless request.design_mode -%}
+      {%- if settings.enable_signup_landing_redirect -%}
+        <script>
+          (() => {
+            const target = {{ settings.signup_landing_redirect_url | default: 'https://alardproducts.co.uk/pages/signup-landing' | json }};
+            if (!target) return;
+
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('preview_theme_id')) return;
+            if (window.Shopify && (window.Shopify.designMode || window.Shopify.inspectMode)) return;
+
+            const targetUrl = new URL(target, window.location.origin);
+            if (window.location.pathname === targetUrl.pathname) return;
+
+            window.location.replace(targetUrl.href);
+          })();
+        </script>
+      {%- endif -%}
+    {%- endunless -%}
     <link
       rel="stylesheet"
       type="text/css"
