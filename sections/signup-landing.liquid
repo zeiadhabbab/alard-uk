@@ -441,8 +441,15 @@
   }
 
   #{{ section_id }} .sl-benefits__subtitle {
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: 10px auto 0;
     color: var(--sl-muted);
     font-size: 2rem;
+    line-height: 1.35;
+    opacity: 1;
+    visibility: visible;
   }
 
   #{{ section_id }} .sl-benefits__grid {
@@ -744,6 +751,15 @@
     #{{ section_id }} .sl-community::before,
     #{{ section_id }} .sl-community::after {
       width: 42vw;
+    }
+  }
+
+  @media screen and (max-width: 490px) {
+    #{{ section_id }} .sl-app-blocks ._container_3eyaa_70,
+    #{{ section_id }} .sl-app-blocks [class*="_container_"] {
+      display: flex;
+      justify-content: center;
+      width: 100%;
     }
   }
 
@@ -1417,7 +1433,9 @@
     <div class="sl-shell sl-center">
       <h2 class="sl-heading">{{ section.settings.benefits_heading }}</h2>
       <span class="sl-section-kicker" aria-hidden="true"></span>
-      <p class="sl-benefits__subtitle">{{ section.settings.benefits_subheading }}</p>
+      {%- if section.settings.benefits_subheading != blank -%}
+        <p class="sl-benefits__subtitle">{{ section.settings.benefits_subheading }}</p>
+      {%- endif -%}
 
       <div class="sl-benefits__grid">
         {%- for block in section.blocks -%}
@@ -2042,6 +2060,15 @@
       form[data-testid="form"] button[data-testid="btn-form-submit"]:focus-visible {
         background: ${oliveDark} !important;
         box-shadow: 0 14px 28px rgba(79, 96, 45, 0.22) !important;
+      }
+
+      @media screen and (max-width: 490px) {
+        ._container_3eyaa_70,
+        [class*="_container_"] {
+          display: flex !important;
+          justify-content: center !important;
+          width: 100% !important;
+        }
       }
     `;
 
