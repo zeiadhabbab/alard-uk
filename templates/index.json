@@ -87,75 +87,6 @@
         "padding_bottom": 52
       }
     },
-    "featured_product_mBnKFU": {
-      "type": "featured-product",
-      "blocks": {
-        "text_rUTggz": {
-          "type": "text",
-          "settings": {
-            "text": "{{ section.settings.product.vendor }}",
-            "text_style": "uppercase"
-          }
-        },
-        "title_4wCRec": {
-          "type": "title",
-          "settings": {
-            "heading_size": "h1"
-          }
-        },
-        "price_4yqA9B": {
-          "type": "price",
-          "settings": {}
-        },
-        "variant_picker_pB9af7": {
-          "type": "variant_picker",
-          "settings": {
-            "picker_type": "button"
-          }
-        },
-        "quantity_selector_Lf4ceB": {
-          "type": "quantity_selector",
-          "settings": {}
-        },
-        "buy_buttons_DDWE9D": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_dynamic_checkout": false,
-            "show_gift_card_recipient": true
-          }
-        },
-        "share_PwTnVw": {
-          "type": "share",
-          "settings": {
-            "share_label": "Share"
-          }
-        }
-      },
-      "block_order": [
-        "text_rUTggz",
-        "title_4wCRec",
-        "price_4yqA9B",
-        "variant_picker_pB9af7",
-        "quantity_selector_Lf4ceB",
-        "buy_buttons_DDWE9D",
-        "share_PwTnVw"
-      ],
-      "name": "t:sections.featured-product.presets.name",
-      "settings": {
-        "product": "palestinian-extra-virgin-olive-oil-500-ml-2",
-        "color_scheme": "background-2",
-        "secondary_background": false,
-        "media_size": "medium",
-        "constrain_to_viewport": true,
-        "media_fit": "contain",
-        "media_position": "left",
-        "image_zoom": "lightbox",
-        "hide_variants": false,
-        "enable_video_looping": false,
-        "padding_top": 32,
-        "padding_bottom": 32
-      }
-    },
     "featured_collection_cXThQL": {
       "type": "featured-collection",
       "settings": {
@@ -354,7 +285,6 @@
     "image_banner",
     "featured_collection_aXzrBb",
     "custom_liquid_HXKMFR",
-    "featured_product_mBnKFU",
     "featured_collection_cXThQL",
     "17aa76ca-3d53-4eb9-850c-d949111d8309",
     "74a01cbc-229e-4ff0-9deb-20e5a38b6085",
