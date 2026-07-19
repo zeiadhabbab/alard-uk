@@ -127,7 +127,7 @@
     "show_vendor": false,
     "show_cart_note": false,
     "cart_drawer_collection": "",
-    "enable_signup_landing_redirect": true,
+    "enable_signup_landing_redirect": false,
     "sections": {
       "main-password-header": {
         "type": "main-password-header",
